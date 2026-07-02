@@ -1,0 +1,9 @@
+/* App-level styles */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes screenEnter {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
