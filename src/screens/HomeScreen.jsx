@@ -1057,7 +1057,7 @@ export default function HomeScreen({
         }}>
           {/* Title */}
           <p style={{ fontFamily: 'Atlas', fontWeight: 500, fontSize: 16, color: '#323232', textAlign: 'right', lineHeight: '20px', margin: 0, width: '100%' }}>
-            מצאנו דפוס משותף בין<br />האירועים שבחרת
+            זיהינו דפוס משותף בין<br />האירועים שבחרת
           </p>
 
           {/* Dominant Mandala */}
