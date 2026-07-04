@@ -3,8 +3,39 @@ import Mandala from '../components/Mandala';
 
 const DOT_SIZE = 88.25;
 
+let _chimePlayed = false;
+function playChime() {
+  if (_chimePlayed) return;
+  _chimePlayed = true;
+  setTimeout(() => { _chimePlayed = false; }, 500);
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const t   = ctx.currentTime;
+
+    const addTone = (freq, startDelay, peak, decay) => {
+      const osc  = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, t + startDelay);
+      gain.gain.linearRampToValueAtTime(peak, t + startDelay + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + startDelay + decay);
+      osc.start(t + startDelay);
+      osc.stop(t + startDelay + decay);
+    };
+
+    addTone(523, 0,    0.10, 0.35); // C5 — "ta"
+    addTone(784, 0.18, 0.10, 0.55); // G5 — "da" (a fifth up, softer + longer)
+
+    setTimeout(() => ctx.close(), 1000);
+  } catch (_) {}
+}
+
 export default function EventSavedScreen({ event, onDone }) {
   useEffect(() => {
+    playChime();
     const t = setTimeout(onDone, 2000);
     return () => clearTimeout(t);
   }, [onDone]);
