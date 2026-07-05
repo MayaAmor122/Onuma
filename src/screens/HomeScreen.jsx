@@ -542,7 +542,7 @@ export default function HomeScreen({
   }
 
   /* ── Derived ── */
-  const allEvents      = [...events].reverse();
+  const allEvents      = [...events];
   const chartBuckets   = getChartBuckets(events, level, filter);
   const chartMax       = Math.max(...chartBuckets.map(b => b.count), 1);
   const selCount       = selectedEventIds.size;
@@ -636,6 +636,27 @@ export default function HomeScreen({
               gap: `${gap}px`, justifyContent: 'center', direction: 'rtl',
             }}>
               {Array.from({ length: gridCellCount }, (_, i) => {
+                const isAddButton = hasEvents && i === allEvents.length;
+
+                if (isAddButton) {
+                  return (
+                    <div
+                      key={i}
+                      ref={addButtonRef}
+                      onClick={onAddEvent}
+                      style={{
+                        width: dotSize, height: dotSize, borderRadius: '50%',
+                        background: addButtonBg || '#F8F5EE',
+                        border: `2px solid ${addButtonBorderColor || '#183497'}`,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        cursor: 'pointer', boxSizing: 'border-box', flexShrink: 0,
+                      }}
+                    >
+                      <PlusIcon size={26} color={addButtonIconColor || '#183497'} />
+                    </div>
+                  );
+                }
+
                 const event      = i < allEvents.length ? allEvents[i] : null;
                 const matches    = event ? eventMatchesFilter(event, filter) : true;
                 const isSelected = event ? selectedEventIds.has(event.id) : false;
@@ -650,7 +671,7 @@ export default function HomeScreen({
                     {...handlers}
                     style={{
                       width: dotSize, height: dotSize, borderRadius: '50%',
-                      background: hasEvents ? '#EFECDE' : 'rgba(239,236,222,0.36)',
+                      background: event ? 'transparent' : (hasEvents ? '#EFECDE' : 'rgba(239,236,222,0.36)'),
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       cursor: event ? 'pointer' : 'default',
                       boxSizing: 'border-box', position: 'relative',
@@ -669,7 +690,7 @@ export default function HomeScreen({
                           timeOfDay={getTimeOfDay(event.timestamp)}
                           intensity={event.rating || 1}
                           color={mandalaColor}
-                          size={dotSize * 0.85}
+                          size={dotSize * 0.861}
                         />
                       </div>
                     )}
@@ -699,22 +720,6 @@ export default function HomeScreen({
           </div>
         )}
 
-        {/* "+" — fixed at the bottom-left, drawn above the fade so it stays fully visible */}
-        {hasEvents && viewMode === 'grid' && level === 0 && (
-          <button
-            ref={addButtonRef}
-            onClick={onAddEvent}
-            style={{
-              position: 'absolute', bottom: 8, left: 18.5, zIndex: 5,
-              width: dotSize, height: dotSize, borderRadius: '50%',
-              background: addButtonBg || '#F8F5EE', border: `2px solid ${addButtonBorderColor || '#183497'}`,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer', boxSizing: 'border-box',
-            }}
-          >
-            <PlusIcon size={26} color={addButtonIconColor || '#183497'} />
-          </button>
-        )}
 
         {/* ── Empty state — "+" sits on second-row first-dot from the right, text flows left ── */}
         {!hasEvents && viewMode === 'grid' && level === 0 && (
@@ -733,7 +738,7 @@ export default function HomeScreen({
                 onPointerLeave={() => setEmptyBtnPressed(false)}
                 style={{
                   width: dotSize, height: dotSize, borderRadius: '50%',
-                  background: emptyBtnPressed ? '#8FAAED' : '#B6CDFF', border: 'none',
+                  background: emptyBtnPressed ? 'rgba(24,52,151,0.08)' : '#F8F5EE', border: '2px solid #183497',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   cursor: 'pointer', pointerEvents: 'auto', flexShrink: 0,
                   transform: emptyBtnPressed ? 'scale(0.97)' : 'scale(1)',
@@ -779,7 +784,7 @@ export default function HomeScreen({
                       timeOfDay={getTimeOfDay(event.timestamp)}
                       intensity={event.rating || 1}
                       color={mandalaColor}
-                      size={dotSize * 0.85}
+                      size={dotSize * 0.861}
                     />
                   </div>
                 );

@@ -65,7 +65,7 @@ function FilterSection({ label, children, noBorder }) {
     <div>
       {!noBorder && <div style={{ height: 1, background: '#E2DFD0', margin: '0 0 20px' }} />}
       <p style={{
-        fontFamily: 'Atlas', fontWeight: 400, fontSize: 16, color: '#183497',
+        fontFamily: 'Atlas', fontWeight: 400, fontSize: 16, color: '#45423A',
         textAlign: 'right', margin: '0 0 18px',
       }}>
         {label}

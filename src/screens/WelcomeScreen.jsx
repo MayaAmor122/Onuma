@@ -1,13 +1,6 @@
 import { useState } from 'react';
-import Mandala from '../components/Mandala';
-
-const MANDALAS = [
-  { timeOfDay: 'morning',   intensity: 2, color: '#B6CDFF' },
-  { timeOfDay: 'afternoon', intensity: 3, color: '#5CB85C' },
-  { timeOfDay: 'noon',      intensity: 2, color: '#F4B8C8' },
-  { timeOfDay: 'evening',   intensity: 4, color: '#183497' },
-  { timeOfDay: 'morning',   intensity: 3, color: '#FFDC60' },
-];
+import topDecoration    from '../assets/images/welcome-top-decoration.png';
+import bottomDecoration from '../assets/images/welcome-bottom-decoration.png';
 
 function Logo() {
   return (
@@ -31,44 +24,43 @@ export default function WelcomeScreen({ onNext }) {
   return (
     <div style={{
       flex: 1, display: 'flex', flexDirection: 'column',
-      background: '#F8F5EE', overflow: 'hidden',
+      background: '#F8F5EE', overflow: 'hidden', position: 'relative',
     }}>
 
-      {/* ── Mandala column ── */}
-      <div style={{
-        display: 'flex', flexDirection: 'column', alignItems: 'center',
-        paddingTop: 32, gap: 10, flexShrink: 0,
-      }}>
-        {MANDALAS.map((m, i) => (
-          <Mandala key={i} timeOfDay={m.timeOfDay} intensity={m.intensity} color={m.color} size={64} />
-        ))}
-      </div>
+      {/* ── Top decoration ── */}
+      <img src={topDecoration} alt="" style={{
+        position: 'absolute', top: 20, left: 25, right: 25,
+        width: 'calc(100% - 50px)', pointerEvents: 'none', zIndex: 0,
+      }} />
 
-      {/* ── Text section ── */}
+      {/* ── Bottom decoration ── */}
+      <img src={bottomDecoration} alt="" style={{
+        position: 'absolute', bottom: 20, left: 25, right: 25,
+        width: 'calc(100% - 50px)', pointerEvents: 'none', zIndex: 0,
+      }} />
+
+      {/* ── Centered content ── */}
       <div style={{
         flex: 1, display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center',
-        padding: '0 32px', gap: 10,
+        padding: '0 32px 48px', gap: 10, position: 'relative', zIndex: 1,
       }}>
         <p style={{
           fontFamily: 'Atlas', fontWeight: 500, fontSize: 24, color: '#45423A',
           margin: '5px 0 0', direction: 'rtl', textAlign: 'center',
         }}>
-          ברוך הבא ל-
+          ברוכים הבאים
         </p>
 
         <Logo />
 
         <p style={{
-          fontFamily: 'Atlas', fontWeight: 400, fontSize: 16, color: '#45423A',
-          margin: '6px 0 0', direction: 'rtl', textAlign: 'center', lineHeight: 1.55,
+          fontFamily: 'Atlas', fontWeight: 400, fontSize: 15, color: '#45423A',
+          margin: '6px 0 20px', direction: 'rtl', textAlign: 'center', lineHeight: 1.55,
         }}>
-          המקום שבו תוכל לתעד אירועים, לזהות דפוסים לאורך זמן ולקבל תובנות שיעזרו<br />לך להבין טוב יותר את ההתנהגות שלך.
+          המקום שבו תוכלו לתעד אירועים, לזהות<br />דפוסים לאורך זמן ולקבל תובנות שיעזרו<br />לכם להבין טוב יותר את דרך הפעולה שלכם.
         </p>
-      </div>
 
-      {/* ── Button ── */}
-      <div style={{ padding: '0 24px 48px', flexShrink: 0 }}>
         <button
           onClick={onNext}
           onPointerDown={() => setPressed(true)}
@@ -84,7 +76,7 @@ export default function WelcomeScreen({ onNext }) {
             transition: 'background 0.12s ease, transform 0.12s ease',
           }}
         >
-          בוא נתחיל
+          בואו נתחיל
         </button>
       </div>
 

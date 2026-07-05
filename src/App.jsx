@@ -39,7 +39,8 @@ function AppContent() {
   const [splashUp,   setSplashUp]   = useState(false);
   const [splashGone, setSplashGone] = useState(false);
   const [authView,   setAuthView]   = useState('login');
-  const [step,       setStep]       = useState('welcome');
+  const [step,       setStep]       = useState('intro');
+  const [welcomeDone, setWelcomeDone] = useState(false);
   const [activeTab,  setActiveTab]  = useState('home');
   const [addEventStep,  setAddEventStep]  = useState(null);
   const [pendingEvent,  setPendingEvent]  = useState({});
@@ -53,13 +54,14 @@ function AppContent() {
 
   /* ── Unique key for the current screen — drives transition ── */
   const screenKey = useMemo(() => {
+    if (!isLoggedIn && !welcomeDone) return 'welcome';
     if (!isLoggedIn) return authView;
     if (!onboardingDone) return step;
     if (activeTab !== 'home') return activeTab;
     if (selectedEvent) return 'event-detail';
     if (addEventStep)  return `add-${addEventStep}`;
     return 'home';
-  }, [isLoggedIn, authView, onboardingDone, step, activeTab, selectedEvent, addEventStep]);
+  }, [isLoggedIn, welcomeDone, authView, onboardingDone, step, activeTab, selectedEvent, addEventStep]);
 
   function quitAddEvent() {
     setShowQuitModal(false);
@@ -75,6 +77,13 @@ function AppContent() {
   }
 
   function renderContent() {
+    /* ── Pre-login welcome ── */
+    if (!isLoggedIn && !welcomeDone) {
+      return (
+        <WelcomeScreen onNext={() => { setDirection('forward'); setWelcomeDone(true); }} />
+      );
+    }
+
     /* ── Auth ── */
     if (!isLoggedIn) {
       if (authView === 'signup') {
@@ -233,12 +242,6 @@ function AppContent() {
 
     /* ── Onboarding ── */
     switch (step) {
-      case 'welcome':
-        return (
-          <WelcomeScreen
-            onNext={() => { setDirection('forward'); setStep('intro'); }}
-          />
-        );
       case 'intro':
         return (
           <OnboardingIntroScreen
