@@ -7,6 +7,14 @@ const CARD_W   = 244;
 const CARD_H   = 133;
 const CARD_GAP = 16;
 
+/* Replace green events only in the bottom-visible rows (indices ~224–236)
+   so no green mandala appears near the + button overlay. */
+const WALKTHROUGH_EVENTS = MOCK_EVENTS.map((e, i) =>
+  i >= 224 && i <= 236 && e.color === '#00BE4A'
+    ? { ...e, color: '#183497' }
+    : e
+);
+
 /* ════════════════════════════════
    Walkthrough — step 2
    Spotlight on the "+" add-event button.
@@ -16,7 +24,7 @@ const CARD_GAP = 16;
 ════════════════════════════════ */
 const BTN_SIZE = 72;
 const BTN_LEFT = 16;
-const BTN_BOTTOM = 82;
+const BTN_BOTTOM = 98;
 
 function PlusIcon() {
   return (
@@ -61,7 +69,7 @@ export default function WalkthroughScreen2({ onNext, onSkip }) {
         pointerEvents: 'none',
       }}>
         <HomeScreen
-          previewEvents={MOCK_EVENTS}
+          previewEvents={WALKTHROUGH_EVENTS}
           onNavigate={() => {}} onAddEvent={() => {}} onEventPress={() => {}}
         />
       </div>
