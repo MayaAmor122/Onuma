@@ -7,10 +7,8 @@ const CARD_W   = 244;
 const CARD_H   = 133;
 const CARD_GAP = 16;
 
-/* Remove green from walkthrough mock events so none appears near the + button overlay. */
-const WALKTHROUGH_EVENTS = MOCK_EVENTS.map(e =>
-  e.color === '#00BE4A' ? { ...e, color: '#183497' } : e
-);
+/* 259 events → position 259 in RTL 4-col grid = leftmost column of last row */
+const WT2_EVENTS = MOCK_EVENTS.slice(0, 259);
 
 /* ════════════════════════════════
    Walkthrough — step 2
@@ -19,18 +17,6 @@ const WALKTHROUGH_EVENTS = MOCK_EVENTS.map(e =>
    is positioned with the same top/left/width/height as the button, so the
    hole in the scrim IS the button — no center-calculation drift possible.
 ════════════════════════════════ */
-const BTN_SIZE = 72;
-const BTN_LEFT = 16;
-const BTN_BOTTOM = 98;
-
-function PlusIcon() {
-  return (
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round">
-      <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
-    </svg>
-  );
-}
-
 export default function WalkthroughScreen2({ onNext, onSkip }) {
   const containerRef = useRef(null);
   const plusRef      = useRef(null);
@@ -46,14 +32,23 @@ export default function WalkthroughScreen2({ onNext, onSkip }) {
 
   useEffect(() => {
     if (!plusRef.current || !containerRef.current) return;
-    const btnBox  = plusRef.current.getBoundingClientRect();
-    const baseBox = containerRef.current.getBoundingClientRect();
-    setRect({
-      top:  btnBox.top  - baseBox.top,
-      left: btnBox.left - baseBox.left,
-      size: btnBox.width,
+
+    /* Scroll the grid to the bottom so the + button is visible */
+    const scrollable = containerRef.current.querySelector('.no-scrollbar');
+    if (scrollable) scrollable.scrollTop = scrollable.scrollHeight;
+
+    /* Measure after scroll takes effect */
+    requestAnimationFrame(() => {
+      if (!plusRef.current || !containerRef.current) return;
+      const btnBox  = plusRef.current.getBoundingClientRect();
+      const baseBox = containerRef.current.getBoundingClientRect();
+      setRect({
+        top:  btnBox.top  - baseBox.top,
+        left: btnBox.left - baseBox.left,
+        size: btnBox.width,
+      });
+      requestAnimationFrame(() => setOpen(true));
     });
-    requestAnimationFrame(() => requestAnimationFrame(() => setOpen(true)));
   }, []);
 
   return (
@@ -66,24 +61,11 @@ export default function WalkthroughScreen2({ onNext, onSkip }) {
         pointerEvents: 'none',
       }}>
         <HomeScreen
-          previewEvents={WALKTHROUGH_EVENTS}
+          previewEvents={WT2_EVENTS}
+          addButtonBg="#1C1C1C" addButtonBorderColor="#ffffff" addButtonIconColor="#ffffff"
+          addButtonRef={plusRef}
           onNavigate={() => {}} onAddEvent={() => {}} onEventPress={() => {}}
         />
-      </div>
-
-      {/* Fixed + button at bottom-left — the spotlight target */}
-      <div
-        ref={plusRef}
-        style={{
-          position: 'absolute',
-          bottom: BTN_BOTTOM, left: BTN_LEFT,
-          width: BTN_SIZE, height: BTN_SIZE, borderRadius: '50%',
-          background: '#1C1C1C', border: '2px solid #ffffff',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          zIndex: 9, pointerEvents: 'none', boxSizing: 'border-box',
-        }}
-      >
-        <PlusIcon />
       </div>
 
       {/* Backup solid scrim — always rendered, fades away only once the spotlight
