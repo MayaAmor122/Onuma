@@ -2,21 +2,22 @@ import { useEffect, useRef, useState } from 'react';
 import HomeScreen from './HomeScreen';
 import { MOCK_EVENTS } from '../utils/mockEvents';
 
-const SCRIM    = 'rgba(28,28,28,0.83)';
+const SCRIM    = 'rgba(28,28,28,0.92)';
 const CARD_W   = 244;
 const CARD_H   = 133;
 const CARD_GAP = 16;
+const BTN_SIZE = 72;
+const BTN_LEFT = 16;
+const BTN_BOTTOM = 98;
 
-/* 259 events → position 259 in RTL 4-col grid = leftmost column of last row */
-const WT2_EVENTS = MOCK_EVENTS.slice(0, 259);
+function PlusIcon() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round">
+      <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+  );
+}
 
-/* ════════════════════════════════
-   Walkthrough — step 2
-   Spotlight on the "+" add-event button.
-   Uses box-shadow for guaranteed pixel-perfect alignment: a transparent div
-   is positioned with the same top/left/width/height as the button, so the
-   hole in the scrim IS the button — no center-calculation drift possible.
-════════════════════════════════ */
 export default function WalkthroughScreen2({ onNext, onSkip }) {
   const containerRef = useRef(null);
   const plusRef      = useRef(null);
@@ -32,23 +33,14 @@ export default function WalkthroughScreen2({ onNext, onSkip }) {
 
   useEffect(() => {
     if (!plusRef.current || !containerRef.current) return;
-
-    /* Scroll the grid to the bottom so the + button is visible */
-    const scrollable = containerRef.current.querySelector('.no-scrollbar');
-    if (scrollable) scrollable.scrollTop = scrollable.scrollHeight;
-
-    /* Measure after scroll takes effect */
-    requestAnimationFrame(() => {
-      if (!plusRef.current || !containerRef.current) return;
-      const btnBox  = plusRef.current.getBoundingClientRect();
-      const baseBox = containerRef.current.getBoundingClientRect();
-      setRect({
-        top:  btnBox.top  - baseBox.top,
-        left: btnBox.left - baseBox.left,
-        size: btnBox.width,
-      });
-      requestAnimationFrame(() => setOpen(true));
+    const btnBox  = plusRef.current.getBoundingClientRect();
+    const baseBox = containerRef.current.getBoundingClientRect();
+    setRect({
+      top:  btnBox.top  - baseBox.top,
+      left: btnBox.left - baseBox.left,
+      size: btnBox.width,
     });
+    requestAnimationFrame(() => requestAnimationFrame(() => setOpen(true)));
   }, []);
 
   return (
@@ -61,16 +53,27 @@ export default function WalkthroughScreen2({ onNext, onSkip }) {
         pointerEvents: 'none',
       }}>
         <HomeScreen
-          previewEvents={WT2_EVENTS}
-          addButtonBg="#1C1C1C" addButtonBorderColor="#ffffff" addButtonIconColor="#ffffff"
-          addButtonRef={plusRef}
+          previewEvents={MOCK_EVENTS}
           onNavigate={() => {}} onAddEvent={() => {}} onEventPress={() => {}}
         />
       </div>
 
-      {/* Backup solid scrim — always rendered, fades away only once the spotlight
-          is open. Prevents the 1-frame flash that occurs when rect is measured
-          (the box-shadow spread scales with transform, so scale(0.001) covers ~10px). */}
+      {/* Fixed + button at bottom-left — the spotlight target */}
+      <div
+        ref={plusRef}
+        style={{
+          position: 'absolute',
+          bottom: BTN_BOTTOM, left: BTN_LEFT,
+          width: BTN_SIZE, height: BTN_SIZE, borderRadius: '50%',
+          background: '#1C1C1C', border: '2px solid #ffffff',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          zIndex: 9, pointerEvents: 'none', boxSizing: 'border-box',
+        }}
+      >
+        <PlusIcon />
+      </div>
+
+      {/* Backup solid scrim */}
       <div style={{
         position: 'absolute', inset: 0, zIndex: 11, pointerEvents: 'none',
         background: SCRIM,
@@ -78,8 +81,7 @@ export default function WalkthroughScreen2({ onNext, onSkip }) {
         transition: (rect && open) ? 'opacity 0.45s cubic-bezier(0.32,0.72,0,1)' : 'none',
       }} />
 
-      {/* Box-shadow scrim: transparent div sits exactly over the button.
-          Sits at zIndex:10, below backup scrim, until open. */}
+      {/* Box-shadow scrim with spotlight hole over the + button */}
       {rect && (
         <div style={{
           position: 'absolute', zIndex: 10, pointerEvents: 'none',
