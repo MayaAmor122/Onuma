@@ -14,6 +14,18 @@ const CARD_GAP = 16;
    is positioned with the same top/left/width/height as the button, so the
    hole in the scrim IS the button — no center-calculation drift possible.
 ════════════════════════════════ */
+const BTN_SIZE = 72;
+const BTN_LEFT = 16;
+const BTN_BOTTOM = 82;
+
+function PlusIcon() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2.2" strokeLinecap="round">
+      <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+  );
+}
+
 export default function WalkthroughScreen2({ onNext, onSkip }) {
   const containerRef = useRef(null);
   const plusRef      = useRef(null);
@@ -49,9 +61,24 @@ export default function WalkthroughScreen2({ onNext, onSkip }) {
         pointerEvents: 'none',
       }}>
         <HomeScreen
-          previewEvents={MOCK_EVENTS} addButtonBg="#1C1C1C" addButtonBorderColor="#ffffff" addButtonIconColor="#ffffff" addButtonRef={plusRef}
+          previewEvents={MOCK_EVENTS}
           onNavigate={() => {}} onAddEvent={() => {}} onEventPress={() => {}}
         />
+      </div>
+
+      {/* Fixed + button at bottom-left — the spotlight target */}
+      <div
+        ref={plusRef}
+        style={{
+          position: 'absolute',
+          bottom: BTN_BOTTOM, left: BTN_LEFT,
+          width: BTN_SIZE, height: BTN_SIZE, borderRadius: '50%',
+          background: '#1C1C1C', border: '2px solid #ffffff',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          zIndex: 9, pointerEvents: 'none', boxSizing: 'border-box',
+        }}
+      >
+        <PlusIcon />
       </div>
 
       {/* Backup solid scrim — always rendered, fades away only once the spotlight
