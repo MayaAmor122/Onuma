@@ -16,7 +16,6 @@ export default function PhoneFrame({ children }) {
   }, []);
 
   return (
-    <div style={{ width: FRAME_W * scale, height: FRAME_H * scale, flexShrink: 0 }}>
     <div className="phone-shell" style={{
       width: FRAME_W,
       height: FRAME_H,
@@ -28,8 +27,7 @@ export default function PhoneFrame({ children }) {
       flexDirection: 'column',
       boxShadow: '0 40px 100px rgba(0,0,0,0.45), 0 0 0 1px rgba(0,0,0,0.12)',
       flexShrink: 0,
-      transformOrigin: 'top left',
-      transform: `scale(${scale})`,
+      zoom: scale,
     }}>
       {/* ── Status bar ── */}
       <div className="phone-status-bar" style={{
@@ -69,7 +67,6 @@ export default function PhoneFrame({ children }) {
       <div className="phone-content" style={{ flex: 1, overflow: 'hidden', position: 'relative', display: 'flex', flexDirection: 'column' }}>
         {children}
       </div>
-    </div>
     </div>
   );
 }
