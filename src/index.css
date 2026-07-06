@@ -126,3 +126,37 @@ input[type='range']::-moz-range-thumb {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* ── Touch improvements (all devices) ── */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+button, [role="button"], input, select, textarea, label {
+  touch-action: manipulation;
+}
+
+/* ── Mobile: fill the real screen, hide the fake phone frame ── */
+@media (max-width: 768px) {
+  html, body, #root {
+    height: 100dvh;
+    overflow: hidden;
+  }
+  #root {
+    align-items: stretch;
+    background: #F8F5EE;
+  }
+  .phone-shell {
+    width: 100% !important;
+    height: 100dvh !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    flex-shrink: 1 !important;
+  }
+  .phone-status-bar {
+    display: none !important;
+  }
+  .phone-content {
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
