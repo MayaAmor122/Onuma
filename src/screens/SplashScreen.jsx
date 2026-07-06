@@ -38,6 +38,7 @@ export default function SplashScreen({ onSwipeUp }) {
     <div
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
+      onPointerCancel={() => { startY.current = null; }}
       onWheel={onWheel}
       style={{
         flex: 1,
@@ -47,6 +48,7 @@ export default function SplashScreen({ onSwipeUp }) {
         background: '#F8F5EE',
         userSelect: 'none',
         cursor: 'grab',
+        touchAction: 'none',
       }}
     >
       <Logo />
