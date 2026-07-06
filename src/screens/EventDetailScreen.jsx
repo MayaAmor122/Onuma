@@ -93,14 +93,16 @@ function MicIcon({ size = 14, color = '#ffffff' }) {
 }
 
 /* ── Info tag chip ── */
-function InfoTag({ width, children }) {
+function InfoTag({ width, dot, children }) {
   return (
     <span style={{
       width, height: 40, borderRadius: 30, background: '#EBE8DB',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
+      direction: 'rtl', gap: dot ? 7 : 0,
       fontFamily: 'Atlas', fontWeight: 500, fontSize: 14, color: '#323232',
       whiteSpace: 'nowrap', flexShrink: 0, boxSizing: 'border-box',
     }}>
+      {dot && <div style={{ width: 10, height: 10, borderRadius: '50%', background: dot, flexShrink: 0 }} />}
       {children}
     </span>
   );
@@ -220,7 +222,7 @@ export default function EventDetailScreen({ event, onClose }) {
       {/* ── Tags ── */}
       <div style={{ padding: '0 20px 28px', direction: 'rtl' }}>
         <div style={{ display: 'flex', flexDirection: 'row', direction: 'rtl', justifyContent: 'flex-start', gap: 5, marginBottom: 8 }}>
-          {hasLocation && <InfoTag width={214}>{`מיקום האירוע: ${event.location}`}</InfoTag>}
+          {hasLocation && <InfoTag width={214} dot={event.color}>{`מיקום האירוע: ${event.location}`}</InfoTag>}
           <InfoTag width={134}>{`עוצמה: ${event.rating || 1}`}</InfoTag>
         </div>
         {hasTypes && (
