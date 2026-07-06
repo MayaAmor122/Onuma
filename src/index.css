@@ -60,6 +60,7 @@
 
 html, body {
   height: 100%;
+  overflow: hidden;
   font-family: 'Atlas', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
   background: #000000;
   -webkit-font-smoothing: antialiased;
