@@ -196,10 +196,8 @@ export default function AddEventScreen1({ onNext, onClose }) {
           style={{
             position: 'absolute', left: 24, right: 24, bottom: BOTTOM_PAD,
             height: TRIGGER_H, padding: '0 20px', borderRadius: 24,
-            border: isOpen ? '1.5px solid #323232' : 'none',
-            background: isOpen
-              ? (pressed === 'trigger' ? 'rgba(50,50,50,0.06)' : 'transparent')
-              : (pressed === 'trigger' ? '#2E2B25' : '#45423A'),
+            border: '1.5px solid #45423A',
+            background: pressed === 'trigger' ? 'rgba(69,66,58,0.08)' : 'transparent',
             display: 'flex', flexDirection: 'row', direction: 'rtl',
             alignItems: 'center', justifyContent: 'space-between',
             cursor: 'pointer', boxSizing: 'border-box',
@@ -209,11 +207,11 @@ export default function AddEventScreen1({ onNext, onClose }) {
         >
           <span style={{
             fontFamily: 'Atlas', fontWeight: 700, fontSize: 14,
-            color: isOpen ? '#323232' : '#F8F5EE',
+            color: '#45423A',
           }}>
             {currentLabel}
           </span>
-          {isOpen ? <ChevronUpIcon color="#323232" /> : <ChevronLeftIcon color="#F8F5EE" />}
+          {isOpen ? <ChevronUpIcon color="#45423A" /> : <ChevronLeftIcon color="#45423A" />}
         </button>
       </div>
 
