@@ -400,6 +400,11 @@ export default function HomeScreen({
   const isLongPressRef     = useRef(false);
   const selectedIdsRef     = useRef(new Set()); // stale-closure-safe mirror
 
+  /* ── Pinch visual state ── */
+  const [pinchScale,  setPinchScale]  = useState(1);
+  const [isPinching,  setIsPinching]  = useState(false);
+  const pinchScaleRef = useRef(1);
+
   const { cols, dotSize, gap, view: activeView } = LEVELS[level];
   const filterActive = isFilterActive(filter);
   const filterCount  = filter.timesOfDay.length + filter.locations.length + filter.ratings.length + filter.types.length;
@@ -432,26 +437,42 @@ export default function HomeScreen({
       return Math.sqrt(dx*dx + dy*dy);
     }
     function onStart(e) {
-      if (e.touches.length === 2) { pinch.active = true; pinch.startDist = dist(e.touches); pinch.startLevel = levelRef.current; }
-      else pinch.active = false;
+      if (e.touches.length === 2) {
+        pinch.active = true;
+        pinch.startDist = dist(e.touches);
+        pinch.startLevel = levelRef.current;
+        setIsPinching(true);
+      } else {
+        pinch.active = false;
+      }
     }
     function onMove(e) {
       if (!pinch.active || e.touches.length !== 2) return;
       e.preventDefault();
-      const scale = dist(e.touches) / pinch.startDist;
-      let nl = pinch.startLevel;
-      if      (scale < 0.72 && pinch.startLevel < 2) nl = pinch.startLevel + 1;
-      else if (scale > 1.38 && pinch.startLevel > 0) nl = pinch.startLevel - 1;
-      if (nl !== levelRef.current) setLevel(nl);
+      const s = Math.max(0.4, Math.min(2.4, dist(e.touches) / pinch.startDist));
+      pinchScaleRef.current = s;
+      setPinchScale(s);
     }
-    function onEnd() { pinch.active = false; }
+    function onEnd() {
+      if (!pinch.active) return;
+      pinch.active = false;
+      const s = pinchScaleRef.current;
+      const cur = levelRef.current;
+      if      (s < 0.75 && cur < 2) setLevel(cur + 1);
+      else if (s > 1.35 && cur > 0) setLevel(cur - 1);
+      pinchScaleRef.current = 1;
+      setPinchScale(1);
+      setIsPinching(false);
+    }
     el.addEventListener('touchstart', onStart, { passive: true  });
     el.addEventListener('touchmove',  onMove,  { passive: false });
     el.addEventListener('touchend',   onEnd,   { passive: true  });
+    el.addEventListener('touchcancel',onEnd,   { passive: true  });
     return () => {
-      el.removeEventListener('touchstart', onStart);
-      el.removeEventListener('touchmove',  onMove);
-      el.removeEventListener('touchend',   onEnd);
+      el.removeEventListener('touchstart',  onStart);
+      el.removeEventListener('touchmove',   onMove);
+      el.removeEventListener('touchend',    onEnd);
+      el.removeEventListener('touchcancel', onEnd);
     };
   }, []);
 
@@ -621,7 +642,12 @@ export default function HomeScreen({
       )}
 
       {/* ══ Grid / Chart / Circle area ══ */}
-      <div ref={gridAreaRef} style={{ flex: 1, overflow: 'hidden', position: 'relative', marginTop: 8 }}>
+      <div ref={gridAreaRef} style={{
+        flex: 1, overflow: 'hidden', position: 'relative', marginTop: 8,
+        transform: `scale(${pinchScale})`,
+        transformOrigin: 'center center',
+        transition: isPinching ? 'none' : 'transform 0.4s cubic-bezier(0.34,1.56,0.64,1)',
+      }}>
 
         {/* ── DOT GRID — level 0 (4-col, scrollable, interactive) ── */}
         {viewMode === 'grid' && level === 0 && (
