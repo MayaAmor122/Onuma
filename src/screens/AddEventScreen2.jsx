@@ -38,19 +38,19 @@ function polarPts(radius, count) {
 }
 
 /* ── 5-ring target config ──
-   Each ring is 16 px wide, gaps are 4 px.
+   Each zone is 26 px wide (radius), giving a 52 px finger hit area per ring.
    d = outer diameter (border-box), b = border width (0 = solid circle).
    Intensity 1 = innermost, 5 = outermost.                           */
 const RINGS = [
-  { d: 20,  b: 0,  color: '#E3E0D8' },  // intensity 1 — solid center dot (innermost)
-  { d: 60,  b: 20, color: '#D2CFC6' },  // intensity 2
-  { d: 100, b: 20, color: '#C4C1B8' },  // intensity 3
-  { d: 140, b: 20, color: '#B9B6AC' },  // intensity 4
-  { d: 180, b: 20, color: '#B0ADA3' },  // intensity 5 (outermost)
+  { d: 52,  b: 0,  color: '#E3E0D8' },  // intensity 1 — solid center dot (innermost)
+  { d: 104, b: 26, color: '#D2CFC6' },  // intensity 2
+  { d: 156, b: 26, color: '#C4C1B8' },  // intensity 3
+  { d: 208, b: 26, color: '#B9B6AC' },  // intensity 4
+  { d: 260, b: 26, color: '#B0ADA3' },  // intensity 5 (outermost)
 ];
 
-const TARGET_R = 90;   // half of 180 — the outer radius of ring 5
-const WIDGET   = 280;  // SVG + target container size
+const TARGET_R = 130;  // half of 260 — the outer radius of ring 5
+const WIDGET   = 310;  // SVG + target container size
 const SVG_HALF = VIEWBOX / 2; // 40.5
 
 /* ════════════════════════════════
@@ -67,12 +67,13 @@ export default function AddEventScreen2({ onNext, onBack, onClose, timeOfDay = '
   });
 
   function handleTargetClick(e) {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const dx   = e.clientX - (rect.left + rect.width  / 2);
-    const dy   = e.clientY - (rect.top  + rect.height / 2);
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    if (dist > TARGET_R + 6) return; // outside the target circle
-    const zone = Math.ceil((dist / TARGET_R) * 5);
+    const rect   = e.currentTarget.getBoundingClientRect();
+    const dx     = e.clientX - (rect.left + rect.width  / 2);
+    const dy     = e.clientY - (rect.top  + rect.height / 2);
+    const dist   = Math.sqrt(dx * dx + dy * dy);
+    const outerR = rect.width / 2; // use visual size so zoom doesn't break hit-testing
+    if (dist > outerR + 6) return;
+    const zone   = Math.ceil((dist / outerR) * 5);
     setRating(Math.max(1, Math.min(5, zone)));
   }
 
