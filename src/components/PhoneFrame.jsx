@@ -1,8 +1,25 @@
+import { useState, useEffect } from 'react';
+
+const FRAME_W = 390;
+const FRAME_H = 844;
+
 export default function PhoneFrame({ children }) {
+  const [scale, setScale] = useState(() =>
+    Math.min(window.innerWidth / FRAME_W, window.innerHeight / FRAME_H, 1)
+  );
+
+  useEffect(() => {
+    const update = () =>
+      setScale(Math.min(window.innerWidth / FRAME_W, window.innerHeight / FRAME_H, 1));
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
   return (
+    <div style={{ width: FRAME_W * scale, height: FRAME_H * scale, flexShrink: 0 }}>
     <div className="phone-shell" style={{
-      width: 390,
-      height: 844,
+      width: FRAME_W,
+      height: FRAME_H,
       background: '#F8F5EE',
       borderRadius: 52,
       overflow: 'hidden',
@@ -11,8 +28,10 @@ export default function PhoneFrame({ children }) {
       flexDirection: 'column',
       boxShadow: '0 40px 100px rgba(0,0,0,0.45), 0 0 0 1px rgba(0,0,0,0.12)',
       flexShrink: 0,
+      transformOrigin: 'top left',
+      transform: `scale(${scale})`,
     }}>
-      {/* ── Status bar (desktop only — hidden on real phones) ── */}
+      {/* ── Status bar ── */}
       <div className="phone-status-bar" style={{
         height: 50,
         display: 'flex',
@@ -50,6 +69,7 @@ export default function PhoneFrame({ children }) {
       <div className="phone-content" style={{ flex: 1, overflow: 'hidden', position: 'relative', display: 'flex', flexDirection: 'column' }}>
         {children}
       </div>
+    </div>
     </div>
   );
 }

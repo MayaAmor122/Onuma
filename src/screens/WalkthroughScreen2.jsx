@@ -35,10 +35,12 @@ export default function WalkthroughScreen2({ onNext, onSkip }) {
     if (!plusRef.current || !containerRef.current) return;
     const btnBox  = plusRef.current.getBoundingClientRect();
     const baseBox = containerRef.current.getBoundingClientRect();
+    // getBoundingClientRect returns screen px; divide by scale to get CSS px
+    const effectiveScale = baseBox.width / containerRef.current.offsetWidth;
     setRect({
-      top:  btnBox.top  - baseBox.top,
-      left: btnBox.left - baseBox.left,
-      size: btnBox.width,
+      top:  (btnBox.top  - baseBox.top)  / effectiveScale,
+      left: (btnBox.left - baseBox.left) / effectiveScale,
+      size: btnBox.width / effectiveScale,
     });
     requestAnimationFrame(() => requestAnimationFrame(() => setOpen(true)));
   }, []);
