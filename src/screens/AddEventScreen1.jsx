@@ -134,12 +134,16 @@ export default function AddEventScreen1({ onNext, onClose }) {
       {/* ── Mandala preview + dropdown — mandala stays fixed, dropdown overlays on top ── */}
       <div style={{ flex: 1, position: 'relative' }}>
 
-        {/* Mandala — always centered, unaffected by dropdown open/close */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          transform: 'translateY(-26px)',
-        }}>
+        {/* Mandala — tappable to toggle dropdown */}
+        <div
+          onClick={() => isOpen ? closeDropdown() : openDropdown()}
+          style={{
+            position: 'absolute', inset: 0,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transform: 'translateY(-26px)',
+            cursor: 'pointer',
+          }}
+        >
           <Mandala timeOfDay={timeOfDay} intensity={3} color="#EBE8DB" size={343.46} />
         </div>
 
