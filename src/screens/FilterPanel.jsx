@@ -262,8 +262,8 @@ export default function FilterPanel({ events, currentFilter, onApply, onClose, v
       }}>
         {/* הצג — left */}
         <button
-          onClick={hasSelection ? handleApply : undefined}
-          {...(hasSelection ? press('apply') : {})}
+          onClick={handleApply}
+          {...press('apply')}
           style={{
             width: 169, height: 56, borderRadius: 30,
             background: hasSelection
@@ -272,9 +272,9 @@ export default function FilterPanel({ events, currentFilter, onApply, onClose, v
             border: hasSelection ? 'none' : '1.5px solid #45423A',
             color: hasSelection ? '#F8F5EE' : '#45423A',
             fontFamily: 'Atlas', fontWeight: 700, fontSize: 16,
-            cursor: hasSelection ? 'pointer' : 'default',
+            cursor: 'pointer',
             transform: btnPressed === 'apply' ? 'scale(0.97)' : 'scale(1)',
-            transition: hasSelection ? 'background 0.12s ease, transform 0.12s ease' : 'none',
+            transition: 'background 0.12s ease, transform 0.12s ease',
           }}
         >
           {hasSelection ? `הצג תוצאות (${selCount})` : 'הצג'}
@@ -282,12 +282,12 @@ export default function FilterPanel({ events, currentFilter, onApply, onClose, v
 
         {/* נקה בחירה — right */}
         <span
-          onClick={hasSelection ? handleClear : undefined}
-          {...(hasSelection ? press('clear') : {})}
+          onClick={handleClear}
+          {...press('clear')}
           style={{
-            fontFamily: 'Atlas', fontWeight: 700, fontSize: 13, color: '#45423A',
-            cursor: hasSelection ? 'pointer' : 'default',
-            opacity: hasSelection ? (btnPressed === 'clear' ? 0.5 : 1) : 0.35,
+            fontFamily: 'Atlas', fontWeight: 400, fontSize: 13, color: '#45423A',
+            cursor: 'pointer',
+            opacity: btnPressed === 'clear' ? 0.5 : 1,
             transition: 'opacity 0.12s ease',
           }}
         >
