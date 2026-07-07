@@ -591,8 +591,8 @@ export default function HomeScreen({
             onClick={() => hasEvents && openFilterPanel()}
             style={{
               minWidth: 64, height: 30, borderRadius: 30, flexShrink: 0,
-              padding: filterActive ? '0 12px' : '0',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              padding: filterActive ? '0 8px 0 12px' : '0',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
               border: `1.5px solid ${hasEvents ? '#183497' : '#D4D1C3'}`,
               background: filterActive ? '#183497' : 'rgba(248,245,238,0.63)',
               color:      filterActive ? '#ffffff' : (hasEvents ? '#183497' : '#D4D1C3'),
@@ -601,7 +601,20 @@ export default function HomeScreen({
               boxSizing: 'border-box', whiteSpace: 'nowrap',
             }}
           >
-            {filterActive ? `סינון (${filterCount})` : 'סנן'}
+            {filterActive ? (
+              <>
+                <span>סינון ({filterCount})</span>
+                <div
+                  onClick={e => { e.stopPropagation(); setFilter(EMPTY_FILTER); setShowNoResults(false); }}
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    flexShrink: 0, cursor: 'pointer',
+                  }}
+                >
+                  <CloseIcon size={14} />
+                </div>
+              </>
+            ) : 'סנן'}
           </button>
 
           <button onClick={openMenu} style={iconBtn}>
