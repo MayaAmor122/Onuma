@@ -408,14 +408,14 @@ export default function InsightsFlow({ onClose }) {
         onTouchEnd={e => {
           if (touchX.current === null) return;
           const dx = e.changedTouches[0].clientX - touchX.current;
-          if (dx < -40) dismissWelcome();
+          if (Math.abs(dx) > 40) dismissWelcome();
           touchX.current = null;
         }}
         onMouseDown={e => { touchX.current = e.clientX; }}
         onMouseUp={e => {
           if (touchX.current === null) return;
           const dx = e.clientX - touchX.current;
-          if (dx < -40) dismissWelcome();
+          if (Math.abs(dx) > 40) dismissWelcome();
           touchX.current = null;
         }}
         onMouseLeave={() => { touchX.current = null; }}
