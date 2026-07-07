@@ -318,6 +318,7 @@ export default function InsightsFlow({ onClose }) {
   const touchX = useRef(null);
 
   const [loading,       setLoading]       = useState(true);
+  const [welcome,       setWelcome]       = useState(false);
   const [fadeIn,        setFadeIn]        = useState(false);
   const [step,          setStep]          = useState(0);
   const [displayStep,   setDisplayStep]   = useState(0);
@@ -330,10 +331,19 @@ export default function InsightsFlow({ onClose }) {
   useEffect(() => {
     const t = setTimeout(() => {
       setLoading(false);
+      setWelcome(true);
       requestAnimationFrame(() => setFadeIn(true));
     }, 2000);
     return () => clearTimeout(t);
   }, []);
+
+  function dismissWelcome() {
+    setFadeIn(false);
+    setTimeout(() => {
+      setWelcome(false);
+      requestAnimationFrame(() => requestAnimationFrame(() => setFadeIn(true)));
+    }, 300);
+  }
 
   const isCurrent = viewMode === 'שנה'
     ? year >= now.getFullYear()
@@ -380,6 +390,63 @@ export default function InsightsFlow({ onClose }) {
         }}>
           מכין את התובנות שלך...
         </p>
+      </div>
+    );
+  }
+
+  /* ── Welcome screen ── */
+  if (welcome) {
+    return (
+      <div
+        style={{
+          flex: 1, display: 'flex', flexDirection: 'column',
+          background: '#F8F5EE', overflow: 'hidden',
+          alignItems: 'center', justifyContent: 'center', gap: 22, paddingBottom: 15,
+          opacity: fadeIn ? 1 : 0, transition: 'opacity 0.3s ease',
+        }}
+        onTouchStart={e => { touchX.current = e.touches[0].clientX; }}
+        onTouchEnd={e => {
+          if (touchX.current === null) return;
+          const dx = e.changedTouches[0].clientX - touchX.current;
+          if (dx < -40) dismissWelcome();
+          touchX.current = null;
+        }}
+        onMouseDown={e => { touchX.current = e.clientX; }}
+        onMouseUp={e => {
+          if (touchX.current === null) return;
+          const dx = e.clientX - touchX.current;
+          if (dx < -40) dismissWelcome();
+          touchX.current = null;
+        }}
+        onMouseLeave={() => { touchX.current = null; }}
+      >
+        <EmptyMandala size={265} />
+
+        <p style={{
+          fontFamily: 'Atlas', fontWeight: 400, fontSize: 20,
+          color: '#45423A', textAlign: 'center', direction: 'rtl',
+          lineHeight: '28px', margin: 0, padding: '0 40px',
+          whiteSpace: 'pre-line',
+        }}>
+          {`עד כה תיעדת ${events.length} אירועים.\n`}
+          <span style={{ fontWeight: 500 }}>החלק שמאלה</span>
+          {' כדי לצפות\nבסיכום תובנות שהתקבלו..'}
+        </p>
+
+        <button
+          onClick={dismissWelcome}
+          style={{
+            width: 44, height: 44, borderRadius: '50%',
+            background: '#45423A', border: 'none',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer',
+          }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="#F8F5EE" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </button>
       </div>
     );
   }
