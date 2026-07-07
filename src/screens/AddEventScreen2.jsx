@@ -43,10 +43,10 @@ function polarPts(radius, count) {
    Intensity 1 = innermost, 5 = outermost.                           */
 const RINGS = [
   { d: 52,  b: 0,  color: '#E3E0D8' },  // intensity 1 — solid center dot (innermost)
-  { d: 104, b: 26, color: '#D2CFC6' },  // intensity 2
-  { d: 156, b: 26, color: '#C4C1B8' },  // intensity 3
-  { d: 208, b: 26, color: '#B9B6AC' },  // intensity 4
-  { d: 260, b: 26, color: '#B0ADA3' },  // intensity 5 (outermost)
+  { d: 104, b: 27, color: '#D2CFC6' },  // intensity 2 (1px overlap to kill anti-alias gap)
+  { d: 156, b: 27, color: '#C4C1B8' },  // intensity 3
+  { d: 208, b: 27, color: '#B9B6AC' },  // intensity 4
+  { d: 260, b: 27, color: '#B0ADA3' },  // intensity 5 (outermost)
 ];
 
 const TARGET_R = 130;  // half of 260 — the outer radius of ring 5
