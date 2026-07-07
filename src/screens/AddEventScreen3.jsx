@@ -157,12 +157,16 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
       {/* ── Mandala preview + dropdown — mandala stays fixed, dropdown overlays on top ── */}
       <div style={{ flex: 1, position: 'relative' }}>
 
-        {/* Mandala — color reflects the selected location, shape stays from step 1 */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          transform: 'translateY(-26px)',
-        }}>
+        {/* Mandala — tappable to toggle dropdown */}
+        <div
+          onClick={() => isOpen ? closeDropdown() : openDropdown()}
+          style={{
+            position: 'absolute', inset: 0,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            transform: 'translateY(-26px)',
+            cursor: 'pointer',
+          }}
+        >
           <Mandala timeOfDay={timeOfDay} intensity={rating} color={selectedColor} size={343.46} />
         </div>
 
@@ -215,23 +219,39 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
 
             {/* Add new location row — or live input when active */}
             {addingCustom ? (
-              <input
-                ref={inputRef}
-                autoFocus
-                value={customText}
-                onChange={e => setCustomText(e.target.value)}
-                onBlur={confirmCustom}
-                onKeyDown={e => { if (e.key === 'Enter') e.target.blur(); }}
-                placeholder="הקלד מיקום חדש..."
-                style={{
-                  width: '100%', height: 48, borderRadius: 24,
-                  border: 'none', background: 'transparent',
-                  color: '#323232', caretColor: '#323232',
-                  fontFamily: 'Atlas', fontWeight: 500, fontSize: 14,
-                  textAlign: 'right', direction: 'rtl',
-                  padding: '0 18px', boxSizing: 'border-box', outline: 'none',
-                }}
-              />
+              <div style={{ display: 'flex', alignItems: 'center', height: 48, paddingLeft: 8 }}>
+                <button
+                  onClick={confirmCustom}
+                  style={{
+                    width: 32, height: 32, borderRadius: '50%', flexShrink: 0,
+                    background: customText.trim() ? '#45423A' : '#C4C1B8',
+                    border: 'none', cursor: customText.trim() ? 'pointer' : 'default',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    transition: 'background 0.15s ease',
+                  }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                       stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </button>
+                <input
+                  ref={inputRef}
+                  autoFocus
+                  value={customText}
+                  onChange={e => setCustomText(e.target.value)}
+                  onKeyDown={e => { if (e.key === 'Enter') confirmCustom(); }}
+                  placeholder="הקלד מיקום חדש..."
+                  style={{
+                    flex: 1, height: '100%', borderRadius: 24,
+                    border: 'none', background: 'transparent',
+                    color: '#323232', caretColor: '#323232',
+                    fontFamily: 'Atlas', fontWeight: 500, fontSize: 14,
+                    textAlign: 'right', direction: 'rtl',
+                    padding: '0 12px 0 8px', boxSizing: 'border-box', outline: 'none',
+                  }}
+                />
+              </div>
             ) : (
               <button
                 onClick={() => setAddingCustom(true)}

@@ -59,7 +59,7 @@ export default function EventSavedScreen({ event, onDone }) {
       }}>
 
         <p style={{
-          fontFamily: 'Atlas', fontWeight: 500, fontSize: 21, color: '#183497',
+          fontFamily: 'Atlas', fontWeight: 500, fontSize: 21, color: '#45423A',
           direction: 'rtl', textAlign: 'center', margin: 0,
         }}>
           האירוע תועד בהצלחה
@@ -76,7 +76,7 @@ export default function EventSavedScreen({ event, onDone }) {
         </div>
 
         <p style={{
-          fontFamily: 'Atlas', fontWeight: 500, fontSize: 18, color: '#183497',
+          fontFamily: 'Atlas', fontWeight: 500, fontSize: 18, color: '#45423A',
           direction: 'rtl', textAlign: 'center', margin: 0,
         }}>
           מעדכן את לוח האירועים...
