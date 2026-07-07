@@ -564,10 +564,11 @@ export default function HomeScreen({
 
   /* ── Derived ── */
   const allEvents      = [...events];
+  const visibleEvents  = filterActive ? allEvents.filter(e => eventMatchesFilter(e, filter)) : allEvents;
   const chartBuckets   = getChartBuckets(events, level, filter);
   const chartMax       = Math.max(...chartBuckets.map(b => b.count), 1);
   const selCount       = selectedEventIds.size;
-  const gridCellCount  = level === 0 ? Math.max(allEvents.length, MIN_GRID_CELLS) : allEvents.length;
+  const gridCellCount  = level === 0 ? Math.max(visibleEvents.length, MIN_GRID_CELLS) : visibleEvents.length;
 
   /* Fade the grid's top/bottom edges like an endless gallery */
   const fadeMask = 'linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%)';
@@ -675,7 +676,7 @@ export default function HomeScreen({
               gap: `${gap}px`, justifyContent: 'center', direction: 'rtl',
             }}>
               {Array.from({ length: gridCellCount }, (_, i) => {
-                const isAddButton = hasEvents && i === allEvents.length;
+                const isAddButton = hasEvents && i === visibleEvents.length;
 
                 if (isAddButton) {
                   return (
@@ -696,10 +697,9 @@ export default function HomeScreen({
                   );
                 }
 
-                const event      = i < allEvents.length ? allEvents[i] : null;
-                const matches    = event ? eventMatchesFilter(event, filter) : true;
+                const event      = i < visibleEvents.length ? visibleEvents[i] : null;
                 const isSelected = event ? selectedEventIds.has(event.id) : false;
-                const mandalaColor = event ? (matches ? (event.color || '#183497') : '#D4D1C3') : null;
+                const mandalaColor = event ? (event.color || '#183497') : null;
 
                 const handlers = event ? makeDotHandlers(event) : {};
 
@@ -809,9 +809,8 @@ export default function HomeScreen({
               gridTemplateColumns: `repeat(${cols}, ${dotSize}px)`,
               gap: `${gap}px`, justifyContent: 'center', direction: 'rtl',
             }}>
-              {allEvents.map(event => {
-                const matches = eventMatchesFilter(event, filter);
-                const mandalaColor = matches ? (event.color || '#183497') : '#D4D1C3';
+              {visibleEvents.map(event => {
+                const mandalaColor = event.color || '#183497';
                 return (
                   <div key={event.id} style={{
                     width: dotSize, height: dotSize, borderRadius: '50%',
