@@ -1,6 +1,6 @@
 /* Sample events for the walkthrough background — always full of color,
    regardless of the real app's actual event count.                  */
-const COLORS = ['#183497', '#FFDB60', '#FFC8CE', '#B6CDFF'];
+const COLORS = ['#183497', '#00BE4A', '#FFDB60', '#FFC8CE', '#B6CDFF'];
 const HOURS  = [7, 13, 16, 19, 23]; // one representative hour per time-of-day bucket
 const COUNT  = 260; // enough to fill even the densest (year) zoom level
 
