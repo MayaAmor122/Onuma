@@ -7,8 +7,8 @@ const CARD_W   = 244;
 const CARD_H   = 133;
 const CARD_GAP = 16;
 const BTN_SIZE = 72;
-const BTN_LEFT = 23;
-const BTN_BOTTOM = 98;
+const BTN_LEFT = 24;
+const BTN_BOTTOM = 97;
 
 function PlusIcon() {
   return (
