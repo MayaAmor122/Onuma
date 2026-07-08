@@ -4,7 +4,7 @@ import DotFadeDecoration from '../components/DotFadeDecoration';
 function ChevronRightIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-         stroke="#183497" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+         stroke="#45423A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="9 18 15 12 9 6"/>
     </svg>
   );
@@ -25,6 +25,7 @@ const GROUPS = [
     date: '12 באפריל',
     items: [
       { time: '15:10', text: 'עברו יומיים מהתיעוד האחרון שלך' },
+      { time: '09:30', text: 'בוקר טוב - כל תיעוד מוקדם מסייע לדיוק התמונה הכוללת', read: true },
     ],
   },
   {
@@ -34,10 +35,33 @@ const GROUPS = [
       { time: '17:18', text: 'חודש חדש מתחיל - כל תיעוד מקרב אותך לתמונה הגדולה', read: true },
     ],
   },
+  {
+    date: '7 באפריל',
+    items: [
+      { time: '21:05', text: 'ערב טוב - לפני שאתה הולך לישון, יש אירוע שכדאי לתעד?', read: true },
+      { time: '14:50', text: 'עברו 4 שעות מהתיעוד האחרון שלך, האם קרה משהו נוסף?', read: true },
+      { time: '08:15', text: 'זה הזמן לתעד - תיעוד בבוקר עוזר לזהות דפוסים לאורך היום', read: true },
+    ],
+  },
+  {
+    date: '4 באפריל',
+    items: [
+      { time: '19:22', text: 'שבוע חדש מתחיל - כדאי לתעד כדי לעקוב אחרי השינויים', read: true },
+      { time: '11:40', text: 'עברו יומיים מהתיעוד האחרון שלך', read: true },
+    ],
+  },
+  {
+    date: '1 באפריל',
+    items: [
+      { time: '20:00', text: 'חודש חדש מתחיל - כל תיעוד מקרב אותך לתמונה הגדולה', read: true },
+      { time: '16:30', text: 'איך עבר עלייך אחר הצהריים? קח רגע לתעד', read: true },
+      { time: '09:10', text: 'בוקר טוב - תיעוד מוקדם מסייע לדיוק התמונה הכוללת שלך', read: true },
+    ],
+  },
 ];
 
 /* ── Notification card ── */
-function NotificationCard({ time, text, read, fadeBackground = false }) {
+function NotificationCard({ time, text, read }) {
   const color = read ? '#87837A' : '#323232';
   return (
     <div style={{
@@ -45,7 +69,7 @@ function NotificationCard({ time, text, read, fadeBackground = false }) {
       justifyContent: 'space-between', alignItems: 'center', gap: 10,
       border: '1.5px solid #E2DFD0', borderRadius: 16,
       padding: '14px 16px', marginBottom: 10, boxSizing: 'border-box',
-      background: fadeBackground ? 'rgba(248,245,238,0.63)' : 'transparent',
+      background: 'rgba(248,245,238,0.63)',
     }}>
       <p style={{ flex: 1, fontFamily: 'Atlas', fontWeight: 400, fontSize: 14, color, lineHeight: 1.4, margin: 0, textAlign: 'right' }}>
         {text}
@@ -73,7 +97,11 @@ export default function NotificationsScreen({ onBack }) {
       </div>
 
       {/* ── Scrollable content ── */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px 0', position: 'relative', zIndex: 1 }}>
+      <div className="no-scrollbar" style={{
+        flex: 1, overflowY: 'auto', padding: '20px 24px 0', position: 'relative', zIndex: 1,
+        WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 80%, transparent 100%)',
+        maskImage: 'linear-gradient(to bottom, black 0%, black 80%, transparent 100%)',
+      }}>
 
         <p style={{
           fontFamily: 'Atlas', fontWeight: 500, fontSize: 24, color: '#45423A',
