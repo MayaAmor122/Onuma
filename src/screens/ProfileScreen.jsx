@@ -6,7 +6,7 @@ import DotFadeDecoration from '../components/DotFadeDecoration';
 function ChevronRightIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-         stroke="#183497" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+         stroke="#45423A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="9 18 15 12 9 6"/>
     </svg>
   );
@@ -14,7 +14,7 @@ function ChevronRightIcon() {
 function PencilIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-         stroke="#183497" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+         stroke="#45423A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
     </svg>
   );
@@ -35,7 +35,7 @@ function EditableField({ label, value, placeholder, onSave, type = 'text' }) {
   return (
     <div style={{ marginBottom: 24 }}>
       <p style={{
-        fontFamily: 'Atlas', fontWeight: 400, fontSize: 14, color: '#183497',
+        fontFamily: 'Atlas', fontWeight: 400, fontSize: 14, color: '#45423A',
         textAlign: 'right', margin: '0 0 8px',
       }}>
         {label}
