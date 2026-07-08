@@ -274,6 +274,61 @@ function ActiveDot() {
   );
 }
 
+/* ── Report saved confirmation modal ── */
+function ReportConfirmModal({ onGoReport, onGoHome }) {
+  const [visible, setVisible] = useState(false);
+  const [pressed, setPressed] = useState(null);
+  useEffect(() => { requestAnimationFrame(() => setVisible(true)); }, []);
+  const press = id => ({
+    onPointerDown: () => setPressed(id),
+    onPointerUp:   () => setPressed(null),
+    onPointerLeave:() => setPressed(null),
+  });
+  return (
+    <div style={{
+      position: 'absolute', inset: 0, zIndex: 30,
+      background: 'rgba(28,28,28,0.63)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      opacity: visible ? 1 : 0, transition: 'opacity 0.2s ease',
+    }}>
+      <div style={{
+        width: 280, borderRadius: 18, background: '#F8F5EE',
+        border: '1px solid #E2DFD0',
+        boxSizing: 'border-box', padding: '28px 22px 22px',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 28,
+        direction: 'rtl',
+        transform: visible ? 'scale(1)' : 'scale(0.92)',
+        transition: 'transform 0.2s cubic-bezier(0.32,0.72,0,1)',
+      }}>
+        <p style={{
+          fontFamily: 'Atlas', fontWeight: 500, fontSize: 14,
+          color: '#45423A', textAlign: 'center', margin: 0, lineHeight: '20px', whiteSpace: 'pre-line',
+        }}>
+          {'הקשר נשמר בסיכום התקופתי שלך.\nניתן למצוא אותו בדו״חות'}
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: 10, direction: 'ltr', width: '100%' }}>
+          <button onClick={onGoReport} {...press('report')} style={{
+            flex: 1, padding: '10px 0', borderRadius: 30, border: 'none',
+            background: pressed === 'report' ? '#2E2B25' : '#45423A', color: '#F8F5EE',
+            fontFamily: 'Atlas', fontWeight: 700, fontSize: 11, cursor: 'pointer',
+            transform: pressed === 'report' ? 'scale(0.97)' : 'scale(1)',
+            transition: 'background 0.12s ease, transform 0.12s ease',
+          }}>עבור לדו״ח</button>
+          <button onClick={onGoHome} {...press('home')} style={{
+            flex: 1, padding: '10px 0', borderRadius: 30,
+            background: pressed === 'home' ? 'rgba(69,66,58,0.08)' : 'transparent',
+            border: '1.5px solid', borderColor: pressed === 'home' ? '#2E2B25' : '#45423A',
+            color: '#45423A',
+            fontFamily: 'Atlas', fontWeight: 700, fontSize: 11, cursor: 'pointer',
+            transform: pressed === 'home' ? 'scale(0.97)' : 'scale(1)',
+            transition: 'background 0.12s ease, transform 0.12s ease, border-color 0.12s ease',
+          }}>חזור לאירועים</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ── No-results modal ── */
 function NoResultsModal({ onChangeFilter, onClear }) {
   const [visible, setVisible] = useState(false);
@@ -377,7 +432,8 @@ export default function HomeScreen({
   const [menuVisible,     setMenuVisible]     = useState(false);
   const [menuPressed,     setMenuPressed]     = useState(null);
   const [filter,          setFilter]          = useState(EMPTY_FILTER);
-  const [showNoResults,   setShowNoResults]   = useState(false);
+  const [showNoResults,      setShowNoResults]      = useState(false);
+  const [showReportConfirm,  setShowReportConfirm]  = useState(false);
 
   function applyFilter(f) {
     setFilter(f);
@@ -1164,7 +1220,7 @@ export default function HomeScreen({
             }}>
               סגור
             </button>
-            <button style={{
+            <button onClick={() => setShowReportConfirm(true)} style={{
               flex: 1, height: 44, borderRadius: 30,
               background: 'transparent', border: '1.5px solid #45423A',
               color: '#45423A', cursor: 'pointer',
@@ -1205,6 +1261,14 @@ export default function HomeScreen({
             חזור לאירועים שלי
           </button>
         </div>
+      )}
+
+      {/* ── Report confirm modal ── */}
+      {showReportConfirm && (
+        <ReportConfirmModal
+          onGoReport={() => { setShowReportConfirm(false); clearSelection(); onNavigate('reports'); }}
+          onGoHome={() => { setShowReportConfirm(false); clearSelection(); }}
+        />
       )}
 
       {/* ── No-results modal ── */}
