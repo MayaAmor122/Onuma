@@ -19,6 +19,66 @@ function PencilIcon() {
     </svg>
   );
 }
+function PlusIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+         stroke="#45423A" strokeWidth="2" strokeLinecap="round">
+      <line x1="12" y1="5" x2="12" y2="19"/>
+      <line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
+  );
+}
+function DotsGridIcon() {
+  const coords = [4, 10, 16];
+  return (
+    <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+      {coords.flatMap(x => coords.map(y => (
+        <circle key={`${x}-${y}`} cx={x} cy={y} r="2" fill="#45423A" />
+      )))}
+    </svg>
+  );
+}
+function StatCheckIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+         stroke="#45423A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+  );
+}
+function CalendarIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+         stroke="#45423A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2"/>
+      <line x1="16" y1="2" x2="16" y2="6"/>
+      <line x1="8" y1="2" x2="8" y2="6"/>
+      <line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+  );
+}
+
+/* ── Stat card ── */
+function StatCard({ icon, text, borderColor }) {
+  return (
+    <div style={{
+      borderRadius: 16,
+      border: `1.5px solid ${borderColor}`,
+      padding: '20px 16px',
+      display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+      width: 168, height: 151, direction: 'rtl', boxSizing: 'border-box',
+      background: '#F2EFE3',
+    }}>
+      <div>{icon}</div>
+      <p style={{
+        fontFamily: 'Atlas', fontWeight: 500, fontSize: 16, color: '#45423A',
+        margin: 0, textAlign: 'right', lineHeight: 1.3, whiteSpace: 'pre-line',
+      }}>
+        {text}
+      </p>
+    </div>
+  );
+}
 
 /* ── Editable field row ── */
 function EditableField({ label, value, placeholder, onSave, type = 'text' }) {
@@ -99,8 +159,8 @@ export default function ProfileScreen({ onBack }) {
         <button onClick={onBack} style={iconBtn}><ChevronRightIcon /></button>
       </div>
 
-      {/* ── Content ── */}
-      <div style={{ padding: '20px 24px 0', position: 'relative', zIndex: 1 }}>
+      {/* ── Scrollable content ── */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px 60px', position: 'relative', zIndex: 1 }}>
         <p style={{
           fontFamily: 'Atlas', fontWeight: 500, fontSize: 24, color: '#45423A',
           textAlign: 'right', direction: 'rtl', margin: '0 0 28px',
@@ -122,10 +182,26 @@ export default function ProfileScreen({ onBack }) {
           type="email"
           onSave={email => updateProfile({ email })}
         />
+
+        {/* ── התהליך שלי ── */}
+        <div style={{ marginTop: 54 }}>
+          <p style={{
+            fontFamily: 'Atlas', fontWeight: 400, fontSize: 16, color: '#45423A',
+            textAlign: 'right', direction: 'rtl', margin: '0 0 24px',
+          }}>
+            התהליך שלי
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: '168px 168px', gap: 10, direction: 'rtl' }}>
+            <StatCard icon={<DotsGridIcon />}  text="34 דפוסים התגלו לאורך הדרך"    borderColor="#FFC8CE" />
+            <StatCard icon={<PlusIcon />}       text="החודש נוספו 30 אירועים חדשים"  borderColor="#183497" />
+            <StatCard icon={<CalendarIcon />}   text={"30 ימי\nתיעוד ברצף"}            borderColor="#B6CDFF" />
+            <StatCard icon={<StatCheckIcon />}  text={"תיעדת במשך\n84 ימים"}          borderColor="#00BE4A" />
+          </div>
+        </div>
       </div>
 
-      {/* ── Decorative dots ── */}
-      <DotFadeDecoration />
+      {/* ── Decorative dots — pushed down so only top rows peek in ── */}
+      <DotFadeDecoration style={{ bottom: -60 }} />
 
     </div>
   );

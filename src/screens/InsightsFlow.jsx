@@ -429,7 +429,7 @@ export default function InsightsFlow({ onClose }) {
           whiteSpace: 'pre-line',
         }}>
           {`עד כה תיעדת ${events.length} אירועים.\n`}
-          <span style={{ fontWeight: 500 }}>החלק שמאלה</span>
+          <span style={{ fontWeight: 500 }}>החלק לתובנה הבאה</span>
           {' כדי לצפות\nבסיכום תובנות שהתקבלו..'}
         </p>
 

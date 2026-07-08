@@ -5,7 +5,7 @@
    Pass anchor="top" to flush it against the top edge instead. Pass flip
    to mirror the artwork so the fade itself touches that edge (instead of
    the solid dots) — used on the Notifications screen.                  */
-export default function DotFadeDecoration({ anchor = 'bottom', flip = false, opacity = 1 }) {
+export default function DotFadeDecoration({ anchor = 'bottom', flip = false, opacity = 1, style: customStyle = {} }) {
   return (
     <svg
       width="394" height="257" viewBox="0 0 394 257" fill="none"
@@ -14,6 +14,7 @@ export default function DotFadeDecoration({ anchor = 'bottom', flip = false, opa
         pointerEvents: 'none', zIndex: 0,
         transform: flip ? 'scaleY(-1)' : 'none',
         opacity,
+        ...customStyle,
       }}
     >
       <path
