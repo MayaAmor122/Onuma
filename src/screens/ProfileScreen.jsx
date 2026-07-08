@@ -71,7 +71,7 @@ function StatCard({ icon, text, borderColor }) {
     }}>
       <div>{icon}</div>
       <p style={{
-        fontFamily: 'Atlas', fontWeight: 500, fontSize: 16, color: '#45423A',
+        fontFamily: 'Atlas', fontWeight: 500, fontSize: 14, color: '#45423A',
         margin: 0, textAlign: 'right', lineHeight: 1.3, whiteSpace: 'pre-line',
       }}>
         {text}
