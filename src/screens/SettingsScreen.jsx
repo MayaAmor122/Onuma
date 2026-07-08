@@ -5,7 +5,7 @@ import DotFadeDecoration from '../components/DotFadeDecoration';
 function ChevronRightIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-         stroke="#183497" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+         stroke="#45423A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="9 18 15 12 9 6"/>
     </svg>
   );
@@ -61,7 +61,7 @@ function RowCard({ children, paddingLeft = 18 }) {
 function SectionLabel({ children }) {
   return (
     <p style={{
-      fontFamily: 'Atlas', fontWeight: 400, fontSize: 16, color: '#183497',
+      fontFamily: 'Atlas', fontWeight: 400, fontSize: 16, color: '#45423A',
       textAlign: 'right', direction: 'rtl', margin: '0 0 10px',
     }}>
       {children}
