@@ -336,6 +336,27 @@ const MENU_ITEMS = [
   { id: 'settings',      label: 'הגדרות',     Icon: GearIcon     },
 ];
 
+/* ── Empty mandala for no-result state ── */
+function EmptyMandala({ size }) {
+  const rings = [
+    { r: 58.36, dotR: 10.80, count:  9 },
+    { r: 38.43, dotR:  5.12, count: 18 },
+    { r: 26.28, dotR:  3.50, count: 18 },
+    { r: 17.44, dotR:  2.32, count: 21 },
+    { r: 10.07, dotR:  1.34, count: 26 },
+  ];
+  return (
+    <svg width={size} height={size} viewBox="-70 -70 140 140">
+      {rings.map(({ r, dotR, count }, ri) =>
+        Array.from({ length: count }, (_, i) => {
+          const a = (-Math.PI / 2) + (2 * Math.PI / count) * i;
+          return <circle key={`${ri}-${i}`} cx={r * Math.cos(a)} cy={r * Math.sin(a)} r={dotR} fill="#E7E4D4" />;
+        })
+      )}
+    </svg>
+  );
+}
+
 /* ════════════════════════════════
    Screen
 ════════════════════════════════ */
@@ -516,9 +537,12 @@ export default function HomeScreen({
     setSheet('loading');
     const selected = events.filter(e => selectedIdsRef.current.has(e.id));
     setTimeout(() => {
-      setPatternInsights(findPattern(selected));
-      setPatternData(computePatternData(selected));
-      setSheet('result');
+      const insights = findPattern(selected);
+      const data     = computePatternData(selected);
+      const hasPattern = insights.length > 0 && insights[0] !== 'לא נמצאו דפוסים ברורים בין האירועים הנבחרים';
+      setPatternInsights(insights);
+      setPatternData(data);
+      setSheet(hasPattern ? 'result' : 'no-result');
     }, 1600);
   }
 
@@ -1012,7 +1036,7 @@ export default function HomeScreen({
       {/* ══════════════════════════════
           Selection bottom sheet
       ══════════════════════════════ */}
-      {sheet !== null && sheet !== 'result' && (
+      {sheet !== null && sheet !== 'result' && sheet !== 'no-result' && (
         <div style={{
           position: 'absolute', bottom: 20, left: 20, right: 20, zIndex: 15,
           background: '#F8F5EE', borderRadius: 20,
@@ -1150,6 +1174,36 @@ export default function HomeScreen({
               הוסף לדו״ח התקופתי
             </button>
           </div>
+        </div>
+      )}
+
+      {/* ── No-pattern result card ── */}
+      {sheet === 'no-result' && (
+        <div style={{
+          position: 'absolute', bottom: 20, left: 20, right: 20, zIndex: 15,
+          height: 292, boxSizing: 'border-box',
+          background: '#F8F5EE', borderRadius: 20,
+          border: '1px solid #E2DFD0',
+          boxShadow: '0 -4px 24px rgba(0,0,0,0.10)',
+          padding: '28px 24px 28px',
+          direction: 'rtl',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between',
+        }}>
+          <p style={{
+            fontFamily: 'Atlas', fontWeight: 500, fontSize: 16, color: '#323232',
+            textAlign: 'center', margin: 0, lineHeight: 1.45,
+          }}>
+            לא הצלחנו למצוא דפוס משותף{'\n'}בין האירועים שבחרת..
+          </p>
+          <EmptyMandala size={120} />
+          <button onClick={clearSelection} style={{
+            width: '100%', height: 56, borderRadius: 30, border: 'none',
+            background: '#45423A', color: '#F8F5EE',
+            fontFamily: 'Atlas', fontWeight: 700, fontSize: 16,
+            cursor: 'pointer',
+          }}>
+            חזור לאירועים שלי
+          </button>
         </div>
       )}
 
