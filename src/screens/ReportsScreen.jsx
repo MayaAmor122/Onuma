@@ -4,7 +4,7 @@ import DotFadeDecoration from '../components/DotFadeDecoration';
 function ChevronRightIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-         stroke="#183497" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+         stroke="#45423A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="9 18 15 12 9 6"/>
     </svg>
   );
@@ -87,21 +87,21 @@ export default function ReportsScreen({ onBack }) {
 
         {CARDS.map(card => <InfoCard key={card.title} {...card} />)}
 
-        <div style={{ height: 1, background: '#D4D1C3', margin: '14px 0 34px' }} />
+        <div style={{ height: 1, background: '#D4D1C3', margin: '24px 0 34px' }} />
 
         {/* Create report */}
         <button
           disabled
           style={{
             width: '100%', padding: '16px 0', borderRadius: 30, border: 'none',
-            background: '#B6CDFF', color: '#183497',
+            background: '#45423A', color: '#F8F5EE',
             fontFamily: 'Atlas', fontWeight: 700, fontSize: 16, cursor: 'default',
           }}
         >
           צור דו"ח חדש
         </button>
         <p style={{
-          fontFamily: 'Atlas', fontWeight: 400, fontSize: 11, color: '#87837A',
+          fontFamily: 'Atlas', fontWeight: 400, fontSize: 11, color: '#45423A',
           textAlign: 'right', direction: 'rtl', margin: '8px 0 24px',
         }}>
           המערכת תפיק מסמך המרכז את התובנות והדפוסים שנשמרו.
@@ -112,14 +112,14 @@ export default function ReportsScreen({ onBack }) {
           disabled
           style={{
             width: '100%', padding: '16px 0', borderRadius: 30,
-            border: '1.5px solid #183497', background: 'rgba(248,245,238,0.63)', color: '#183497',
+            border: '1.5px solid #45423A', background: 'rgba(248,245,238,0.63)', color: '#45423A',
             fontFamily: 'Atlas', fontWeight: 700, fontSize: 16, cursor: 'default',
           }}
         >
           שתף עם מטופל
         </button>
         <p style={{
-          fontFamily: 'Atlas', fontWeight: 400, fontSize: 11, color: '#87837A',
+          fontFamily: 'Atlas', fontWeight: 400, fontSize: 11, color: '#45423A',
           textAlign: 'right', direction: 'rtl', margin: '8px 0 28px',
         }}>
           בחר כיצד לשלוח את הדוח לאחר יצירתו.
