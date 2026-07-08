@@ -44,6 +44,32 @@ const TRIGGER_H = 48;
 const BOTTOM_PAD = 25;
 const CARD_GAP = 6;
 
+function LocationOption({ loc, idx, selected, pressed, press, onSelect }) {
+  const isSelected = selected === loc;
+  const optId = `opt_${loc}`;
+  return (
+    <button
+      onClick={() => onSelect(loc)}
+      {...press(optId)}
+      style={{
+        width: '100%', height: 48, border: 'none', borderRadius: 24,
+        background: pressed === optId ? 'rgba(24,52,151,0.10)' : isSelected ? '#EBE8DB' : 'transparent',
+        display: 'flex', flexDirection: 'row', direction: 'rtl',
+        alignItems: 'center', justifyContent: 'flex-start',
+        paddingRight: 18, gap: 10,
+        cursor: 'pointer', boxSizing: 'border-box',
+        transform: pressed === optId ? 'scale(0.97)' : 'scale(1)',
+        transition: 'background 0.12s ease, transform 0.12s ease',
+      }}
+    >
+      <div style={{ width: 12, height: 12, borderRadius: '50%', background: colorForIndex(idx), flexShrink: 0 }} />
+      <span style={{ fontFamily: 'Atlas', fontWeight: isSelected ? 700 : 500, fontSize: 14, color: '#323232' }}>
+        {loc}
+      </span>
+    </button>
+  );
+}
+
 /* ════════════════════════════════
    Screen
 ════════════════════════════════ */
@@ -53,6 +79,10 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
       const saved = localStorage.getItem('onuma_locations');
       return saved ? JSON.parse(saved) : ['בית', 'עבודה'];
     } catch { return ['בית', 'עבודה']; }
+  });
+  const [locationCounts,   setLocationCounts]  = useState(() => {
+    try { return JSON.parse(localStorage.getItem('onuma_location_counts') || '{}'); }
+    catch { return {}; }
   });
   const [selectedLocation, setSelectedLocation] = useState('בית');
   const [isOpen,            setIsOpen]          = useState(false);
@@ -73,6 +103,10 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
     localStorage.setItem('onuma_locations', JSON.stringify(locations));
   }, [locations]);
 
+  useEffect(() => {
+    localStorage.setItem('onuma_location_counts', JSON.stringify(locationCounts));
+  }, [locationCounts]);
+
   const selectedIndex = locations.indexOf(selectedLocation);
   const selectedColor = colorForIndex(selectedIndex === -1 ? 0 : selectedIndex);
   const nextColor      = colorForIndex(locations.length);
@@ -90,6 +124,7 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
   function selectLocation(loc) {
     setSelectedLocation(loc);
     setConfirmed(true);
+    setLocationCounts(prev => ({ ...prev, [loc]: (prev[loc] || 0) + 1 }));
     closeDropdown();
   }
 
@@ -97,6 +132,7 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
     const trimmed = customText.trim();
     if (trimmed) {
       if (!locations.includes(trimmed)) setLocations(prev => [...prev, trimmed]);
+      setLocationCounts(prev => ({ ...prev, [trimmed]: (prev[trimmed] || 0) + 1 }));
       setSelectedLocation(trimmed);
       setConfirmed(true);
     }
@@ -104,6 +140,11 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
     setAddingCustom(false);
     closeDropdown();
   }
+
+  /* ── Section logic: show headers when 3+ locations and at least one used 2+ times ── */
+  const showSections = locations.length >= 3 && locations.some(l => (locationCounts[l] || 0) >= 2);
+  const commonLocs   = showSections ? locations.filter(l => (locationCounts[l] || 0) >= 2) : [];
+  const otherLocs    = showSections ? locations.filter(l => (locationCounts[l] || 0) < 2)  : locations;
 
   return (
     <div style={{
@@ -182,40 +223,21 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
             transform: dropVisible ? 'translateY(0)' : 'translateY(8px)',
             transition: 'opacity 0.2s ease, transform 0.2s cubic-bezier(0.32,0.72,0,1)',
           }}>
-            {locations.map((loc, idx) => {
-              const isSelected = selectedLocation === loc;
-              const optId = `opt_${loc}`;
-              return (
-                <button
-                  key={loc}
-                  onClick={() => selectLocation(loc)}
-                  {...press(optId)}
-                  style={{
-                    width: '100%', height: 48, border: 'none',
-                    borderRadius: 24,
-                    background: pressed === optId
-                      ? 'rgba(24,52,151,0.10)'
-                      : isSelected ? '#EBE8DB' : 'transparent',
-                    display: 'flex', flexDirection: 'row', direction: 'rtl',
-                    alignItems: 'center', justifyContent: 'flex-start',
-                    paddingRight: 18, gap: 10,
-                    cursor: 'pointer', boxSizing: 'border-box',
-                    transform: pressed === optId ? 'scale(0.97)' : 'scale(1)',
-                    transition: 'background 0.12s ease, transform 0.12s ease',
-                  }}
-                >
-                  <div style={{
-                    width: 12, height: 12, borderRadius: '50%',
-                    background: colorForIndex(idx), flexShrink: 0,
-                  }} />
-                  <span style={{
-                    fontFamily: 'Atlas', fontWeight: isSelected ? 700 : 500, fontSize: 14, color: '#323232',
-                  }}>
-                    {loc}
-                  </span>
-                </button>
-              );
-            })}
+            {(showSections ? (
+              <>
+                {commonLocs.length > 0 && <>
+                  <div style={{ padding: '10px 18px 2px', fontFamily: 'Atlas', fontWeight: 400, fontSize: 11, color: '#87837A', direction: 'rtl' }}>מיקומים נפוצים</div>
+                  {commonLocs.map(loc => <LocationOption key={loc} loc={loc} idx={locations.indexOf(loc)} selected={selectedLocation} pressed={pressed} press={press} onSelect={selectLocation} />)}
+                </>}
+                {otherLocs.length > 0 && <>
+                  <div style={{ height: 1, background: '#E2DFD0', margin: '8px 10px 0' }} />
+                  <div style={{ padding: '12px 18px 2px', fontFamily: 'Atlas', fontWeight: 400, fontSize: 11, color: '#87837A', direction: 'rtl' }}>כל שאר המיקומים</div>
+                  {otherLocs.map(loc => <LocationOption key={loc} loc={loc} idx={locations.indexOf(loc)} selected={selectedLocation} pressed={pressed} press={press} onSelect={selectLocation} />)}
+                </>}
+              </>
+            ) : locations.map((loc, idx) => (
+              <LocationOption key={loc} loc={loc} idx={idx} selected={selectedLocation} pressed={pressed} press={press} onSelect={selectLocation} />
+            )))}
 
             {/* Add new location row — or live input when active */}
             {addingCustom ? (
