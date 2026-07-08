@@ -9,34 +9,8 @@ function playChime() {
   _chimePlayed = true;
   setTimeout(() => { _chimePlayed = false; }, 500);
   try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const t   = ctx.currentTime;
-
-    const drop = (freq, start, peak) => {
-      const sine = ctx.createOscillator();
-      const tri  = ctx.createOscillator();
-      const g1   = ctx.createGain();
-      const g2   = ctx.createGain();
-      sine.connect(g1); g1.connect(ctx.destination);
-      tri.connect(g2);  g2.connect(ctx.destination);
-      sine.type = 'sine';     sine.frequency.value = freq;
-      tri.type  = 'triangle'; tri.frequency.value  = freq;
-      g1.gain.setValueAtTime(0, t + start);
-      g1.gain.linearRampToValueAtTime(peak, t + start + 0.025);
-      g1.gain.exponentialRampToValueAtTime(peak * 0.4, t + start + 0.125);
-      g1.gain.exponentialRampToValueAtTime(0.0001, t + start + 0.65);
-      g2.gain.setValueAtTime(0, t + start);
-      g2.gain.linearRampToValueAtTime(peak * 0.45, t + start + 0.025);
-      g2.gain.exponentialRampToValueAtTime(peak * 0.15, t + start + 0.125);
-      g2.gain.exponentialRampToValueAtTime(0.0001, t + start + 0.50);
-      sine.start(t + start); sine.stop(t + start + 0.70);
-      tri.start(t + start);  tri.stop(t + start + 0.55);
-    };
-
-    drop(659, 0,    0.11); // E5
-    drop(988, 0.22, 0.11); // B5
-
-    setTimeout(() => ctx.close(), 1500);
+    const audio = new Audio('/chime.mp3');
+    audio.play();
   } catch (_) {}
 }
 
