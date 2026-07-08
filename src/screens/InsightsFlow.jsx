@@ -8,7 +8,7 @@ const DAYS_HE   = ['א','ב','ג','ד','ה','ו','ש'];
 const CELL    = 44;
 const CGAP    = 6;
 const EMPTY_C = '#E7E4D4';
-const MUTED_C = '#C8C5B5';
+const MUTED_C = '#E7E4D4';
 
 const TIME_INFO = {
   morning:   { label: 'הבוקר',   range: '05:00 - 12:00' },
@@ -24,6 +24,98 @@ const SLIDE_TITLES = [
   'ומה לגבי העוצמה?',
   'איזה דפוס חזר על עצמו?',
   'מבט על התקופה',
+];
+
+/* ── Static historical data for past months (demo only) ── */
+const H = (y, mo, d, h, m) => new Date(y, mo, d, h, m).toISOString();
+const FAKE_HISTORICAL_EVENTS = [
+  /* ── June 2026 — dominant: עבודה, morning, כאב, rating 3 ── */
+  { id:'h01', timestamp:H(2026,5, 1, 8,15), location:'עבודה', rating:3, types:['כאב'],    color:'#183497' },
+  { id:'h02', timestamp:H(2026,5, 2, 9,30), location:'עבודה', rating:3, types:['כאב'],    color:'#FFC8CE' },
+  { id:'h03', timestamp:H(2026,5, 3, 8, 0), location:'עבודה', rating:4, types:['כאב'],    color:'#B6CDFF' },
+  { id:'h04', timestamp:H(2026,5, 5, 9, 0), location:'בית',   rating:3, types:['עייפות'], color:'#00BE4A' },
+  { id:'h05', timestamp:H(2026,5, 7, 8,45), location:'עבודה', rating:3, types:['כאב'],    color:'#183497' },
+  { id:'h06', timestamp:H(2026,5, 8, 9,20), location:'עבודה', rating:2, types:['כאב'],    color:'#FFDB60' },
+  { id:'h07', timestamp:H(2026,5,10, 8,30), location:'עבודה', rating:4, types:['כאב'],    color:'#FFC8CE' },
+  { id:'h08', timestamp:H(2026,5,11,20, 0), location:'בית',   rating:3, types:['עייפות'], color:'#B6CDFF' },
+  { id:'h09', timestamp:H(2026,5,13, 9,10), location:'עבודה', rating:2, types:['כאב'],    color:'#183497' },
+  { id:'h10', timestamp:H(2026,5,14, 8,30), location:'עבודה', rating:3, types:['כאב'],    color:'#FFDB60' },
+  { id:'h11', timestamp:H(2026,5,16,19,30), location:'בית',   rating:3, types:['עייפות'], color:'#00BE4A' },
+  { id:'h12', timestamp:H(2026,5,17, 8, 0), location:'עבודה', rating:3, types:['כאב'],    color:'#FFC8CE' },
+  { id:'h13', timestamp:H(2026,5,19, 9, 0), location:'עבודה', rating:2, types:['כאב'],    color:'#183497' },
+  { id:'h14', timestamp:H(2026,5,21, 8,15), location:'עבודה', rating:4, types:['כאב'],    color:'#B6CDFF' },
+  { id:'h15', timestamp:H(2026,5,23,20,30), location:'בית',   rating:3, types:['עייפות'], color:'#FFDB60' },
+  { id:'h16', timestamp:H(2026,5,24, 8,45), location:'עבודה', rating:2, types:['כאב'],    color:'#183497' },
+  { id:'h17', timestamp:H(2026,5,26, 9,15), location:'עבודה', rating:3, types:['כאב'],    color:'#FFC8CE' },
+  { id:'h18', timestamp:H(2026,5,28, 8, 0), location:'עבודה', rating:4, types:['כאב'],    color:'#B6CDFF' },
+  { id:'h19', timestamp:H(2026,5,29,19,30), location:'בית',   rating:3, types:['עייפות'], color:'#00BE4A' },
+  { id:'h20', timestamp:H(2026,5,30, 9,30), location:'עבודה', rating:2, types:['כאב'],    color:'#FFDB60' },
+
+  /* ── May 2026 — dominant: בית, evening, לחץ, rating 4 ── */
+  { id:'h21', timestamp:H(2026,4, 1,20, 0), location:'בית',   rating:4, types:['לחץ'],    color:'#B6CDFF' },
+  { id:'h22', timestamp:H(2026,4, 3,21, 0), location:'בית',   rating:4, types:['לחץ'],    color:'#183497' },
+  { id:'h23', timestamp:H(2026,4, 6,19,30), location:'בית',   rating:5, types:['לחץ'],    color:'#FFC8CE' },
+  { id:'h24', timestamp:H(2026,4, 8,20,15), location:'בית',   rating:4, types:['לחץ'],    color:'#FFDB60' },
+  { id:'h25', timestamp:H(2026,4,10, 9, 0), location:'עבודה', rating:3, types:['כאב'],    color:'#183497' },
+  { id:'h26', timestamp:H(2026,4,13,21,15), location:'בית',   rating:4, types:['לחץ'],    color:'#B6CDFF' },
+  { id:'h27', timestamp:H(2026,4,15,20,45), location:'בית',   rating:5, types:['לחץ'],    color:'#FFC8CE' },
+  { id:'h28', timestamp:H(2026,4,18, 9,30), location:'עבודה', rating:3, types:['כאב'],    color:'#00BE4A' },
+  { id:'h29', timestamp:H(2026,4,20,19, 0), location:'בית',   rating:4, types:['לחץ'],    color:'#183497' },
+  { id:'h30', timestamp:H(2026,4,22,21,30), location:'בית',   rating:4, types:['לחץ'],    color:'#FFDB60' },
+  { id:'h31', timestamp:H(2026,4,25,20, 0), location:'בית',   rating:5, types:['לחץ'],    color:'#FFC8CE' },
+  { id:'h32', timestamp:H(2026,4,27, 9,15), location:'עבודה', rating:3, types:['כאב'],    color:'#183497' },
+  { id:'h33', timestamp:H(2026,4,29,21, 0), location:'בית',   rating:4, types:['לחץ'],    color:'#B6CDFF' },
+
+  /* ── April 2026 — dominant: עבודה, afternoon, עייפות, rating 3 ── */
+  { id:'h34', timestamp:H(2026,3, 2,14,30), location:'עבודה', rating:3, types:['עייפות'], color:'#FFDB60' },
+  { id:'h35', timestamp:H(2026,3, 5,15, 0), location:'עבודה', rating:3, types:['עייפות'], color:'#183497' },
+  { id:'h36', timestamp:H(2026,3, 8,14, 0), location:'עבודה', rating:2, types:['עייפות'], color:'#FFC8CE' },
+  { id:'h37', timestamp:H(2026,3,11,15,30), location:'עבודה', rating:3, types:['עייפות'], color:'#B6CDFF' },
+  { id:'h38', timestamp:H(2026,3,13,19,45), location:'בית',   rating:4, types:['לחץ'],    color:'#00BE4A' },
+  { id:'h39', timestamp:H(2026,3,16,14,15), location:'עבודה', rating:3, types:['עייפות'], color:'#FFDB60' },
+  { id:'h40', timestamp:H(2026,3,19,15, 0), location:'עבודה', rating:2, types:['עייפות'], color:'#183497' },
+  { id:'h41', timestamp:H(2026,3,22,20, 0), location:'בית',   rating:4, types:['לחץ'],    color:'#FFC8CE' },
+  { id:'h42', timestamp:H(2026,3,25,14,30), location:'עבודה', rating:3, types:['עייפות'], color:'#B6CDFF' },
+  { id:'h43', timestamp:H(2026,3,28,15,45), location:'עבודה', rating:3, types:['עייפות'], color:'#FFDB60' },
+
+  /* ── March 2026 — dominant: בית, afternoon, כאב, rating 3 ── */
+  { id:'h44', timestamp:H(2026,2, 1,15, 0), location:'בית',   rating:3, types:['כאב'],    color:'#183497' },
+  { id:'h45', timestamp:H(2026,2, 4,14,30), location:'בית',   rating:3, types:['כאב'],    color:'#FFC8CE' },
+  { id:'h46', timestamp:H(2026,2, 6,16, 0), location:'בית',   rating:4, types:['כאב'],    color:'#B6CDFF' },
+  { id:'h47', timestamp:H(2026,2, 9,15,15), location:'בית',   rating:3, types:['כאב'],    color:'#FFDB60' },
+  { id:'h48', timestamp:H(2026,2,11, 8,30), location:'עבודה', rating:2, types:['עייפות'], color:'#00BE4A' },
+  { id:'h49', timestamp:H(2026,2,14,14,30), location:'בית',   rating:3, types:['כאב'],    color:'#183497' },
+  { id:'h50', timestamp:H(2026,2,17,15,45), location:'בית',   rating:4, types:['כאב'],    color:'#FFC8CE' },
+  { id:'h51', timestamp:H(2026,2,19, 9, 0), location:'עבודה', rating:2, types:['עייפות'], color:'#B6CDFF' },
+  { id:'h52', timestamp:H(2026,2,22,14, 0), location:'בית',   rating:3, types:['כאב'],    color:'#FFDB60' },
+  { id:'h53', timestamp:H(2026,2,24,16,30), location:'בית',   rating:4, types:['כאב'],    color:'#183497' },
+  { id:'h54', timestamp:H(2026,2,26, 8,15), location:'עבודה', rating:2, types:['עייפות'], color:'#00BE4A' },
+  { id:'h55', timestamp:H(2026,2,28,15, 0), location:'בית',   rating:3, types:['כאב'],    color:'#FFC8CE' },
+
+  /* ── February 2026 — dominant: עבודה, morning, עייפות, rating 2 ── */
+  { id:'h56', timestamp:H(2026,1, 2, 8,30), location:'עבודה', rating:2, types:['עייפות'], color:'#00BE4A' },
+  { id:'h57', timestamp:H(2026,1, 5, 9, 0), location:'עבודה', rating:2, types:['עייפות'], color:'#183497' },
+  { id:'h58', timestamp:H(2026,1, 7, 8,15), location:'עבודה', rating:1, types:['עייפות'], color:'#B6CDFF' },
+  { id:'h59', timestamp:H(2026,1,10, 9,30), location:'עבודה', rating:2, types:['עייפות'], color:'#FFDB60' },
+  { id:'h60', timestamp:H(2026,1,12,20, 0), location:'בית',   rating:3, types:['לחץ'],    color:'#FFC8CE' },
+  { id:'h61', timestamp:H(2026,1,15, 8,45), location:'עבודה', rating:2, types:['עייפות'], color:'#00BE4A' },
+  { id:'h62', timestamp:H(2026,1,18, 9, 0), location:'עבודה', rating:1, types:['עייפות'], color:'#183497' },
+  { id:'h63', timestamp:H(2026,1,21,19,30), location:'בית',   rating:3, types:['לחץ'],    color:'#FFC8CE' },
+  { id:'h64', timestamp:H(2026,1,24, 8,30), location:'עבודה', rating:2, types:['עייפות'], color:'#B6CDFF' },
+  { id:'h65', timestamp:H(2026,1,26, 9,15), location:'עבודה', rating:2, types:['עייפות'], color:'#FFDB60' },
+
+  /* ── January 2026 — dominant: בית, evening, לחץ, rating 4-5 ── */
+  { id:'h66', timestamp:H(2026,0, 3,20,30), location:'בית',   rating:4, types:['לחץ'],    color:'#FFC8CE' },
+  { id:'h67', timestamp:H(2026,0, 6,21, 0), location:'בית',   rating:5, types:['לחץ'],    color:'#183497' },
+  { id:'h68', timestamp:H(2026,0, 8,20, 0), location:'בית',   rating:4, types:['לחץ'],    color:'#B6CDFF' },
+  { id:'h69', timestamp:H(2026,0,11,21,30), location:'בית',   rating:5, types:['לחץ'],    color:'#FFDB60' },
+  { id:'h70', timestamp:H(2026,0,13, 9, 0), location:'עבודה', rating:3, types:['כאב'],    color:'#00BE4A' },
+  { id:'h71', timestamp:H(2026,0,16,20,15), location:'בית',   rating:4, types:['לחץ'],    color:'#FFC8CE' },
+  { id:'h72', timestamp:H(2026,0,19,21, 0), location:'בית',   rating:5, types:['לחץ'],    color:'#183497' },
+  { id:'h73', timestamp:H(2026,0,22,20,45), location:'בית',   rating:4, types:['לחץ'],    color:'#B6CDFF' },
+  { id:'h74', timestamp:H(2026,0,25, 9,30), location:'עבודה', rating:3, types:['כאב'],    color:'#00BE4A' },
+  { id:'h75', timestamp:H(2026,0,27,21, 0), location:'בית',   rating:5, types:['לחץ'],    color:'#FFDB60' },
+  { id:'h76', timestamp:H(2026,0,29,20,30), location:'בית',   rating:4, types:['לחץ'],    color:'#FFC8CE' },
 ];
 
 /* ── Helpers ── */
@@ -314,6 +406,7 @@ function YearGrid({ events, slideIdx, domKey, year }) {
 ════════════════════════════════ */
 export default function InsightsFlow({ onClose }) {
   const { events } = useApp();
+  const allEvents = [...events, ...FAKE_HISTORICAL_EVENTS];
   const now = new Date();
   const touchX = useRef(null);
 
@@ -373,7 +466,7 @@ export default function InsightsFlow({ onClose }) {
     }, 160);
   }
 
-  const { me, domKey, pill, sub } = computeSlide(displayStep, events, month, year);
+  const { me, domKey, pill, sub } = computeSlide(displayStep, allEvents, month, year);
 
   /* ── Loading screen ── */
   if (loading) {
@@ -589,7 +682,7 @@ export default function InsightsFlow({ onClose }) {
             />
           ) : (
             <YearGrid
-              events={events}
+              events={allEvents}
               slideIdx={displayStep}
               domKey={domKey}
               year={year}
