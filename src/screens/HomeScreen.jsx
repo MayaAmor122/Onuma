@@ -416,7 +416,7 @@ function EmptyMandala({ size }) {
    Screen
 ════════════════════════════════ */
 export default function HomeScreen({
-  onNavigate, onAddEvent, onEventPress, previewEvents, addButtonRef, addButtonBg, addButtonBorderColor, addButtonIconColor, initialLevel,
+  onNavigate, onAddEvent, onEventPress, previewEvents, addButtonBg, addButtonBorderColor, addButtonIconColor, initialLevel,
   dotRefCallback, hideIndices, newEventId, onNewEventAnimated,
 }) {
   const { events: contextEvents } = useApp();
@@ -471,6 +471,8 @@ export default function HomeScreen({
 
   /* ── Refs ── */
   const gridAreaRef        = useRef(null);
+  const addButtonRef       = useRef(null);
+  const gridScrollRef      = useRef(null);
   const levelRef           = useRef(0);
   const longPressTimerRef  = useRef(null);
   const summaryTimerRef    = useRef(null);
@@ -499,9 +501,15 @@ export default function HomeScreen({
 
   /* Scroll "+" button into view after a new event is saved */
   useEffect(() => {
-    if (!newEventId || !addButtonRef?.current) return;
+    if (!newEventId) return;
     const t = setTimeout(() => {
-      addButtonRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      const container = gridScrollRef.current;
+      const btn = addButtonRef.current;
+      if (!container || !btn) return;
+      const containerRect = container.getBoundingClientRect();
+      const btnRect = btn.getBoundingClientRect();
+      const offset = btnRect.top - containerRect.top + container.scrollTop - containerRect.height / 2 + btnRect.height / 2;
+      container.scrollTo({ top: offset, behavior: 'smooth' });
     }, 150);
     return () => clearTimeout(t);
   }, [newEventId]);
@@ -754,7 +762,7 @@ export default function HomeScreen({
 
         {/* ── DOT GRID — level 0 (4-col, scrollable, interactive) ── */}
         {viewMode === 'grid' && level === 0 && (
-          <div className="no-scrollbar" style={{
+          <div ref={gridScrollRef} className="no-scrollbar" style={{
             height: '100%', overflowY: 'auto', padding: '0 18.5px',
             boxSizing: 'border-box',
             WebkitMaskImage: fadeMask, maskImage: fadeMask,
