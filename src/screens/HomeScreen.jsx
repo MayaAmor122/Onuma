@@ -497,6 +497,15 @@ export default function HomeScreen({
     return () => clearTimeout(t);
   }, [newEventId, onNewEventAnimated]);
 
+  /* Scroll "+" button into view after a new event is saved */
+  useEffect(() => {
+    if (!newEventId || !addButtonRef?.current) return;
+    const t = setTimeout(() => {
+      addButtonRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 150);
+    return () => clearTimeout(t);
+  }, [newEventId]);
+
   /* Cleanup timers on unmount */
   useEffect(() => () => {
     clearTimeout(longPressTimerRef.current);
