@@ -11,9 +11,9 @@ function ChevronRightIcon() {
 }
 
 const OPTIONS = [
-  { id: 'want',  label: 'אני רוצה התראות'     },
-  { id: 'dont',  label: 'אני לא רוצה התראות'   },
-  { id: 'later', label: 'תזכירו לי יותר מאוחר' },
+  { id: 'male',   label: 'זכר'  },
+  { id: 'female', label: 'נקבה' },
+  { id: 'other',  label: 'אחר'  },
 ];
 
 /* ════════════════════════════════
@@ -50,7 +50,7 @@ export default function OnboardingNotificationsScreen({ onNext, onBack }) {
           fontFamily: 'Atlas', fontWeight: 500, fontSize: 18, color: '#45423A',
           textAlign: 'right', margin: '0 0 28px',
         }}>
-          האם תרצה לקבל התראות?
+          כיצד תרצה שנפנה אלייך?
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>

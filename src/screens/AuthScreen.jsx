@@ -81,6 +81,7 @@ export default function AuthScreen({ onGoToSignUp }) {
           onChange={e => setEmail(e.target.value)}
           placeholder="Name@gmail.com"
           onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+          disabled
           style={{
             width: '100%', padding: '14px 18px', borderRadius: 30,
             border: 'none', background: '#EBE8DB',

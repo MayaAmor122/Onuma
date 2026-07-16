@@ -28,6 +28,13 @@ const QUESTIONS = [
   'מה למדת על עצמך דרך האירוע?',
 ];
 
+/* Hebrew keyboard — standard QWERTY mapping */
+const KB_ROWS = [
+  ['.', 'ק', 'ר', 'א', 'ט', 'ו', 'ן', 'ם', 'פ'],
+  ['ש', 'ד', 'ג', 'כ', 'ע', 'י', 'ח', 'ל', 'ך', 'ף'],
+  ['ז', 'ס', 'ב', 'ה', 'נ', 'מ', 'צ', 'ת', 'ץ'],
+];
+
 /* ── Icons ── */
 function CloseIcon() {
   return (
@@ -57,14 +64,88 @@ function MicIcon() {
     </svg>
   );
 }
+function BackspaceIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+         stroke="#45423A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+      <line x1="18" y1="9" x2="12" y2="15"/>
+      <line x1="12" y1="9" x2="18" y2="15"/>
+    </svg>
+  );
+}
+
+/* ── Hebrew virtual keyboard ── */
+function HebrewKeyboard({ onKey, onBackspace, onDone }) {
+  const [pressedKey, setPressedKey] = useState(null);
+
+  function mkKey(id, content, onPress, opts = {}) {
+    const { flex = 1, fontSize = 17, dark = false } = opts;
+    const isPressed = pressedKey === id;
+    return (
+      <button
+        key={id}
+        onPointerDown={() => { setPressedKey(id); onPress(); }}
+        onPointerUp={() => setPressedKey(null)}
+        onPointerLeave={() => setPressedKey(null)}
+        style={{
+          flex,
+          height: 44,
+          borderRadius: 6,
+          background: isPressed ? '#C0BDB1' : (dark ? '#ADAAA0' : '#F8F5EE'),
+          border: 'none',
+          boxShadow: '0 1px 0 rgba(0,0,0,0.25)',
+          fontFamily: 'Atlas',
+          fontSize,
+          color: '#45423A',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          WebkitTapHighlightColor: 'transparent',
+          minWidth: 0,
+        }}
+      >
+        {content}
+      </button>
+    );
+  }
+
+  return (
+    <div style={{
+      background: '#B4B1A6',
+      padding: '10px 4px 28px',
+      direction: 'ltr',
+    }}>
+      {KB_ROWS.map((row, ri) => (
+        <div key={ri} style={{
+          display: 'flex', gap: 5, marginBottom: 8, justifyContent: 'center',
+        }}>
+          {ri === 2 && <div style={{ flex: 0.5 }} />}
+          {row.map(key => mkKey(key, key, () => onKey(key)))}
+          {ri === 2 && <div style={{ flex: 0.5 }} />}
+        </div>
+      ))}
+      {/* Bottom row: done · space · backspace */}
+      <div style={{ display: 'flex', gap: 5 }}>
+        {mkKey('done', 'סיום', onDone, { flex: 1.5, fontSize: 14, dark: true })}
+        {mkKey('space', 'רווח', () => onKey(' '), { flex: 4, fontSize: 14 })}
+        {mkKey('back', <BackspaceIcon />, onBackspace, { flex: 1.5, dark: true })}
+      </div>
+    </div>
+  );
+}
 
 /* ════════════════════════════════
    Screen
 ════════════════════════════════ */
 export default function AddEventScreen4({ onNext, onBack, onClose }) {
   const [question] = useState(() => QUESTIONS[Math.floor(Math.random() * QUESTIONS.length)]);
-  const [text, setText] = useState('');
-  const [pressed, setPressed] = useState(null);
+  const [text, setText]               = useState('');
+  const [pressed, setPressed]         = useState(null);
+  const [showKeyboard, setShowKeyboard] = useState(false);
 
   const press = id => ({
     onPointerDown: () => setPressed(id),
@@ -72,13 +153,20 @@ export default function AddEventScreen4({ onNext, onBack, onClose }) {
     onPointerLeave:() => setPressed(null),
   });
 
+  function handleKey(key) {
+    setText(prev => prev + key);
+  }
+  function handleBackspace() {
+    setText(prev => prev.slice(0, -1));
+  }
+
   return (
     <div style={{
       flex: 1, display: 'flex', flexDirection: 'column',
       background: '#F8F5EE', overflow: 'hidden', position: 'relative',
     }}>
 
-      {/* ── Top bar: chevron (right, back) · indicator (center) · X (left, exit) ── */}
+      {/* ── Top bar ── */}
       <div style={{ position: 'relative', padding: '20px 20px 0' }}>
         <div style={{
           display: 'flex', flexDirection: 'row', direction: 'rtl',
@@ -126,23 +214,29 @@ export default function AddEventScreen4({ onNext, onBack, onClose }) {
         <textarea
           className="event-textarea"
           value={text}
+          onClick={() => setShowKeyboard(true)}
           onChange={e => setText(e.target.value)}
           placeholder="הקלד כאן.."
+          inputMode="none"
+          readOnly
           style={{
             width: '100%', height: '100%',
             fontFamily: 'Atlas', fontWeight: 400, fontSize: 32, color: '#323232',
             background: 'transparent', border: 'none', outline: 'none',
             resize: 'none', textAlign: 'right', direction: 'rtl',
-            lineHeight: 1.3, padding: 0,
+            lineHeight: 1.3, padding: 0, cursor: 'text',
           }}
         />
       </div>
 
-      {/* ── Bottom row: continue (left) · record (right) ── */}
+      {/* ── Bottom row: continue · record ── */}
       <div style={{
         display: 'flex', flexDirection: 'row', direction: 'rtl',
         justifyContent: 'space-between', alignItems: 'center',
         padding: '0 24px 44px',
+        transition: 'opacity 0.2s ease',
+        opacity: showKeyboard ? 0 : 1,
+        pointerEvents: showKeyboard ? 'none' : 'auto',
       }}>
         <div style={{ display: 'flex', flexDirection: 'row', direction: 'rtl', alignItems: 'center', gap: 10 }}>
           <button {...press('mic')} style={{
@@ -178,6 +272,19 @@ export default function AddEventScreen4({ onNext, onBack, onClose }) {
         >
           המשך
         </button>
+      </div>
+
+      {/* ── Virtual Hebrew keyboard — slides up from bottom ── */}
+      <div style={{
+        overflow: 'hidden',
+        maxHeight: showKeyboard ? '320px' : '0px',
+        transition: 'max-height 0.3s cubic-bezier(0.32, 0.72, 0, 1)',
+      }}>
+        <HebrewKeyboard
+          onKey={handleKey}
+          onBackspace={handleBackspace}
+          onDone={() => setShowKeyboard(false)}
+        />
       </div>
 
     </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import FilterPanel from './FilterPanel';
 import Mandala, { getTimeOfDay } from '../components/Mandala';
@@ -163,7 +163,7 @@ function computePatternData(selected) {
 function HamburgerIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
-         stroke="#183497" strokeWidth="2" strokeLinecap="round">
+         stroke="#45423A" strokeWidth="2" strokeLinecap="round">
       <line x1="3" y1="6"  x2="21" y2="6"/>
       <line x1="3" y1="12" x2="21" y2="12"/>
       <line x1="3" y1="18" x2="21" y2="18"/>
@@ -218,7 +218,7 @@ function LogoutIcon() {
     </svg>
   );
 }
-function PlusIcon({ color = '#183497', size = 20 }) {
+function PlusIcon({ color = '#45423A', size = 20 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
          stroke={color} strokeWidth="2" strokeLinecap="round">
@@ -691,9 +691,9 @@ export default function HomeScreen({
               minWidth: 64, height: 30, borderRadius: 30, flexShrink: 0,
               padding: filterActive ? '0 8px 0 12px' : '0',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-              border: `1.5px solid ${hasEvents ? '#183497' : '#D4D1C3'}`,
-              background: filterActive ? '#183497' : 'rgba(248,245,238,0.63)',
-              color:      filterActive ? '#ffffff' : (hasEvents ? '#183497' : '#D4D1C3'),
+              border: `1.5px solid ${hasEvents ? '#45423A' : '#D4D1C3'}`,
+              background: filterActive ? '#45423A' : 'rgba(248,245,238,0.63)',
+              color:      filterActive ? '#ffffff' : (hasEvents ? '#45423A' : '#D4D1C3'),
               fontFamily: 'Atlas', fontWeight: 500, fontSize: 12,
               cursor: hasEvents ? 'pointer' : 'default',
               boxSizing: 'border-box', whiteSpace: 'nowrap',
@@ -741,9 +741,9 @@ export default function HomeScreen({
           <span style={{
             width: 116, height: 25, borderRadius: 30,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontFamily: 'Atlas', fontWeight: 500, fontSize: 9, color: '#183497',
+            fontFamily: 'Atlas', fontWeight: 500, fontSize: 9, color: '#45423A',
             background: 'rgba(248,245,238,0.84)',
-            border: '1.5px solid #183497',
+            border: '1.5px solid #45423A',
             backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)',
             boxSizing: 'border-box',
           }}>
@@ -784,12 +784,12 @@ export default function HomeScreen({
                       style={{
                         width: dotSize, height: dotSize, borderRadius: '50%',
                         background: addButtonBg || '#F8F5EE',
-                        border: `2px solid ${addButtonBorderColor || '#183497'}`,
+                        border: `2px solid ${addButtonBorderColor || '#45423A'}`,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         cursor: 'pointer', boxSizing: 'border-box', flexShrink: 0,
                       }}
                     >
-                      <PlusIcon size={26} color={addButtonIconColor || '#183497'} />
+                      <PlusIcon size={26} color={addButtonIconColor || '#45423A'} />
                     </div>
                   );
                 }
@@ -874,14 +874,14 @@ export default function HomeScreen({
                 onPointerLeave={() => setEmptyBtnPressed(false)}
                 style={{
                   width: dotSize, height: dotSize, borderRadius: '50%',
-                  background: emptyBtnPressed ? 'rgba(24,52,151,0.08)' : '#F8F5EE', border: '2px solid #183497',
+                  background: emptyBtnPressed ? 'rgba(69,66,58,0.08)' : '#F8F5EE', border: '2px solid #45423A',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   cursor: 'pointer', pointerEvents: 'auto', flexShrink: 0,
                   transform: emptyBtnPressed ? 'scale(0.97)' : 'scale(1)',
                   transition: 'transform 0.12s ease, background 0.12s ease',
                 }}
               >
-                <PlusIcon size={30} color="#183497" />
+                <PlusIcon size={30} color="#45423A" />
               </button>
               <p style={{
                 fontFamily: 'Atlas', fontWeight: 500, fontSize: 14, color: '#45423A',
@@ -981,9 +981,9 @@ export default function HomeScreen({
           style={{
             width: 102, height: 40, borderRadius: 30, flexShrink: 0,
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-            border: `1.5px solid ${hasEvents ? '#183497' : '#D4D1C3'}`, background: 'rgba(248,245,238,0.63)',
+            border: `1.5px solid ${hasEvents ? '#45423A' : '#D4D1C3'}`, background: 'rgba(248,245,238,0.63)',
             cursor: hasEvents ? 'pointer' : 'default',
-            fontFamily: 'Atlas', fontWeight: 400, fontSize: 12, color: hasEvents ? '#183497' : '#D4D1C3',
+            fontFamily: 'Atlas', fontWeight: 400, fontSize: 12, color: hasEvents ? '#45423A' : '#D4D1C3',
             direction: 'ltr', boxSizing: 'border-box',
           }}
         >
@@ -992,7 +992,7 @@ export default function HomeScreen({
         <div style={{
           display: 'flex', alignItems: 'center',
           background: 'rgba(248,245,238,0.63)',
-          border: `1.5px solid ${hasEvents ? '#183497' : '#D4D1C3'}`,
+          border: `1.5px solid ${hasEvents ? '#45423A' : '#D4D1C3'}`,
           borderRadius: 30, padding: 4, gap: 2,
           width: 200, height: 40, direction: 'rtl',
           boxSizing: 'border-box', flexShrink: 0,
@@ -1007,8 +1007,8 @@ export default function HomeScreen({
                 style={{
                 width: isActive ? 70 : undefined, flex: isActive ? 'none' : 1,
                 height: 32, borderRadius: 24, border: 'none',
-                background: isActive && hasEvents ? '#183497' : 'transparent',
-                color:      isActive ? (hasEvents ? '#ffffff' : '#D4D1C3') : (hasEvents ? '#183497' : '#D4D1C3'),
+                background: isActive && hasEvents ? '#45423A' : 'transparent',
+                color:      isActive ? (hasEvents ? '#ffffff' : '#D4D1C3') : (hasEvents ? '#45423A' : '#D4D1C3'),
                 fontFamily: 'Atlas', fontWeight: 400, fontSize: isActive ? 14 : 13,
                 cursor: hasEvents ? 'pointer' : 'default', whiteSpace: 'nowrap', boxSizing: 'border-box',
               }}>

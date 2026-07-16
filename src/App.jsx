@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { flushSync } from 'react-dom';
 import './App.css';
 
@@ -343,10 +343,126 @@ function AppContent() {
   );
 }
 
+/* ── Fullscreen video splash — sits outside the phone frame ── */
+const VIDEO_SRC = '/Video placeholder.mp4';
+
+function VideoSplash({ onStart }) {
+  const [fading, setFading] = useState(false);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    videoRef.current?.play().catch(() => {});
+  }, []);
+
+  function handleStart() {
+    setFading(true);
+    setTimeout(onStart, 600);
+  }
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 9999,
+      display: 'flex', flexDirection: 'column',
+      alignItems: 'center', justifyContent: 'flex-end',
+      background: '#000',
+      opacity: fading ? 0 : 1,
+      transition: 'opacity 0.6s ease',
+      pointerEvents: fading ? 'none' : 'auto',
+    }}>
+      {VIDEO_SRC ? (
+        <video
+          ref={videoRef}
+          src={VIDEO_SRC}
+          loop muted playsInline
+          style={{
+            position: 'absolute', inset: 0,
+            width: '100%', height: '100%', objectFit: 'cover',
+          }}
+        />
+      ) : (
+        /* Placeholder until video is ready */
+        <div style={{
+          position: 'absolute', inset: 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <p style={{
+            fontFamily: 'Atlas', fontSize: 16, color: 'rgba(255,255,255,0.3)',
+            margin: 0,
+          }}>
+            הוידאו יופיע כאן
+          </p>
+        </div>
+      )}
+
+      {/* התחל button */}
+      <button
+        onClick={handleStart}
+        style={{
+          position: 'relative', zIndex: 1,
+          marginBottom: 60,
+          padding: '16px 64px', borderRadius: 30,
+          background: 'rgba(248,245,238,0.92)',
+          border: 'none', cursor: 'pointer',
+          fontFamily: 'Atlas', fontWeight: 700, fontSize: 20,
+          color: '#45423A',
+          boxShadow: '0 4px 24px rgba(0,0,0,0.3)',
+        }}
+      >
+        התחל
+      </button>
+    </div>
+  );
+}
+
+const INACTIVITY_MS = 10 * 60 * 1000; // 10 minutes
+
 export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
+  const [resetting,  setResetting]  = useState(false);
+  const timerRef = useRef(null);
+
+  /* Start inactivity watch once the user dismisses the splash */
+  useEffect(() => {
+    if (showSplash) return;
+
+    function doReset() {
+      setResetting(true);
+      setTimeout(() => {
+        Object.keys(localStorage)
+          .filter(k => k.startsWith('onuma_'))
+          .forEach(k => localStorage.removeItem(k));
+        window.location.reload();
+      }, 800);
+    }
+
+    function kick() {
+      clearTimeout(timerRef.current);
+      timerRef.current = setTimeout(doReset, INACTIVITY_MS);
+    }
+
+    const EVENTS = ['mousedown', 'mousemove', 'touchstart', 'touchmove', 'keydown', 'scroll'];
+    EVENTS.forEach(e => window.addEventListener(e, kick, { passive: true }));
+    kick(); // arm the timer immediately
+
+    return () => {
+      clearTimeout(timerRef.current);
+      EVENTS.forEach(e => window.removeEventListener(e, kick));
+    };
+  }, [showSplash]);
+
   return (
     <AppProvider>
       <AppContent />
+      {showSplash && <VideoSplash onStart={() => setShowSplash(false)} />}
+
+      {/* Fade-to-black curtain on inactivity reset */}
+      <div style={{
+        position: 'fixed', inset: 0, zIndex: 9998,
+        background: '#000',
+        opacity: resetting ? 1 : 0,
+        transition: 'opacity 0.8s ease',
+        pointerEvents: 'none',
+      }} />
     </AppProvider>
   );
 }
