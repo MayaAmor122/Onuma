@@ -43,11 +43,13 @@ export function AppProvider({ children }) {
   const [userEmail,             setUserEmail]             = useState(() => localStorage.getItem('onuma_userEmail') || 'Maya4085@gmail.com');
   const [notificationsEnabled,  setNotificationsEnabled]  = useState(() => localStorage.getItem('onuma_notifications') !== 'false');
   const [theme,                 setTheme]                 = useState(() => localStorage.getItem('onuma_theme') || 'light');
+  const [gender,                setGender]                = useState(() => localStorage.getItem('onuma_gender') || 'male');
 
   useEffect(() => { localStorage.setItem('onuma_userName',      userName);                        }, [userName]);
   useEffect(() => { localStorage.setItem('onuma_userEmail',     userEmail);                       }, [userEmail]);
   useEffect(() => { localStorage.setItem('onuma_notifications', String(notificationsEnabled));    }, [notificationsEnabled]);
   useEffect(() => { localStorage.setItem('onuma_theme',         theme);                           }, [theme]);
+  useEffect(() => { localStorage.setItem('onuma_gender',        gender);                          }, [gender]);
 
   useEffect(() => { localStorage.setItem('onuma_spaces', JSON.stringify(spaces)); }, [spaces]);
   useEffect(() => { localStorage.setItem('onuma_events', JSON.stringify(events)); }, [events]);
@@ -109,9 +111,9 @@ export function AppProvider({ children }) {
     <AppContext.Provider value={{
       spaces, activeSpaces, events,
       onboardingDone, isLoggedIn,
-      userName, userEmail, notificationsEnabled, theme,
+      userName, userEmail, notificationsEnabled, theme, gender,
       addEvent, updateSpace, addCustomSpace, completeOnboarding,
-      login, logout, updateProfile, setNotificationsEnabled, setTheme,
+      login, logout, updateProfile, setNotificationsEnabled, setTheme, setGender,
     }}>
       {children}
     </AppContext.Provider>

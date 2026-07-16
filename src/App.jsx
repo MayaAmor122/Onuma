@@ -34,7 +34,7 @@ import NotificationsScreen           from './screens/NotificationsScreen';
 import SettingsScreen                from './screens/SettingsScreen';
 
 function AppContent() {
-  const { isLoggedIn, onboardingDone, completeOnboarding, addEvent } = useApp();
+  const { isLoggedIn, onboardingDone, completeOnboarding, addEvent, setGender } = useApp();
 
   const [splashUp,   setSplashUp]   = useState(false);
   const [splashGone, setSplashGone] = useState(false);
@@ -292,7 +292,7 @@ function AppContent() {
       case 'notifications':
         return (
           <OnboardingNotificationsScreen
-            onNext={() => { setDirection('forward'); setStep('loading2'); }}
+            onNext={(id) => { setGender(id); setDirection('forward'); setStep('loading2'); }}
             onBack={() => { setDirection('back');    setStep('intro'); }}
           />
         );
