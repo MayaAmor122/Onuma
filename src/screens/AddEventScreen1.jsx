@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Mandala from '../components/Mandala';
+import { useApp } from '../context/AppContext';
 
 /* ── Icons ── */
 function CloseIcon() {
@@ -52,6 +53,8 @@ const CARD_GAP = 6;
    Screen
 ════════════════════════════════ */
 export default function AddEventScreen1({ onNext, onClose }) {
+  const { gender } = useApp();
+  const isFemale = gender === 'female';
   const [timeOfDay,   setTimeOfDay]   = useState('morning');
   const [isOpen,      setIsOpen]      = useState(false);
   const [dropVisible, setDropVisible] = useState(false);
@@ -238,7 +241,7 @@ export default function AddEventScreen1({ onNext, onClose }) {
             transition: confirmed ? 'background 0.12s ease, transform 0.12s ease' : 'none',
           }}
         >
-          המשך
+          {isFemale ? 'המשיכי' : 'המשך'}
         </button>
       </div>
 

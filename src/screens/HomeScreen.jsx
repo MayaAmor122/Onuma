@@ -1245,7 +1245,7 @@ export default function HomeScreen({
               fontFamily: 'Atlas', fontWeight: 700, fontSize: 13,
               boxSizing: 'border-box',
             }}>
-              הוסף לדו״ח התקופתי
+              {isFemale ? 'הוסיפי לדו״ח התקופתי' : 'הוסף לדו״ח התקופתי'}
             </button>
           </div>
         </div>

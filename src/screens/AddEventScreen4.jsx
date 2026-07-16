@@ -275,7 +275,7 @@ export default function AddEventScreen4({ onNext, onBack, onClose }) {
             transition: 'background 0.12s ease, transform 0.12s ease',
           }}
         >
-          המשך
+          {isFemale ? 'המשיכי' : 'המשך'}
         </button>
       </div>
 

@@ -265,28 +265,28 @@ function AppContent() {
         return (
           <WalkthroughScreen2
             onNext={() => { setDirection('forward'); setStep('walkthrough3'); }}
-            onSkip={() => { setDirection('forward'); setTransitionType('slide'); setStep('loading2'); }}
+            onSkip={() => { setDirection('forward'); setTransitionType('slide'); setStep('notifications'); }}
           />
         );
       case 'walkthrough3':
         return (
           <WalkthroughScreen3
             onNext={() => { setDirection('forward'); setStep('walkthrough4'); }}
-            onSkip={() => { setDirection('forward'); setTransitionType('slide'); setStep('loading2'); }}
+            onSkip={() => { setDirection('forward'); setTransitionType('slide'); setStep('notifications'); }}
           />
         );
       case 'walkthrough4':
         return (
           <WalkthroughScreen4
             onNext={() => { setDirection('forward'); setStep('walkthrough5'); }}
-            onSkip={() => { setDirection('forward'); setTransitionType('slide'); setStep('loading2'); }}
+            onSkip={() => { setDirection('forward'); setTransitionType('slide'); setStep('notifications'); }}
           />
         );
       case 'walkthrough5':
         return (
           <WalkthroughScreen5
             onDone={() => { setDirection('forward'); setTransitionType('slide'); setStep('notifications'); }}
-            onSkip={() => { setDirection('forward'); setTransitionType('slide'); setStep('loading2'); }}
+            onSkip={() => { setDirection('forward'); setTransitionType('slide'); setStep('notifications'); }}
           />
         );
       case 'notifications':

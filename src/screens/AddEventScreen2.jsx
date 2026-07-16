@@ -126,7 +126,7 @@ export default function AddEventScreen2({ onNext, onBack, onClose, timeOfDay = '
           fontFamily: 'Atlas', fontWeight: 500, fontSize: 18, color: '#45423A',
           textAlign: 'right', direction: 'rtl', margin: 0,
         }}>
-          דרג את עוצמת האירוע
+          {isFemale ? 'דרגי את עוצמת האירוע' : 'דרג את עוצמת האירוע'}
         </p>
         <p style={{
           fontFamily: 'Atlas', fontWeight: 400, fontSize: 16, color: '#87837A',
@@ -204,7 +204,7 @@ export default function AddEventScreen2({ onNext, onBack, onClose, timeOfDay = '
             boxSizing: 'border-box',
           }}
         >
-          המשך
+          {isFemale ? 'המשיכי' : 'המשך'}
         </button>
       </div>
 

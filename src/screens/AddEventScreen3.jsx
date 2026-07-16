@@ -195,7 +195,7 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
         fontFamily: 'Atlas', fontWeight: 500, fontSize: 18, color: '#45423A',
         textAlign: 'right', direction: 'rtl', margin: '24px 28px 0',
       }}>
-        בחר איפה האירוע התרחש?
+        {isFemale ? 'בחרי איפה האירוע התרחש?' : 'בחר איפה האירוע התרחש?'}
       </p>
 
       {/* ── Mandala preview + dropdown — mandala stays fixed, dropdown overlays on top ── */}
@@ -350,7 +350,7 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
             transition: confirmed ? 'background 0.12s ease, transform 0.12s ease' : 'none',
           }}
         >
-          המשך
+          {isFemale ? 'המשיכי' : 'המשך'}
         </button>
       </div>
 

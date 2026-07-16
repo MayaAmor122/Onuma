@@ -1,4 +1,5 @@
 import DotFadeDecoration from '../components/DotFadeDecoration';
+import { useApp } from '../context/AppContext';
 
 /* ── Icons ── */
 function ChevronRightIcon() {
@@ -58,6 +59,8 @@ function InfoCard({ title, subtitle }) {
    Screen — placeholder only, no real report generation
 ════════════════════════════════ */
 export default function ReportsScreen({ onBack }) {
+  const { gender } = useApp();
+  const isFemale = gender === 'female';
   return (
     <div style={{
       flex: 1, display: 'flex', flexDirection: 'column',
@@ -98,7 +101,7 @@ export default function ReportsScreen({ onBack }) {
             fontFamily: 'Atlas', fontWeight: 700, fontSize: 16, cursor: 'default',
           }}
         >
-          צור דו"ח חדש
+          {isFemale ? 'צרי דו"ח חדש' : 'צור דו"ח חדש'}
         </button>
         <p style={{
           fontFamily: 'Atlas', fontWeight: 400, fontSize: 11, color: '#45423A',
@@ -116,13 +119,13 @@ export default function ReportsScreen({ onBack }) {
             fontFamily: 'Atlas', fontWeight: 700, fontSize: 16, cursor: 'default',
           }}
         >
-          שתף עם מטופל
+          {isFemale ? 'שתפי עם מטפל' : 'שתף עם מטפל'}
         </button>
         <p style={{
           fontFamily: 'Atlas', fontWeight: 400, fontSize: 11, color: '#45423A',
           textAlign: 'right', direction: 'rtl', margin: '8px 0 28px',
         }}>
-          בחר כיצד לשלוח את הדוח לאחר יצירתו.
+          {isFemale ? 'בחרי כיצד לשלוח את הדוח לאחר יצירתו.' : 'בחר כיצד לשלוח את הדוח לאחר יצירתו.'}
         </p>
 
       </div>

@@ -155,7 +155,7 @@ export default function AddEventScreen5({ onSave, onBack, onClose }) {
             fontFamily: 'Atlas', fontWeight: 500, fontSize: 18, color: '#45423A',
             textAlign: 'right', margin: 0,
           }}>
-            בחר את סוג האירוע
+            {isFemale ? 'בחרי את סוג האירוע' : 'בחר את סוג האירוע'}
           </p>
           <p style={{
             fontFamily: 'Atlas', fontWeight: 400, fontSize: 14, color: '#87837A',
@@ -255,7 +255,7 @@ export default function AddEventScreen5({ onSave, onBack, onClose }) {
             transition: hasTypes ? 'background 0.12s ease, transform 0.12s ease' : 'none',
           }}
         >
-          תעד את האירוע
+          {isFemale ? 'תעדי את האירוע' : 'תעד את האירוע'}
         </button>
       </div>
 
