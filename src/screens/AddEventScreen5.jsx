@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useApp } from '../context/AppContext';
 
 /* ── Default event types — ordered so pair[0]=right(140px), pair[1]=left(208px) ── */
 const DEFAULT_TYPES = [
@@ -69,6 +70,8 @@ function TypeChip({ label, width, selected, onPress }) {
    Screen
 ════════════════════════════════ */
 export default function AddEventScreen5({ onSave, onBack, onClose }) {
+  const { gender } = useApp();
+  const isFemale = gender === 'female';
   const [eventTypes,    setEventTypes]    = useState(DEFAULT_TYPES);
   const [selectedTypes, setSelectedTypes] = useState(new Set());
   const [addingCustom,  setAddingCustom]  = useState(false);
@@ -198,7 +201,7 @@ export default function AddEventScreen5({ onSave, onBack, onClose }) {
                 onChange={e => setCustomText(e.target.value)}
                 onBlur={confirmCustom}
                 onKeyDown={e => { if (e.key === 'Enter') e.target.blur(); }}
-                placeholder="הקלד סוג אירוע..."
+                placeholder={isFemale ? 'הקלידי סוג אירוע...' : 'הקלד סוג אירוע...'}
                 style={{
                   height: 48, borderRadius: 30,
                   border: '1.5px solid #45423A', background: 'transparent',

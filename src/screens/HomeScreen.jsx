@@ -419,7 +419,8 @@ export default function HomeScreen({
   onNavigate, onAddEvent, onEventPress, previewEvents, addButtonBg, addButtonBorderColor, addButtonIconColor, initialLevel,
   dotRefCallback, hideIndices, newEventId, onNewEventAnimated,
 }) {
-  const { events: contextEvents } = useApp();
+  const { events: contextEvents, gender } = useApp();
+  const isFemale = gender === 'female';
   const events     = previewEvents || contextEvents;
   const hasEvents  = events.length > 0;
 
@@ -888,7 +889,7 @@ export default function HomeScreen({
                 textAlign: 'right', direction: 'rtl', lineHeight: 1.5,
                 margin: 0, whiteSpace: 'pre-line',
               }}>
-                {'לחץ להוספת\nהאירוע הראשון'}
+                {isFemale ? 'לחצי להוספת\nהאירוע הראשון' : 'לחץ להוספת\nהאירוע הראשון'}
               </p>
             </div>
           </div>

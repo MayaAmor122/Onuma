@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useApp } from '../context/AppContext';
 
 /* ── Icons ── */
 function CloseIcon() {
@@ -57,6 +58,8 @@ const SVG_HALF = VIEWBOX / 2; // 40.5
    Screen
 ════════════════════════════════ */
 export default function AddEventScreen2({ onNext, onBack, onClose, timeOfDay = 'morning' }) {
+  const { gender } = useApp();
+  const isFemale = gender === 'female';
   const [rating,  setRating]  = useState(null);
   const [pressed, setPressed] = useState(null);
 
@@ -129,7 +132,7 @@ export default function AddEventScreen2({ onNext, onBack, onClose, timeOfDay = '
           fontFamily: 'Atlas', fontWeight: 400, fontSize: 16, color: '#87837A',
           textAlign: 'right', direction: 'rtl', lineHeight: '17px', margin: '8px 0 0',
         }}>
-          לחץ על טבעת מ-1 (הכי נמוך) עד 5 (הכי גבוה) על מנת לדרג את העוצמה
+          {isFemale ? 'לחצי על טבעת מ-1 (הכי נמוך) עד 5 (הכי גבוה) על מנת לדרג את העוצמה' : 'לחץ על טבעת מ-1 (הכי נמוך) עד 5 (הכי גבוה) על מנת לדרג את העוצמה'}
         </p>
       </div>
 

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Mandala from '../components/Mandala';
+import { useApp } from '../context/AppContext';
 
 /* ── Icons ── */
 function CloseIcon() {
@@ -74,6 +75,8 @@ function LocationOption({ loc, idx, selected, pressed, press, onSelect }) {
    Screen
 ════════════════════════════════ */
 export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = 'morning', rating = 3 }) {
+  const { gender } = useApp();
+  const isFemale = gender === 'female';
   const [locations,        setLocations]       = useState(() => {
     try {
       const saved = localStorage.getItem('onuma_locations');
@@ -263,7 +266,7 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
                   value={customText}
                   onChange={e => setCustomText(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter') confirmCustom(); }}
-                  placeholder="הקלד מיקום חדש..."
+                  placeholder={isFemale ? 'הקלידי מיקום חדש...' : 'הקלד מיקום חדש...'}
                   style={{
                     flex: 1, height: '100%', borderRadius: 24,
                     border: 'none', background: 'transparent',
