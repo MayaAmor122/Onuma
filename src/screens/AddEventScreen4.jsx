@@ -31,7 +31,7 @@ const QUESTIONS = [
 
 /* Hebrew keyboard — standard QWERTY mapping */
 const KB_ROWS = [
-  ['.', 'ק', 'ר', 'א', 'ט', 'ו', 'ן', 'ם', 'פ'],
+  ['ק', 'ר', 'א', 'ט', 'ו', 'ן', 'ם', 'פ'],
   ['ש', 'ד', 'ג', 'כ', 'ע', 'י', 'ח', 'ל', 'ך', 'ף'],
   ['ז', 'ס', 'ב', 'ה', 'נ', 'מ', 'צ', 'ת', 'ץ'],
 ];
@@ -115,25 +115,51 @@ function HebrewKeyboard({ onKey, onBackspace, onDone }) {
   }
 
   return (
-    <div style={{
-      background: '#B4B1A6',
-      padding: '10px 4px 28px',
-      direction: 'ltr',
-    }}>
-      {KB_ROWS.map((row, ri) => (
-        <div key={ri} style={{
-          display: 'flex', gap: 5, marginBottom: 8, justifyContent: 'center',
-        }}>
-          {ri === 2 && <div style={{ flex: 0.5 }} />}
-          {row.map(key => mkKey(key, key, () => onKey(key)))}
-          {ri === 2 && <div style={{ flex: 0.5 }} />}
+    <div style={{ direction: 'ltr' }}>
+      {/* Accessory bar */}
+      <div style={{
+        background: 'transparent',
+        padding: '6px 8px',
+        display: 'flex', justifyContent: 'flex-end',
+      }}>
+        <button
+          onPointerDown={() => { setPressedKey('done'); onDone(); }}
+          onPointerUp={() => setPressedKey(null)}
+          onPointerLeave={() => setPressedKey(null)}
+          style={{
+            padding: '12px 32px', borderRadius: 30, border: 'none',
+            background: pressedKey === 'done' ? '#2E2B25' : '#45423A',
+            fontFamily: 'Atlas', fontSize: 15, fontWeight: 600, color: '#F8F5EE',
+            cursor: 'pointer',
+            boxShadow: '0 1px 0 rgba(0,0,0,0.25)',
+            userSelect: 'none', WebkitUserSelect: 'none',
+          }}
+        >
+          סיום
+        </button>
+      </div>
+
+      {/* Keys */}
+      <div style={{ background: '#E2DFD0', padding: '10px 4px 28px' }}>
+        {/* Numbers row */}
+        <div style={{ display: 'flex', gap: 5, marginBottom: 8, justifyContent: 'center' }}>
+          {['1','2','3','4','5','6','7','8','9','0'].map(n => mkKey(n, n, () => onKey(n)))}
         </div>
-      ))}
-      {/* Bottom row: done · space · backspace */}
-      <div style={{ display: 'flex', gap: 5 }}>
-        {mkKey('done', 'סיום', onDone, { flex: 1.5, fontSize: 14, dark: true })}
-        {mkKey('space', 'רווח', () => onKey(' '), { flex: 4, fontSize: 14 })}
-        {mkKey('back', <BackspaceIcon />, onBackspace, { flex: 1.5, dark: true })}
+        {KB_ROWS.map((row, ri) => (
+          <div key={ri} style={{
+            display: 'flex', gap: 5, marginBottom: 8, justifyContent: 'center',
+          }}>
+            {ri === 2 && <div style={{ flex: 0.5 }} />}
+            {row.map(key => mkKey(key, key, () => onKey(key)))}
+            {ri === 2 && <div style={{ flex: 0.5 }} />}
+          </div>
+        ))}
+        {/* Bottom row: dot · space · backspace */}
+        <div style={{ display: 'flex', gap: 5 }}>
+          {mkKey('.', '.', () => onKey('.'), { flex: 1, fontSize: 24 })}
+          {mkKey('space', 'רווח', () => onKey(' '), { flex: 3, fontSize: 14 })}
+          {mkKey('back', <BackspaceIcon />, onBackspace, { flex: 1, dark: true })}
+        </div>
       </div>
     </div>
   );
@@ -282,7 +308,7 @@ export default function AddEventScreen4({ onNext, onBack, onClose }) {
       {/* ── Virtual Hebrew keyboard — slides up from bottom ── */}
       <div style={{
         overflow: 'hidden',
-        maxHeight: showKeyboard ? '320px' : '0px',
+        maxHeight: showKeyboard ? '380px' : '0px',
         transition: 'max-height 0.3s cubic-bezier(0.32, 0.72, 0, 1)',
       }}>
         <HebrewKeyboard
