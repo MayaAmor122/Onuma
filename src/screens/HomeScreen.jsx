@@ -808,7 +808,7 @@ export default function HomeScreen({
                     {...handlers}
                     style={{
                       width: dotSize, height: dotSize, borderRadius: '50%',
-                      background: event ? 'transparent' : (hasEvents ? '#EFECDE' : 'rgba(239,236,222,0.36)'),
+                      background: 'transparent',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       cursor: event ? 'pointer' : 'default',
                       boxSizing: 'border-box', position: 'relative',
@@ -816,6 +816,13 @@ export default function HomeScreen({
                       WebkitTouchCallout: 'none',
                     }}
                   >
+                    {!event && (
+                      <div style={{
+                        width: 16, height: 16, borderRadius: '50%',
+                        background: hasEvents ? '#EFECDE' : 'rgba(239,236,222,0.36)',
+                        flexShrink: 0,
+                      }} />
+                    )}
                     {/* Event's mandala — sits on top of the base dot */}
                     {event && !(hideIndices && hideIndices.includes(i)) && (
                       <div style={{
