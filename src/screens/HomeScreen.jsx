@@ -907,7 +907,7 @@ export default function HomeScreen({
               </button>
               <p style={{
                 fontFamily: 'Atlas', fontWeight: 500, fontSize: 14, color: '#45423A',
-                textAlign: 'right', direction: 'rtl', lineHeight: 1.5,
+                textAlign: 'right', direction: 'rtl', lineHeight: 1.2,
                 margin: 0, whiteSpace: 'pre-line',
               }}>
                 {isFemale ? 'לחצי להוספת\nהאירוע הראשון' : 'לחץ להוספת\nהאירוע הראשון'}
