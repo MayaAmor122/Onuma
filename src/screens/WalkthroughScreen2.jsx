@@ -25,10 +25,6 @@ export default function WalkthroughScreen2({ onNext, onSkip }) {
   const [open,    setOpen]    = useState(false);
   const [pressed, setPressed] = useState(null);
 
-  useEffect(() => {
-    try { const a = new Audio('/sound-051.mp3'); a.volume = 0.4; a.play(); } catch (_) {}
-  }, []);
-
   const press = id => ({
     onPointerDown: () => setPressed(id),
     onPointerUp:   () => setPressed(null),
