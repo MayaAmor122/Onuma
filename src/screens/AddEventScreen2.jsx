@@ -130,9 +130,9 @@ export default function AddEventScreen2({ onNext, onBack, onClose, timeOfDay = '
         </p>
         <p style={{
           fontFamily: 'Atlas', fontWeight: 400, fontSize: 16, color: '#87837A',
-          textAlign: 'right', direction: 'rtl', lineHeight: '17px', margin: '8px 0 0',
+          textAlign: 'right', direction: 'rtl', lineHeight: '22px', margin: '8px 0 0', whiteSpace: 'pre-line',
         }}>
-          {isFemale ? 'לחצי על טבעת מ-1 (הכי נמוך) עד 5 (הכי גבוה) על מנת לדרג את העוצמה' : 'לחץ על טבעת מ-1 (הכי נמוך) עד 5 (הכי גבוה) על מנת לדרג את העוצמה'}
+          {isFemale ? 'לחצי על טבעת מ-1 (הכי פנימי)\nעד 5 (הכי חיצוני) על מנת לדרג את העוצמה' : 'לחץ על טבעת מ-1 (הכי פנימי)\nעד 5 (הכי חיצוני) על מנת לדרג את העוצמה'}
         </p>
       </div>
 

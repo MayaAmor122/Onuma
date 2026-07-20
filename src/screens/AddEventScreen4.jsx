@@ -93,9 +93,9 @@ function HebrewKeyboard({ onKey, onBackspace, onDone }) {
           flex,
           height: 44,
           borderRadius: 6,
-          background: isPressed ? '#C0BDB1' : (dark ? '#ADAAA0' : '#F8F5EE'),
+          background: isPressed ? '#C8C5BC' : (dark ? '#D4D1C3' : '#E2DFD0'),
           border: 'none',
-          boxShadow: '0 1px 0 rgba(0,0,0,0.25)',
+          boxShadow: 'none',
           fontFamily: 'Atlas',
           fontSize,
           color: '#45423A',
@@ -140,7 +140,7 @@ function HebrewKeyboard({ onKey, onBackspace, onDone }) {
       </div>
 
       {/* Keys */}
-      <div style={{ background: '#E2DFD0', padding: '10px 4px 28px' }}>
+      <div style={{ background: '#F8F5EE', padding: '10px 4px 28px', borderTop: '1px solid #D4D1C3' }}>
         {/* Numbers row */}
         <div style={{ display: 'flex', gap: 5, marginBottom: 8, justifyContent: 'center' }}>
           {['1','2','3','4','5','6','7','8','9','0'].map(n => mkKey(n, n, () => onKey(n)))}
@@ -249,7 +249,6 @@ export default function AddEventScreen4({ onNext, onBack, onClose }) {
           onChange={e => setText(e.target.value)}
           placeholder={placeholder}
           inputMode="none"
-          readOnly
           style={{
             width: '100%', height: '100%',
             fontFamily: 'Atlas', fontWeight: 400, fontSize: 32, color: '#323232',
@@ -309,7 +308,7 @@ export default function AddEventScreen4({ onNext, onBack, onClose }) {
       <div style={{
         overflow: 'hidden',
         maxHeight: showKeyboard ? '380px' : '0px',
-        transition: 'max-height 0.3s cubic-bezier(0.32, 0.72, 0, 1)',
+        transition: 'max-height 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
       }}>
         <HebrewKeyboard
           onKey={handleKey}

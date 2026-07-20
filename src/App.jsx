@@ -65,6 +65,7 @@ function AppContent() {
 
   function quitAddEvent() {
     setShowQuitModal(false);
+    setTransitionType('slide');
     setDirection('back');
     setAddEventStep(null);
     setPendingEvent({});
@@ -117,6 +118,7 @@ function AppContent() {
               onClose={() => setShowQuitModal(true)}
               onNext={({ timeOfDay }) => {
                 setPendingEvent(prev => ({ ...prev, timeOfDay }));
+                setTransitionType('fade');
                 setDirection('forward');
                 setAddEventStep('step2');
               }}
@@ -127,10 +129,11 @@ function AppContent() {
           return (
             <AddEventScreen2
               onClose={() => setShowQuitModal(true)}
-              onBack={() => { setDirection('back'); setAddEventStep('step1'); }}
+              onBack={() => { setTransitionType('fade'); setDirection('back'); setAddEventStep('step1'); }}
               timeOfDay={pendingEvent.timeOfDay}
               onNext={({ rating }) => {
                 setPendingEvent(prev => ({ ...prev, rating }));
+                setTransitionType('fade');
                 setDirection('forward');
                 setAddEventStep('step3');
               }}
@@ -143,9 +146,10 @@ function AppContent() {
               timeOfDay={pendingEvent.timeOfDay}
               rating={pendingEvent.rating}
               onClose={() => setShowQuitModal(true)}
-              onBack={() => { setDirection('back'); setAddEventStep('step2'); }}
+              onBack={() => { setTransitionType('fade'); setDirection('back'); setAddEventStep('step2'); }}
               onNext={({ location, color }) => {
                 setPendingEvent(prev => ({ ...prev, location, color }));
+                setTransitionType('fade');
                 setDirection('forward');
                 setAddEventStep('step4');
               }}
@@ -156,9 +160,10 @@ function AppContent() {
           return (
             <AddEventScreen4
               onClose={() => setShowQuitModal(true)}
-              onBack={() => { setDirection('back'); setAddEventStep('step3'); }}
+              onBack={() => { setTransitionType('fade'); setDirection('back'); setAddEventStep('step3'); }}
               onNext={({ text }) => {
                 setPendingEvent(prev => ({ ...prev, text }));
+                setTransitionType('fade');
                 setDirection('forward');
                 setAddEventStep('step5');
               }}
@@ -169,9 +174,10 @@ function AppContent() {
           return (
             <AddEventScreen5
               onClose={() => setShowQuitModal(true)}
-              onBack={() => { setDirection('back'); setAddEventStep('step4'); }}
+              onBack={() => { setTransitionType('fade'); setDirection('back'); setAddEventStep('step4'); }}
               onSave={({ types }) => {
                 setPendingEvent(prev => ({ ...prev, types }));
+                setTransitionType('fade');
                 setDirection('forward');
                 setAddEventStep('saving');
               }}
@@ -187,6 +193,7 @@ function AppContent() {
                 addEvent({ ...pendingEvent, id });
                 setNewEventId(id);
                 setPendingEvent({});
+                setTransitionType('slide');
                 setDirection('forward');
                 setAddEventStep(null);
               }}
@@ -199,7 +206,7 @@ function AppContent() {
               setDirection(tab === 'home' ? 'back' : 'forward');
               setActiveTab(tab);
             }}
-            onAddEvent={() => { setDirection('forward'); setAddEventStep('step1'); }}
+            onAddEvent={() => { setTransitionType('fade'); setDirection('forward'); setAddEventStep('step1'); }}
             onEventPress={evt => { setDirection('forward'); setSelectedEvent(evt); }}
             newEventId={newEventId}
             onNewEventAnimated={() => setNewEventId(null)}
