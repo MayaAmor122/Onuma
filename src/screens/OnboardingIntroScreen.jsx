@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import decoration1 from '../assets/images/onboarding-decoration-1.png';
 import decoration2 from '../assets/images/onboarding-decoration-2.png';
 import decoration3 from '../assets/images/onboarding-decoration-3.png';
@@ -26,21 +26,24 @@ const SLIDES = [
 ];
 
 /* ── Shared blocks ── */
-function TextBlock({ title, paragraph, style }) {
+function TextBlock({ title, paragraph, style, delay = 0 }) {
+  // Lock in the delay at mount time — parent re-renders between mount and
+  // screen-visible don't overwrite it (SlideTransition causes one such re-render).
+  const d = useRef(delay).current;
   return (
     <div style={{ padding: '0 28px', textAlign: 'right', ...style }}>
       <p style={{
         fontFamily: 'Atlas', fontWeight: 500, fontSize: 24,
         color: '#45423A', lineHeight: '26px',
         whiteSpace: 'pre-line', marginBottom: 14,
-        animation: 'textEnterUp 0.4s cubic-bezier(0.32, 0.72, 0, 1) both',
+        animation: `textFadeIn 0.45s ease ${d}ms both`,
       }}>
         {title}
       </p>
       <p style={{
         fontFamily: 'Atlas', fontWeight: 400, fontSize: 16,
         color: '#323232', lineHeight: '22px', whiteSpace: 'pre-line',
-        animation: 'textEnterUp 0.4s cubic-bezier(0.32, 0.72, 0, 1) 0.08s both',
+        animation: `textFadeIn 0.45s ease ${d + 1000}ms both`,
       }}>
         {paragraph}
       </p>
@@ -76,6 +79,10 @@ export default function OnboardingIntroScreen({ onDone, onSkip }) {
   const [pressed, setPressed] = useState(null);
   const { image, title, paragraph, reverse } = SLIDES[slide];
   const isLast = slide === SLIDES.length - 1;
+
+  const isFirstRender = useRef(true);
+  const textDelay = isFirstRender.current ? 300 : 0;
+  useEffect(() => { isFirstRender.current = false; }, []);
 
   function handleNext() {
     if (!isLast) setSlide(s => s + 1);
@@ -126,13 +133,13 @@ export default function OnboardingIntroScreen({ onDone, onSkip }) {
       {/* ── Image + text — order swaps for "reverse" slides ── */}
       {reverse ? (
         <>
-          <TextBlock key={slide} title={title} paragraph={paragraph} style={{ paddingTop: 28 }} />
+          <TextBlock key={slide} title={title} paragraph={paragraph} delay={textDelay} style={{ paddingTop: 28 }} />
           <ImageBlock image={image} style={{ marginTop: 80 }} />
         </>
       ) : (
         <>
           <ImageBlock image={image} style={{ marginTop: -72 }} />
-          <TextBlock key={slide} title={title} paragraph={paragraph} style={{ paddingBottom: 13 }} />
+          <TextBlock key={slide} title={title} paragraph={paragraph} delay={textDelay} style={{ paddingBottom: 13 }} />
         </>
       )}
 
