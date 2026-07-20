@@ -28,6 +28,11 @@ export default function LoadingScreen({ onDone, text = 'בונה את לוח ה�
     return () => clearTimeout(t);
   }, [onDone]);
 
+  /* Preload walkthrough intro sound so it's cached and plays instantly */
+  useEffect(() => {
+    try { new Audio('/sound-036.mp3').load(); } catch (_) {}
+  }, []);
+
   return (
     <div style={{
       flex: 1,
