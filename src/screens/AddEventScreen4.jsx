@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 
 /* Question pool — gendered pairs [masculine/other, feminine] */
@@ -86,7 +86,7 @@ function HebrewKeyboard({ onKey, onBackspace, onDone }) {
     return (
       <button
         key={id}
-        onPointerDown={() => { setPressedKey(id); onPress(); }}
+        onPointerDown={(e) => { e.preventDefault(); setPressedKey(id); onPress(); }}
         onPointerUp={() => setPressedKey(null)}
         onPointerLeave={() => setPressedKey(null)}
         style={{
@@ -123,7 +123,7 @@ function HebrewKeyboard({ onKey, onBackspace, onDone }) {
         display: 'flex', justifyContent: 'flex-end',
       }}>
         <button
-          onPointerDown={() => { setPressedKey('done'); onDone(); }}
+          onPointerDown={(e) => { e.preventDefault(); setPressedKey('done'); onDone(); }}
           onPointerUp={() => setPressedKey(null)}
           onPointerLeave={() => setPressedKey(null)}
           style={{
@@ -177,6 +177,11 @@ export default function AddEventScreen4({ onNext, onBack, onClose }) {
   const [text, setText]               = useState('');
   const [pressed, setPressed]         = useState(null);
   const [showKeyboard, setShowKeyboard] = useState(false);
+  const textareaRef = useRef(null);
+
+  useEffect(() => {
+    if (showKeyboard) textareaRef.current?.focus();
+  }, [showKeyboard]);
 
   const press = id => ({
     onPointerDown: () => setPressed(id),
@@ -186,9 +191,11 @@ export default function AddEventScreen4({ onNext, onBack, onClose }) {
 
   function handleKey(key) {
     setText(prev => prev + key);
+    textareaRef.current?.focus();
   }
   function handleBackspace() {
     setText(prev => prev.slice(0, -1));
+    textareaRef.current?.focus();
   }
 
   return (
@@ -245,6 +252,7 @@ export default function AddEventScreen4({ onNext, onBack, onClose }) {
         <textarea
           className="event-textarea"
           value={text}
+          ref={textareaRef}
           onClick={() => setShowKeyboard(true)}
           onChange={e => setText(e.target.value)}
           placeholder={placeholder}
