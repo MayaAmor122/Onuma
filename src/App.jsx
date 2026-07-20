@@ -203,6 +203,7 @@ function AppContent() {
             onEventPress={evt => { setDirection('forward'); setSelectedEvent(evt); }}
             newEventId={newEventId}
             onNewEventAnimated={() => setNewEventId(null)}
+            playEntrySound
           />
         );
       }

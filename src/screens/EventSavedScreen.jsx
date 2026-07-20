@@ -9,7 +9,8 @@ function playChime() {
   _chimePlayed = true;
   setTimeout(() => { _chimePlayed = false; }, 500);
   try {
-    const audio = new Audio('/chime.mp3');
+    const audio = new Audio('/sound-036.mp3');
+    audio.volume = 0.4;
     audio.play();
   } catch (_) {}
 }

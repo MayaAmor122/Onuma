@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import HomeScreen from './HomeScreen';
 import { MOCK_EVENTS } from '../utils/mockEvents';
 
@@ -10,6 +10,10 @@ import { MOCK_EVENTS } from '../utils/mockEvents';
 export default function WalkthroughScreen1({ onDone }) {
   const [fading,  setFading]  = useState(false);
   const [pressed, setPressed] = useState(false);
+
+  useEffect(() => {
+    try { const a = new Audio('/sound-036.mp3'); a.volume = 0.4; a.play(); } catch (_) {}
+  }, []);
 
   const press = {
     onPointerDown: () => setPressed(true),

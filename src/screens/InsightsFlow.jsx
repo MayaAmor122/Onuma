@@ -426,6 +426,7 @@ export default function InsightsFlow({ onClose }) {
       setLoading(false);
       setWelcome(true);
       requestAnimationFrame(() => setFadeIn(true));
+      try { const a = new Audio('/sound-036.mp3'); a.volume = 0.4; a.play(); } catch (_) {}
     }, 2000);
     return () => clearTimeout(t);
   }, []);

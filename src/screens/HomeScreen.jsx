@@ -3,6 +3,8 @@ import { useApp } from '../context/AppContext';
 import FilterPanel from './FilterPanel';
 import Mandala, { getTimeOfDay } from '../components/Mandala';
 
+let _homeEntrySoundPlayed = false;
+
 /* ── Hebrew helpers ── */
 const MONTHS_HE = [
   'ינואר','פברואר','מרץ','אפריל','מאי','יוני',
@@ -417,10 +419,16 @@ function EmptyMandala({ size }) {
 ════════════════════════════════ */
 export default function HomeScreen({
   onNavigate, onAddEvent, onEventPress, previewEvents, addButtonBg, addButtonBorderColor, addButtonIconColor, initialLevel,
-  dotRefCallback, hideIndices, newEventId, onNewEventAnimated,
+  dotRefCallback, hideIndices, newEventId, onNewEventAnimated, playEntrySound,
 }) {
   const { events: contextEvents, gender } = useApp();
   const isFemale = gender === 'female';
+
+  useEffect(() => {
+    if (!playEntrySound || _homeEntrySoundPlayed) return;
+    _homeEntrySoundPlayed = true;
+    try { const a = new Audio('/sound-036.mp3'); a.volume = 0.4; a.play(); } catch (_) {}
+  }, []);
   const events     = previewEvents || contextEvents;
   const hasEvents  = events.length > 0;
 
@@ -499,6 +507,12 @@ export default function HomeScreen({
     const t = setTimeout(onNewEventAnimated, 1400);
     return () => clearTimeout(t);
   }, [newEventId, onNewEventAnimated]);
+
+  /* Play sound when new event lands on the grid */
+  useEffect(() => {
+    if (!newEventId) return;
+    try { const a = new Audio('/sound-036.mp3'); a.volume = 0.25; a.play(); } catch (_) {}
+  }, [newEventId]);
 
   /* Scroll "+" button into view after a new event is saved */
   useEffect(() => {
