@@ -36,14 +36,14 @@ function TextBlock({ title, paragraph, style, delay = 0 }) {
         fontFamily: 'Atlas', fontWeight: 500, fontSize: 24,
         color: '#45423A', lineHeight: '26px',
         whiteSpace: 'pre-line', marginBottom: 14,
-        animation: `textFadeIn 0.45s ease ${d}ms both`,
+        animation: `textFadeIn 0.9s ease-in ${d}ms both`,
       }}>
         {title}
       </p>
       <p style={{
         fontFamily: 'Atlas', fontWeight: 400, fontSize: 16,
         color: '#323232', lineHeight: '22px', whiteSpace: 'pre-line',
-        animation: `textFadeIn 0.45s ease ${d + 1000}ms both`,
+        animation: `textFadeIn 0.9s ease-in ${d + 1000}ms both`,
       }}>
         {paragraph}
       </p>

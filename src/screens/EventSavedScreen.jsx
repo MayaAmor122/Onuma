@@ -3,21 +3,8 @@ import Mandala from '../components/Mandala';
 
 const DOT_SIZE = 88.25;
 
-let _chimePlayed = false;
-function playChime() {
-  if (_chimePlayed) return;
-  _chimePlayed = true;
-  setTimeout(() => { _chimePlayed = false; }, 500);
-  try {
-    const audio = new Audio('/sound-036.mp3');
-    audio.volume = 0.4;
-    audio.play();
-  } catch (_) {}
-}
-
 export default function EventSavedScreen({ event, onDone }) {
   useEffect(() => {
-    playChime();
     const t = setTimeout(onDone, 2000);
     return () => clearTimeout(t);
   }, [onDone]);
