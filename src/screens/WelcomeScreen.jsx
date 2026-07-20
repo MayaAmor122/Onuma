@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import topDecoration    from '../assets/images/welcome-top-decoration.png';
-import bottomDecoration from '../assets/images/welcome-bottom-decoration.png';
+import WelcomeDecorationTop    from './WelcomeDecorationTop';
+import WelcomeDecorationBottom from './WelcomeDecorationBottom';
 
 function Logo() {
   return (
@@ -18,7 +18,7 @@ function Logo() {
   );
 }
 
-export default function WelcomeScreen({ onNext }) {
+export default function WelcomeScreen({ onNext, visible }) {
   const [pressed, setPressed] = useState(false);
 
   return (
@@ -28,16 +28,20 @@ export default function WelcomeScreen({ onNext }) {
     }}>
 
       {/* ── Top decoration ── */}
-      <img src={topDecoration} alt="" style={{
+      <div style={{
         position: 'absolute', top: 20, left: 25, right: 25,
         width: 'calc(100% - 50px)', pointerEvents: 'none', zIndex: 0,
-      }} />
+      }}>
+        <WelcomeDecorationTop visible={visible} />
+      </div>
 
       {/* ── Bottom decoration ── */}
-      <img src={bottomDecoration} alt="" style={{
+      <div style={{
         position: 'absolute', bottom: 20, left: 25, right: 25,
         width: 'calc(100% - 50px)', pointerEvents: 'none', zIndex: 0,
-      }} />
+      }}>
+        <WelcomeDecorationBottom visible={visible} />
+      </div>
 
       {/* ── Centered content ── */}
       <div style={{

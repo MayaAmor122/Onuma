@@ -81,7 +81,7 @@ function AppContent() {
     /* ── Pre-login welcome ── */
     if (!isLoggedIn && !welcomeDone) {
       return (
-        <WelcomeScreen onNext={() => { setDirection('forward'); setWelcomeDone(true); }} />
+        <WelcomeScreen onNext={() => { setDirection('forward'); setWelcomeDone(true); }} visible={splashGone} />
       );
     }
 

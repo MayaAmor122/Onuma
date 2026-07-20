@@ -52,6 +52,12 @@
   100% { transform: scale(1); }
 }
 
+@keyframes mandalaPopIn {
+  0%   { transform: scale(0); opacity: 0; }
+  70%  { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
