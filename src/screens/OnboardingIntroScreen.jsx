@@ -33,12 +33,14 @@ function TextBlock({ title, paragraph, style }) {
         fontFamily: 'Atlas', fontWeight: 500, fontSize: 24,
         color: '#45423A', lineHeight: '26px',
         whiteSpace: 'pre-line', marginBottom: 14,
+        animation: 'textEnterUp 0.4s cubic-bezier(0.32, 0.72, 0, 1) both',
       }}>
         {title}
       </p>
       <p style={{
         fontFamily: 'Atlas', fontWeight: 400, fontSize: 16,
         color: '#323232', lineHeight: '22px', whiteSpace: 'pre-line',
+        animation: 'textEnterUp 0.4s cubic-bezier(0.32, 0.72, 0, 1) 0.08s both',
       }}>
         {paragraph}
       </p>
@@ -124,13 +126,13 @@ export default function OnboardingIntroScreen({ onDone, onSkip }) {
       {/* ── Image + text — order swaps for "reverse" slides ── */}
       {reverse ? (
         <>
-          <TextBlock title={title} paragraph={paragraph} style={{ paddingTop: 28 }} />
+          <TextBlock key={slide} title={title} paragraph={paragraph} style={{ paddingTop: 28 }} />
           <ImageBlock image={image} style={{ marginTop: 80 }} />
         </>
       ) : (
         <>
           <ImageBlock image={image} style={{ marginTop: -72 }} />
-          <TextBlock title={title} paragraph={paragraph} style={{ paddingBottom: 13 }} />
+          <TextBlock key={slide} title={title} paragraph={paragraph} style={{ paddingBottom: 13 }} />
         </>
       )}
 
