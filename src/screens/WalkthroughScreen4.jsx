@@ -11,6 +11,9 @@ export default function WalkthroughScreen4({ onNext, onSkip }) {
   const [pressed, setPressed] = useState(null);
 
   useEffect(() => { requestAnimationFrame(() => setVisible(true)); }, []);
+  useEffect(() => {
+    try { const a = new Audio('/sound-051.mp3'); a.volume = 0.4; a.play(); } catch (_) {}
+  }, []);
 
   const press = id => ({
     onPointerDown: () => setPressed(id),
