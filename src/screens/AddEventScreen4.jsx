@@ -31,7 +31,7 @@ const QUESTIONS = [
 
 /* Hebrew keyboard — standard QWERTY mapping */
 const KB_ROWS = [
-  ['ק', 'ר', 'א', 'ט', 'ו', 'ן', 'ם', 'פ'],
+  ['ק', 'ר', 'א', 'ט', 'ו', 'ן', 'ם', 'פ', '/'],
   ['ש', 'ד', 'ג', 'כ', 'ע', 'י', 'ח', 'ל', 'ך', 'ף'],
   ['ז', 'ס', 'ב', 'ה', 'נ', 'מ', 'צ', 'ת', 'ץ'],
 ];
@@ -157,6 +157,7 @@ function HebrewKeyboard({ onKey, onBackspace, onDone }) {
         {/* Bottom row: dot · space · backspace */}
         <div style={{ display: 'flex', gap: 5 }}>
           {mkKey('.', '.', () => onKey('.'), { flex: 1, fontSize: 24 })}
+          {mkKey(',', ',', () => onKey(','), { flex: 1, fontSize: 20 })}
           {mkKey('space', 'רווח', () => onKey(' '), { flex: 3, fontSize: 14 })}
           {mkKey('back', <BackspaceIcon />, onBackspace, { flex: 1, dark: true })}
         </div>
