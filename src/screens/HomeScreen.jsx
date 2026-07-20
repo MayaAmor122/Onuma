@@ -631,6 +631,9 @@ export default function HomeScreen({
       setPatternInsights(insights);
       setPatternData(data);
       setSheet(hasPattern ? 'result' : 'no-result');
+      if (hasPattern) {
+        try { const a = new Audio('/sound-036.mp3'); a.volume = 0.4; a.play(); } catch (_) {}
+      }
     }, 1600);
   }
 
