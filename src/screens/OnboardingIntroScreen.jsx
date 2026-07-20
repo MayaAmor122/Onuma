@@ -82,10 +82,7 @@ export default function OnboardingIntroScreen({ onDone, onSkip }) {
 
   const isFirstRender = useRef(true);
   const textDelay = isFirstRender.current ? 300 : 0;
-  useEffect(() => {
-    isFirstRender.current = false;
-    try { const a = new Audio('/sound-036.mp3'); a.volume = 0.4; a.play(); } catch (_) {}
-  }, []);
+  useEffect(() => { isFirstRender.current = false; }, []);
 
   function handleNext() {
     if (!isLast) setSlide(s => s + 1);

@@ -11,6 +11,9 @@ export default function WalkthroughScreen1({ onDone }) {
   const [fading,  setFading]  = useState(false);
   const [pressed, setPressed] = useState(false);
 
+  useEffect(() => {
+    try { const a = new Audio('/sound-036.mp3'); a.volume = 0.4; a.play(); } catch (_) {}
+  }, []);
 
   const press = {
     onPointerDown: () => setPressed(true),
