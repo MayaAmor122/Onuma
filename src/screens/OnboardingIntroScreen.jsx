@@ -42,7 +42,7 @@ function TextBlock({ title, paragraph, style, delay = 0 }) {
       </p>
       <p style={{
         fontFamily: 'Atlas', fontWeight: 400, fontSize: 16,
-        color: '#323232', lineHeight: '22px', whiteSpace: 'pre-line',
+        color: '#777366', lineHeight: '22px', whiteSpace: 'pre-line',
         animation: `textFadeIn 0.9s ease-in ${d + 1000}ms both`,
       }}>
         {paragraph}
