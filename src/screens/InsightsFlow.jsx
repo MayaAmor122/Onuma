@@ -501,7 +501,7 @@ export default function InsightsFlow({ onClose, onShowSummary }) {
       const dx = e.clientX - touchStart.current.x;
       const dy = e.clientY - touchStart.current.y;
       if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40)
-        dx > 0 ? navRef.current.goPrev() : navRef.current.goNext();
+        dx > 0 ? navRef.current.goNext() : navRef.current.goPrev();
       touchStart.current = null;
     }
     function onTouchEnd(e) {
@@ -509,7 +509,7 @@ export default function InsightsFlow({ onClose, onShowSummary }) {
       const dx = e.changedTouches[0].clientX - touchStart.current.x;
       const dy = e.changedTouches[0].clientY - touchStart.current.y;
       if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40)
-        dx > 0 ? navRef.current.goPrev() : navRef.current.goNext();
+        dx > 0 ? navRef.current.goNext() : navRef.current.goPrev();
       touchStart.current = null;
     }
     window.addEventListener('mouseup', onMouseUp);
