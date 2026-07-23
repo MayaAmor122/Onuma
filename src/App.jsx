@@ -27,7 +27,7 @@ import AddEventScreen5               from './screens/AddEventScreen5';
 import EventSavedScreen              from './screens/EventSavedScreen';
 import EventDetailScreen             from './screens/EventDetailScreen';
 import QuitConfirmModal              from './components/QuitConfirmModal';
-import InsightsFlow                  from './screens/InsightsFlow';
+import InsightsFlow, { SummaryOverlay } from './screens/InsightsFlow';
 import ProfileScreen                 from './screens/ProfileScreen';
 import ReportsScreen                 from './screens/ReportsScreen';
 import NotificationsScreen           from './screens/NotificationsScreen';
@@ -47,6 +47,7 @@ function AppContent() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [newEventId,    setNewEventId]    = useState(null);
   const [showQuitModal, setShowQuitModal] = useState(false);
+  const [summaryData,   setSummaryData]   = useState(null);
 
   /* ── Slide direction + type ── */
   const [direction,      setDirection]      = useState('forward');
@@ -215,7 +216,12 @@ function AppContent() {
         );
       }
       if (activeTab === 'insights') {
-        return <InsightsFlow onClose={() => { setDirection('back'); setActiveTab('home'); }} />;
+        return (
+          <InsightsFlow
+            onClose={() => { setSummaryData(null); setDirection('back'); setActiveTab('home'); }}
+            onShowSummary={data => setSummaryData(data)}
+          />
+        );
       }
       if (activeTab === 'profile') {
         return (
@@ -331,6 +337,16 @@ function AppContent() {
         />
       )}
 
+      {/* ── Summary overlay — floats above scroll content, relative to phone-content ── */}
+      {summaryData && (
+        <SummaryOverlay
+          viewMode={summaryData.viewMode}
+          month={summaryData.month}
+          year={summaryData.year}
+          onClose={() => setSummaryData(null)}
+        />
+      )}
+
       {/* ── Splash overlay — slides up on swipe ── */}
       {!splashGone && (
         <div style={{
@@ -422,7 +438,7 @@ function VideoSplash({ onStart }) {
   );
 }
 
-const INACTIVITY_MS = 10 * 60 * 1000; // 10 minutes
+const INACTIVITY_MS = 3 * 60 * 1000; // 3 minutes
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);

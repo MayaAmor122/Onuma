@@ -18,6 +18,31 @@ export const GRAY_SWATCHES = [
 
 const AppContext = createContext(null);
 
+/* 10 pre-seeded events shown from the very first session so the board
+   never looks empty during the exhibition. Generated relative to today
+   so they always appear recent. */
+function makeDemoEvents() {
+  const now = new Date();
+  function daysAgo(n, hour) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - n);
+    d.setHours(hour, 0, 0, 0);
+    return d.toISOString();
+  }
+  return [
+    { id: 'demo-1',  color: '#183497', rating: 4, timeOfDay: 'morning',   location: 'עבודה', types: ['בדיקה', 'ספירה'],             text: '',        timestamp: daysAgo(13, 8)  },
+    { id: 'demo-2',  color: '#FFC8CE', rating: 2, timeOfDay: 'evening',   location: 'בית',   types: ['מחשבה טורדנית'],               text: '',        timestamp: daysAgo(12, 19) },
+    { id: 'demo-3',  color: '#00BE4A', rating: 3, timeOfDay: 'afternoon', location: null,    types: ['הימנעות'],                     text: '',        timestamp: daysAgo(11, 16) },
+    { id: 'demo-4',  color: '#FFDB60', rating: 5, timeOfDay: 'noon',      location: 'עבודה', types: ['ניקיון', 'סידור'],             text: '',        timestamp: daysAgo(10, 13) },
+    { id: 'demo-5',  color: '#B6CDFF', rating: 2, timeOfDay: 'night',     location: 'בית',   types: ['חזרתיות'],                     text: '',        timestamp: daysAgo(9,  23) },
+    { id: 'demo-6',  color: '#183497', rating: 3, timeOfDay: 'morning',   location: null,    types: ['בדיקה'],                       text: '',        timestamp: daysAgo(7,  8)  },
+    { id: 'demo-7',  color: '#FFC8CE', rating: 4, timeOfDay: 'afternoon', location: 'בית',   types: ['הסתרה', 'הימנעות'],            text: '',        timestamp: daysAgo(6,  16) },
+    { id: 'demo-8',  color: '#FFDB60', rating: 1, timeOfDay: 'evening',   location: 'עבודה', types: ['ארגון'],                       text: '',        timestamp: daysAgo(4,  19) },
+    { id: 'demo-9',  color: '#00BE4A', rating: 3, timeOfDay: 'noon',      location: null,    types: ['צורך בוודאות', 'אישור'],       text: '',        timestamp: daysAgo(2,  13) },
+    { id: 'demo-10', color: '#B6CDFF', rating: 4, timeOfDay: 'morning',   location: 'בית',   types: ['מחשבה טורדנית', 'ספירה'],     text: '',        timestamp: daysAgo(1,  8)  },
+  ];
+}
+
 /* Maps each time-of-day choice to a representative hour so mandalas match */
 const TIME_OF_DAY_HOURS = { morning: 8, noon: 13, afternoon: 16, evening: 19, night: 23 };
 
@@ -32,7 +57,7 @@ function load(key, fallback) {
 
 export function AppProvider({ children }) {
   const [spaces, setSpaces] = useState(() => load('onuma_spaces', DEFAULT_SPACES));
-  const [events, setEvents] = useState(() => load('onuma_events', []));
+  const [events, setEvents] = useState(() => load('onuma_events', makeDemoEvents()));
   const [onboardingDone, setOnboardingDone] = useState(
     () => localStorage.getItem('onuma_onboarded') === 'true'
   );
