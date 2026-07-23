@@ -34,7 +34,7 @@ import NotificationsScreen           from './screens/NotificationsScreen';
 import SettingsScreen                from './screens/SettingsScreen';
 
 function AppContent() {
-  const { isLoggedIn, onboardingDone, completeOnboarding, addEvent, setGender } = useApp();
+  const { isLoggedIn, onboardingDone, completeOnboarding, addEvent, setGender, login } = useApp();
 
   const [splashUp,   setSplashUp]   = useState(false);
   const [splashGone, setSplashGone] = useState(false);
@@ -82,7 +82,7 @@ function AppContent() {
     /* ── Pre-login welcome ── */
     if (!isLoggedIn && !welcomeDone) {
       return (
-        <WelcomeScreen onNext={() => { setDirection('forward'); setWelcomeDone(true); }} visible={splashGone} />
+        <WelcomeScreen onNext={() => { setDirection('forward'); login(); }} visible={splashGone} />
       );
     }
 
