@@ -368,7 +368,7 @@ function AppContent() {
 }
 
 /* ── Fullscreen video splash — sits outside the phone frame ── */
-const VIDEO_SRC = '/Video placeholder.mp4';
+const VIDEO_SRC = '/Screen saver recording.mp4';
 
 function VideoSplash({ onStart }) {
   const [fading, setFading] = useState(false);
