@@ -401,6 +401,8 @@ function VideoSplash({ onStart }) {
           style={{
             position: 'absolute', inset: 0,
             width: '100%', height: '100%', objectFit: 'cover',
+            transform: 'scale(1.12)',
+            filter: 'contrast(1.15) saturate(1.1) brightness(1.02)',
           }}
         />
       ) : (
@@ -425,10 +427,10 @@ function VideoSplash({ onStart }) {
           position: 'relative', zIndex: 1,
           marginBottom: 60,
           padding: '16px 64px', borderRadius: 30,
-          background: 'rgba(248,245,238,0.92)',
+          background: '#45423A',
           border: 'none', cursor: 'pointer',
           fontFamily: 'Atlas', fontWeight: 700, fontSize: 20,
-          color: '#45423A',
+          color: '#F8F5EE',
           boxShadow: '0 4px 24px rgba(0,0,0,0.3)',
         }}
       >
