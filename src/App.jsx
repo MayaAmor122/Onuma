@@ -402,7 +402,6 @@ function VideoSplash({ onStart }) {
             position: 'absolute', inset: 0,
             width: '100%', height: '100%', objectFit: 'cover',
             transform: 'scale(1.12)',
-            filter: 'contrast(1.15) saturate(1.1) brightness(1.02)',
           }}
         />
       ) : (
