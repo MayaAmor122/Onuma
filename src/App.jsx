@@ -52,6 +52,7 @@ function AppContent() {
   /* ── Slide direction + type ── */
   const [direction,      setDirection]      = useState('forward');
   const [transitionType, setTransitionType] = useState('slide');
+  const [animateGrid,    setAnimateGrid]    = useState(false);
 
   /* ── Unique key for the current screen — drives transition ── */
   const screenKey = useMemo(() => {
@@ -211,6 +212,7 @@ function AppContent() {
             onEventPress={evt => { setDirection('forward'); setSelectedEvent(evt); }}
             newEventId={newEventId}
             onNewEventAnimated={() => setNewEventId(null)}
+            animateGrid={animateGrid}
             playEntrySound
           />
         );
@@ -314,7 +316,12 @@ function AppContent() {
         return (
           <LoadingScreen
             text="כבר מתחילים.."
-            onDone={() => { setDirection('forward'); completeOnboarding(); }}
+            onDone={() => {
+              setAnimateGrid(true);
+              setTimeout(() => setAnimateGrid(false), 2200);
+              setDirection('forward');
+              completeOnboarding();
+            }}
           />
         );
       default:

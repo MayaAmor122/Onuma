@@ -420,6 +420,7 @@ function EmptyMandala({ size }) {
 export default function HomeScreen({
   onNavigate, onAddEvent, onEventPress, previewEvents, addButtonBg, addButtonBorderColor, addButtonIconColor, initialLevel,
   dotRefCallback, hideIndices, newEventId, onNewEventAnimated, playEntrySound,
+  animateGrid, onGridAnimated,
 }) {
   const { events: contextEvents, gender } = useApp();
   const isFemale = gender === 'female';
@@ -429,6 +430,7 @@ export default function HomeScreen({
     _homeEntrySoundPlayed = true;
     try { const a = new Audio('/sound-036.mp3'); a.volume = 0.4; a.play(); } catch (_) {}
   }, []);
+
   const events     = previewEvents || contextEvents;
   const hasEvents  = events.length > 0;
 
@@ -845,7 +847,11 @@ export default function HomeScreen({
                       <div style={{
                         position: 'absolute', inset: 0,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        animation: event.id === newEventId ? 'popIn 1.4s ease-in-out' : 'none',
+                        animation: event.id === newEventId
+                          ? 'popIn 1.4s ease-in-out'
+                          : animateGrid
+                          ? `mandalaPopIn 0.8s cubic-bezier(0.32, 0.72, 0, 1) ${(0.3 + Math.min(i, 15) * 0.06).toFixed(2)}s both`
+                          : 'none',
                       }}>
                         <Mandala
                           timeOfDay={getTimeOfDay(event.timestamp)}
