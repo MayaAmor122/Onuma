@@ -387,7 +387,7 @@ function VideoSplash({ onStart }) {
     <div style={{
       position: 'fixed', inset: 0, zIndex: 9999,
       display: 'flex', flexDirection: 'column',
-      alignItems: 'center', justifyContent: 'flex-end',
+      alignItems: 'center', justifyContent: 'center',
       background: '#000',
       opacity: fading ? 0 : 1,
       transition: 'opacity 0.6s ease',
@@ -424,11 +424,10 @@ function VideoSplash({ onStart }) {
         onClick={handleStart}
         style={{
           position: 'relative', zIndex: 1,
-          marginBottom: 60,
           padding: '16px 64px', borderRadius: 30,
           background: '#45423A',
           border: 'none', cursor: 'pointer',
-          fontFamily: 'Atlas', fontWeight: 700, fontSize: 20,
+          fontFamily: 'Atlas', fontWeight: 700, fontSize: 25,
           color: '#F8F5EE',
           boxShadow: '0 4px 24px rgba(0,0,0,0.3)',
         }}
