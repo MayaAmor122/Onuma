@@ -424,10 +424,10 @@ function VideoSplash({ onStart }) {
         onClick={handleStart}
         style={{
           position: 'relative', zIndex: 1,
-          padding: '16px 64px', borderRadius: 30,
+          padding: '18px 100px', borderRadius: 999,
           background: '#45423A',
           border: 'none', cursor: 'pointer',
-          fontFamily: 'Atlas', fontWeight: 700, fontSize: 30,
+          fontFamily: 'Atlas', fontWeight: 700, fontSize: 23,
           color: '#F8F5EE',
           boxShadow: '0 4px 24px rgba(0,0,0,0.3)',
         }}
