@@ -427,7 +427,7 @@ function VideoSplash({ onStart }) {
           padding: '16px 64px', borderRadius: 30,
           background: '#45423A',
           border: 'none', cursor: 'pointer',
-          fontFamily: 'Atlas', fontWeight: 700, fontSize: 25,
+          fontFamily: 'Atlas', fontWeight: 700, fontSize: 30,
           color: '#F8F5EE',
           boxShadow: '0 4px 24px rgba(0,0,0,0.3)',
         }}
