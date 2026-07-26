@@ -272,9 +272,9 @@ function LocationCard({ data }) {
 
   return (
     <div style={{ background: '#F2EFE3', borderRadius: 16, padding: '18px 18px 22px', direction: 'rtl' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-        <span style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 13, color: '#45423A' }}>המרחב הפעיל ביותר</span>
-        <span style={{ fontFamily: 'Atlas', fontWeight: 700, fontSize: 14, color: '#45423A' }}>{pct}%</span>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+        <span style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 13, color: '#45423A', }}>המרחב הפעיל ביותר</span>
+        <span style={{ fontFamily: 'Atlas', fontWeight: 700, fontSize: 20, color: '#45423A' }}>{pct}%</span>
       </div>
       {name && (
         <p style={{ fontFamily: 'Atlas', fontWeight: 700, fontSize: 13, color: '#45423A', margin: '0 0 18px', textAlign: 'right' }}>
@@ -304,9 +304,9 @@ function HourCard({ data }) {
 
   return (
     <div style={{ background: '#F2EFE3', borderRadius: 16, padding: '18px 18px 22px', direction: 'rtl' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-        <span style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 13, color: '#45423A' }}>השעה הנפוצה ביותר</span>
-        <span style={{ fontFamily: 'Atlas', fontWeight: 700, fontSize: 14, color: '#45423A' }}>{pct}%</span>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+        <span style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 13, color: '#45423A', lineHeight: 2 }}>השעה הנפוצה ביותר</span>
+        <span style={{ fontFamily: 'Atlas', fontWeight: 700, fontSize: 20, color: '#45423A' }}>{pct}%</span>
       </div>
       <p style={{ fontFamily: 'Atlas', fontWeight: 700, fontSize: 13, color: '#45423A', margin: '0 0 20px', textAlign: 'right', direction: 'ltr' }}>
         {peakRange}
@@ -349,9 +349,9 @@ function IntensityCard({ data }) {
 
   return (
     <div style={{ background: '#F2EFE3', borderRadius: 16, padding: '18px 14px 22px', direction: 'rtl', flex: '0 0 auto', width: 'calc(54% - 6px)' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-        <span style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 13, color: '#45423A' }}>עוצמה ממוצעת</span>
-        <span style={{ fontFamily: 'Atlas', fontWeight: 700, fontSize: 14, color: '#45423A' }}>{pct}%</span>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+        <span style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 13, color: '#45423A', lineHeight: 2 }}>עוצמה ממוצעת</span>
+        <span style={{ fontFamily: 'Atlas', fontWeight: 700, fontSize: 20, color: '#45423A' }}>{pct}%</span>
       </div>
       <p style={{ fontFamily: 'Atlas', fontWeight: 700, fontSize: 13, color: '#45423A', margin: '0 0 16px', textAlign: 'right' }}>
         דרגה {rating || '—'}
@@ -377,9 +377,14 @@ function TypesCard({ data }) {
           ? list.map(([type, , typePct], i) => (
             <div key={type}>
               {i > 0 && <div style={{ height: 1, background: '#D4D1C3' }} />}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0' }}>
-                <span style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 13, color: '#45423A' }}>{type}</span>
-                <span style={{ fontFamily: 'Atlas', fontWeight: 700, fontSize: 13, color: '#45423A' }}>{typePct}%</span>
+              <div style={{ padding: '10px 0 8px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                  <span style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 13, color: '#45423A' }}>{type}</span>
+                  <span style={{ fontFamily: 'Atlas', fontWeight: 700, fontSize: 20, color: '#45423A' }}>{typePct}%</span>
+                </div>
+                <div style={{ display: 'flex', direction: 'rtl', width: '100%', height: 4, background: '#D4D1C3', borderRadius: 2, overflow: 'hidden' }}>
+                  <div style={{ width: `${typePct}%`, height: 4, background: '#45423A', borderRadius: 2 }} />
+                </div>
               </div>
             </div>
           ))

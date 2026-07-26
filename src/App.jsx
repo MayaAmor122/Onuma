@@ -445,7 +445,7 @@ function VideoSplash({ onStart }) {
   );
 }
 
-const INACTIVITY_MS = 3 * 60 * 1000; // 3 minutes
+const INACTIVITY_MS = 1 * 60 * 1000; // 1 minute
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(true);
