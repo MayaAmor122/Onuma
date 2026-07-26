@@ -349,7 +349,7 @@ function IntensityCard({ data }) {
   const tod   = event ? getTimeOfDay(event.timestamp) : 'morning';
 
   return (
-    <div style={{ background: '#F2EFE3', borderRadius: 16, padding: '18px 14px 22px', direction: 'rtl', flex: '0 0 auto', width: 'calc(54% - 6px)' }}>
+    <div style={{ background: '#F2EFE3', borderRadius: 16, padding: '18px 14px 22px', direction: 'rtl' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
         <span style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 13, color: '#45423A', lineHeight: 2 }}>עוצמה ממוצעת</span>
         <span style={{ fontFamily: 'Atlas', fontWeight: 700, fontSize: 20, color: '#45423A' }}>{pct}%</span>
@@ -357,8 +357,10 @@ function IntensityCard({ data }) {
       <p style={{ fontFamily: 'Atlas', fontWeight: 700, fontSize: 13, color: '#45423A', margin: '0 0 16px', textAlign: 'right' }}>
         דרגה {rating || '—'}
       </p>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: 8 }}>
-        <Mandala timeOfDay={tod} intensity={rating || 3} color={color} size={125} />
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', direction: 'ltr', paddingTop: 8 }}>
+        {[1, 2, 3, 4, 5].map(i => (
+          <Mandala key={i} timeOfDay={tod} intensity={i} color={i === (rating || 3) ? color : '#D4D1C3'} size={58} />
+        ))}
       </div>
     </div>
   );
@@ -380,16 +382,17 @@ function TypesCard({ data, month, year, viewMode }) {
   const key = viewMode === 'שנה' ? 'שנה' : `${month}-${year}`;
   const list = TYPES_BY_PERIOD[key] ?? TYPES_BY_PERIOD['6-2026'];
   const pillColor = data.intensity.event?.color || data.location.event?.color || '#183497';
+  const pillTextColor = ['#183497', '#00BE4A'].includes(pillColor) ? '#fff' : '#183497';
 
   return (
-    <div style={{ background: '#F2EFE3', borderRadius: 16, padding: '18px 14px 22px', direction: 'rtl', flex: 1 }}>
-      <span style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 13, color: '#45423A', lineHeight: '18px', display: 'block', marginBottom: 14 }}>
-        סוגי האירועים<br />הכי נפוצים
+    <div style={{ background: '#F2EFE3', borderRadius: 16, padding: '18px 14px 22px', direction: 'rtl' }}>
+      <span style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 13, color: '#45423A', lineHeight: '18px', display: 'block', marginBottom: 18 }}>
+        סוגי האירועים הכי נפוצים
       </span>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 17 }}>
         {list.length > 0
           ? list.map(([type, , typePct]) => (
-            <div key={type} style={{ width: '100%', height: 40, borderRadius: 20, background: '#D4D1C3', position: 'relative', overflow: 'hidden' }}>
+            <div key={type} style={{ width: '100%', height: 38, borderRadius: 19, background: '#D4D1C3', position: 'relative', overflow: 'hidden' }}>
               <div style={{
                 position: 'absolute', left: 0, top: 0, bottom: 0,
                 width: `${Math.max(typePct, 75)}%`,
@@ -398,8 +401,8 @@ function TypesCard({ data, month, year, viewMode }) {
                 justifyContent: 'space-between',
                 padding: '0 14px', boxSizing: 'border-box', gap: 4,
               }}>
-                <span style={{ fontFamily: 'Atlas', fontWeight: 700, fontSize: 15, color: '#fff', flexShrink: 0 }}>{typePct}%</span>
-                <span style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 14, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{type}</span>
+                <span style={{ fontFamily: 'Atlas', fontWeight: 700, fontSize: 15, color: pillTextColor, flexShrink: 0 }}>{typePct}%</span>
+                <span style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 14, color: pillTextColor, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{type}</span>
               </div>
             </div>
           ))
@@ -688,10 +691,8 @@ export default function InsightsFlow({ onClose, onShowSummary }) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '38px 16px 0' }}>
           <LocationCard data={dash} />
           <HourCard data={dash} />
-          <div style={{ display: 'flex', gap: 10, direction: 'rtl' }}>
-            <TypesCard data={dash} month={month} year={year} viewMode={viewMode} />
-            <IntensityCard data={dash} />
-          </div>
+          <IntensityCard data={dash} />
+          <TypesCard data={dash} month={month} year={year} viewMode={viewMode} />
         </div>
 
         {/* ── Comparison text ── */}
