@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Mandala, { getTimeOfDay } from '../components/Mandala';
+import { useApp } from '../context/AppContext';
 
 const MONTHS_HE = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
 
@@ -364,27 +365,41 @@ function IntensityCard({ data }) {
 }
 
 /* Card 4 — Most common event types + chips */
-function TypesCard({ data }) {
-  const { list } = data.types;
+const TYPES_BY_PERIOD = {
+  'שנה':   [['בדיקה', 8, 91], ['ספירה', 8, 83]],
+  '6-2026': [['בדיקה', 8, 86], ['ספירה', 8, 75]],
+  '5-2026': [['מחשבה טורדנית', 8, 93], ['הימנעות', 8, 78]],
+  '4-2026': [['ניקיון', 8, 79], ['ארגון', 8, 71]],
+  '3-2026': [['חזרתיות', 8, 94], ['הסתרה', 8, 82]],
+  '2-2026': [['צורך בוודאות', 8, 88], ['אישור', 8, 75]],
+  '1-2026': [['סידור', 8, 92], ['החלטה או בחירה', 8, 77]],
+  '0-2026': [['הימנעות', 8, 96], ['מחשבה טורדנית', 8, 84]],
+};
+
+function TypesCard({ data, month, year, viewMode }) {
+  const key = viewMode === 'שנה' ? 'שנה' : `${month}-${year}`;
+  const list = TYPES_BY_PERIOD[key] ?? TYPES_BY_PERIOD['6-2026'];
+  const pillColor = data.intensity.event?.color || data.location.event?.color || '#183497';
 
   return (
     <div style={{ background: '#F2EFE3', borderRadius: 16, padding: '18px 14px 22px', direction: 'rtl', flex: 1 }}>
       <span style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 13, color: '#45423A', lineHeight: '18px', display: 'block', marginBottom: 14 }}>
         סוגי האירועים<br />הכי נפוצים
       </span>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         {list.length > 0
-          ? list.map(([type, , typePct], i) => (
-            <div key={type}>
-              {i > 0 && <div style={{ height: 1, background: '#D4D1C3' }} />}
-              <div style={{ padding: '10px 0 8px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-                  <span style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 13, color: '#45423A' }}>{type}</span>
-                  <span style={{ fontFamily: 'Atlas', fontWeight: 700, fontSize: 20, color: '#45423A' }}>{typePct}%</span>
-                </div>
-                <div style={{ display: 'flex', direction: 'rtl', width: '100%', height: 4, background: '#D4D1C3', borderRadius: 2, overflow: 'hidden' }}>
-                  <div style={{ width: `${typePct}%`, height: 4, background: '#45423A', borderRadius: 2 }} />
-                </div>
+          ? list.map(([type, , typePct]) => (
+            <div key={type} style={{ width: '100%', height: 40, borderRadius: 20, background: '#D4D1C3', position: 'relative', overflow: 'hidden' }}>
+              <div style={{
+                position: 'absolute', left: 0, top: 0, bottom: 0,
+                width: `${Math.max(typePct, 75)}%`,
+                background: pillColor, borderRadius: 23,
+                display: 'flex', alignItems: 'center', direction: 'ltr',
+                justifyContent: 'space-between',
+                padding: '0 14px', boxSizing: 'border-box', gap: 4,
+              }}>
+                <span style={{ fontFamily: 'Atlas', fontWeight: 700, fontSize: 15, color: '#fff', flexShrink: 0 }}>{typePct}%</span>
+                <span style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 14, color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{type}</span>
               </div>
             </div>
           ))
@@ -443,6 +458,7 @@ export function SummaryOverlay({ viewMode, month, year, onClose }) {
    InsightsFlow
 ════════════════════════════════ */
 export default function InsightsFlow({ onClose, onShowSummary }) {
+  const { events: contextEvents } = useApp();
   const allEvents = FAKE_HISTORICAL_EVENTS;
   const now        = new Date();
   const touchStart = useRef(null);
@@ -572,7 +588,7 @@ export default function InsightsFlow({ onClose, onShowSummary }) {
           textAlign: 'center', direction: 'rtl', lineHeight: '28px',
           margin: 0, padding: '0 40px', whiteSpace: 'pre-line',
         }}>
-          {`עד כה תיעדת ${allEvents.length} אירועים.\n`}
+          {`עד כה תיעדת ${contextEvents.length} אירועים.\n`}
           <span style={{ fontWeight: 500 }}>החלק שמאלה</span>
           {' כדי לצפות\nבסיכום תובנות שהתקבלו..'}
         </p>
@@ -673,7 +689,7 @@ export default function InsightsFlow({ onClose, onShowSummary }) {
           <LocationCard data={dash} />
           <HourCard data={dash} />
           <div style={{ display: 'flex', gap: 10, direction: 'rtl' }}>
-            <TypesCard data={dash} />
+            <TypesCard data={dash} month={month} year={year} viewMode={viewMode} />
             <IntensityCard data={dash} />
           </div>
         </div>
