@@ -5,12 +5,12 @@ const FRAME_H = 844;
 
 export default function PhoneFrame({ children }) {
   const [scale, setScale] = useState(() =>
-    Math.min(window.innerWidth / FRAME_W, window.innerHeight / FRAME_H, 1)
+    Math.min(window.innerWidth / FRAME_W, window.innerHeight / FRAME_H)
   );
 
   useEffect(() => {
     const update = () =>
-      setScale(Math.min(window.innerWidth / FRAME_W, window.innerHeight / FRAME_H, 1));
+      setScale(Math.min(window.innerWidth / FRAME_W, window.innerHeight / FRAME_H));
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
   }, []);
