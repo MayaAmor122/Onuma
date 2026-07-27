@@ -415,6 +415,8 @@ function TypesCard({ data, month, year, viewMode }) {
 
 /* Summary overlay — bottom sheet with lorem ipsum placeholder */
 export function SummaryOverlay({ viewMode, month, year, onClose }) {
+  const { events: contextEvents } = useApp();
+  const eventCount = contextEvents.length;
   const title = viewMode === 'חודש' ? `סיכום ${MONTHS_HE[month]} ${year}` : `סיכום ${year}`;
 
   return (
@@ -436,7 +438,7 @@ export function SummaryOverlay({ viewMode, month, year, onClose }) {
         {viewMode === 'חודש' ? (
           <>
             <p style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 16, color: '#45423A', lineHeight: '23px', margin: 0 }}>
-              במהלך חודש יולי תיעדת 82 אירועים. מתוך כלל האירועים שתועדו, 78% התרחשו בבית, ורובם תועדו בין השעות 06:00–08:00. העוצמה הממוצעת של האירועים הייתה 3, וסוג האירוע הנפוץ ביותר היה סערה. בהשוואה לחודש הקודם נרשמה ירידה של 45% במספר האירועים שתועדו.
+              במהלך חודש יולי תיעדת {eventCount} אירועים. מתוך כלל האירועים שתועדו, 78% התרחשו בבית, ורובם תועדו בין השעות 06:00–08:00. העוצמה הממוצעת של האירועים הייתה 3, וסוג האירוע הנפוץ ביותר היה סערה. בהשוואה לחודש הקודם נרשמה ירידה<br />של 45% במספר האירועים שתועדו.
             </p>
             <p style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 14, color: '#777366', lineHeight: '21px', margin: 0 }}>
               הסיכום מבוסס על האירועים שתיעדת במהלך החודש, והוא מתעדכן באופן אוטומטי עם כל אירוע חדש שנוסף.
@@ -445,7 +447,7 @@ export function SummaryOverlay({ viewMode, month, year, onClose }) {
         ) : (
           <>
             <p style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 16, color: '#45423A', lineHeight: '28px', margin: 0 }}>
-              במהלך שנת 2026 תיעדת 87 אירועים. רובם התרחשו בעבודה (55%), בעיקר בין השעות 08:00–06:00. העוצמה הממוצעת של האירועים הייתה 3, וסוג האירוע הנפוץ ביותר היה כאב.
+              במהלך שנת 2026 תיעדת {eventCount} אירועים. רובם התרחשו בעבודה (55%), בעיקר בין השעות 08:00–06:00. העוצמה הממוצעת של האירועים הייתה 3, וסוג האירוע הנפוץ ביותר היה כאב.
             </p>
             <p style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 14, color: '#45423A', lineHeight: '24px', margin: 0 }}>
               הסיכום מבוסס על האירועים שתיעדת במהלך השנה, והוא מתעדכן באופן אוטומטי עם כל אירוע חדש שנוסף.
@@ -705,7 +707,7 @@ export default function InsightsFlow({ onClose, onShowSummary }) {
         <div style={{ padding: '44px 28px 0', direction: 'rtl', textAlign: 'center' }}>
           {compDir ? (
             <p style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 18, color: '#45423A', margin: 0, lineHeight: '23px' }}>
-              בהשוואה ל{compPrevLabel} נרשמה {compDir} של{' '}
+              בהשוואה ל{compPrevLabel} נרשמה {compDir}<br />של{' '}
               <span style={{ fontWeight: 700 }}>{compPct}%</span>
               {' '}במספר האירועים שתועדו
             </p>
@@ -717,7 +719,7 @@ export default function InsightsFlow({ onClose, onShowSummary }) {
         </div>
 
         {/* ── Summary button ── */}
-        <div style={{ padding: '20px 16px 40px' }}>
+        <div style={{ padding: '28px 16px 40px' }}>
           <button
             onClick={() => onShowSummary({ viewMode, month, year })}
             style={{
@@ -735,6 +737,13 @@ export default function InsightsFlow({ onClose, onShowSummary }) {
         </div>
 
       </div>
+
+      {/* ── Bottom fade ── */}
+      <div style={{
+        position: 'sticky', bottom: 0,
+        height: 64, pointerEvents: 'none',
+        background: 'linear-gradient(to bottom, rgba(248,245,238,0), rgba(248,245,238,1))',
+      }} />
 
     </div>
   );
