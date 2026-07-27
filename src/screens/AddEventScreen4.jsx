@@ -313,11 +313,13 @@ export default function AddEventScreen4({ onNext, onBack, onClose }) {
         </button>
       </div>
 
-      {/* ── Virtual Hebrew keyboard — slides up from bottom ── */}
+      {/* ── Virtual Hebrew keyboard — slides up from bottom as overlay ── */}
       <div style={{
-        overflow: 'hidden',
+        position: 'absolute', left: 0, right: 0, bottom: 0,
+        overflow: 'hidden', zIndex: 10,
         maxHeight: showKeyboard ? '380px' : '0px',
         transition: 'max-height 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
+        background: '#F8F5EE',
       }}>
         <HebrewKeyboard
           onKey={handleKey}
