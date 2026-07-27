@@ -133,13 +133,13 @@ export default function OnboardingIntroScreen({ onDone, onSkip }) {
       {/* ── Image + text — order swaps for "reverse" slides ── */}
       {reverse ? (
         <>
-          <TextBlock key={slide} title={title} paragraph={paragraph} delay={textDelay} style={{ paddingTop: 28 }} />
+          <TextBlock key={slide} title={title} paragraph={paragraph} delay={textDelay} style={{ paddingTop: 36 }} />
           <ImageBlock image={image} style={{ marginTop: 80 }} />
         </>
       ) : (
         <>
           <ImageBlock image={image} style={{ marginTop: -72 }} />
-          <TextBlock key={slide} title={title} paragraph={paragraph} delay={textDelay} style={{ paddingBottom: 13 }} />
+          <TextBlock key={slide} title={title} paragraph={paragraph} delay={textDelay} style={{ paddingBottom: 24 }} />
         </>
       )}
 
