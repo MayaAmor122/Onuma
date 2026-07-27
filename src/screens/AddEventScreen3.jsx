@@ -283,12 +283,14 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
       <p style={{
         fontFamily: 'Atlas', fontWeight: 500, fontSize: 18, color: '#45423A',
         textAlign: 'right', direction: 'rtl', margin: '24px 28px 0',
+        opacity: showKeyboard ? 0 : 1,
+        transition: 'opacity 0.25s ease',
       }}>
         {isFemale ? 'בחרי איפה האירוע התרחש?' : 'בחר איפה האירוע התרחש?'}
       </p>
 
       {/* ── Mandala preview + dropdown — mandala stays fixed, dropdown overlays on top ── */}
-      <div style={{ flex: 1, position: 'relative' }}>
+      <div style={{ flex: 1, position: 'relative', opacity: showKeyboard ? 0 : 1, transition: 'opacity 0.25s ease' }}>
 
         {/* Mandala — tappable to toggle dropdown */}
         <div
@@ -331,65 +333,27 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
               <LocationOption key={loc} loc={loc} idx={idx} selected={selectedLocation} pressed={pressed} press={press} onSelect={selectLocation} />
             )))}
 
-            {/* Add new location row — or live input when active */}
-            {addingCustom ? (
-              <div style={{ display: 'flex', alignItems: 'center', height: 48, paddingLeft: 8 }}>
-                <button
-                  onClick={confirmCustom}
-                  style={{
-                    width: 32, height: 32, borderRadius: '50%', flexShrink: 0,
-                    background: customText.trim() ? '#45423A' : '#C4C1B8',
-                    border: 'none', cursor: customText.trim() ? 'pointer' : 'default',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    transition: 'background 0.15s ease',
-                  }}
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                       stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                </button>
-                <input
-                  ref={inputRef}
-                  value={customText}
-                  readOnly
-                  inputMode="none"
-                  placeholder={isFemale ? 'הקלידי מיקום חדש...' : 'הקלד מיקום חדש...'}
-                  style={{
-                    flex: 1, height: '100%', borderRadius: 24,
-                    border: 'none', background: 'transparent',
-                    color: '#323232', caretColor: '#323232',
-                    fontFamily: 'Atlas', fontWeight: 500, fontSize: 14,
-                    textAlign: 'right', direction: 'rtl',
-                    padding: '0 12px 0 8px', boxSizing: 'border-box', outline: 'none',
-                  }}
-                />
-              </div>
-            ) : (
-              <button
-                onClick={() => { setAddingCustom(true); setShowKeyboard(true); }}
-                {...press('add_loc')}
-                style={{
-                  width: '100%', height: 48, border: 'none',
-                  background: pressed === 'add_loc' ? 'rgba(24,52,151,0.08)' : 'transparent',
-                  borderRadius: 24,
-                  display: 'flex', flexDirection: 'row', direction: 'rtl',
-                  alignItems: 'center', justifyContent: 'flex-start',
-                  paddingRight: 18, gap: 10,
-                  cursor: 'pointer', boxSizing: 'border-box',
-                  transform: pressed === 'add_loc' ? 'scale(0.97)' : 'scale(1)',
-                  transition: 'background 0.12s ease, transform 0.12s ease',
-                }}
-              >
-                <div style={{
-                  width: 12, height: 12, borderRadius: '50%',
-                  background: nextColor, flexShrink: 0,
-                }} />
-                <span style={{ fontFamily: 'Atlas', fontWeight: 500, fontSize: 14, color: '#323232' }}>
-                  הוסף מיקום חדש +
-                </span>
-              </button>
-            )}
+            {/* Add new location button */}
+            <button
+              onClick={() => { setAddingCustom(true); setShowKeyboard(true); closeDropdown(); }}
+              {...press('add_loc')}
+              style={{
+                width: '100%', height: 48, border: 'none',
+                background: pressed === 'add_loc' ? 'rgba(24,52,151,0.08)' : 'transparent',
+                borderRadius: 24,
+                display: 'flex', flexDirection: 'row', direction: 'rtl',
+                alignItems: 'center', justifyContent: 'flex-start',
+                paddingRight: 18, gap: 10,
+                cursor: 'pointer', boxSizing: 'border-box',
+                transform: pressed === 'add_loc' ? 'scale(0.97)' : 'scale(1)',
+                transition: 'background 0.12s ease, transform 0.12s ease',
+              }}
+            >
+              <div style={{ width: 12, height: 12, borderRadius: '50%', background: nextColor, flexShrink: 0 }} />
+              <span style={{ fontFamily: 'Atlas', fontWeight: 500, fontSize: 14, color: '#323232' }}>
+                הוסף מיקום חדש +
+              </span>
+            </button>
           </div>
         )}
 
@@ -449,6 +413,37 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
           {isFemale ? 'המשיכי' : 'המשך'}
         </button>
       </div>
+
+      {/* ── Input bar — sits just above the keyboard when typing ── */}
+      {addingCustom && (
+        <div style={{
+          position: 'absolute', left: 24, right: 24, bottom: 370,
+          zIndex: 11, opacity: showKeyboard ? 1 : 0,
+          transition: 'opacity 0.25s ease',
+          pointerEvents: showKeyboard ? 'auto' : 'none',
+        }}>
+          <div style={{
+            height: 52, borderRadius: 26,
+            border: '1.5px solid #45423A', background: '#F8F5EE',
+            display: 'flex', alignItems: 'center', paddingRight: 20, paddingLeft: 16,
+            direction: 'rtl',
+          }}>
+            <input
+              ref={inputRef}
+              value={customText}
+              readOnly
+              inputMode="none"
+              placeholder={isFemale ? 'הקלידי מיקום חדש...' : 'הקלד מיקום חדש...'}
+              style={{
+                flex: 1, border: 'none', background: 'transparent',
+                color: '#323232', caretColor: '#323232',
+                fontFamily: 'Atlas', fontWeight: 500, fontSize: 16,
+                textAlign: 'right', direction: 'rtl', outline: 'none',
+              }}
+            />
+          </div>
+        </div>
+      )}
 
       {/* ── Virtual Hebrew keyboard — slides up from bottom as overlay ── */}
       <div style={{
