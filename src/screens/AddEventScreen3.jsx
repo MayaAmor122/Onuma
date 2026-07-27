@@ -37,6 +37,90 @@ function ChevronUpIcon({ color = '#323232' }) {
   );
 }
 
+const KB_ROWS = [
+  ['/', 'ק', 'ר', 'א', 'ט', 'ו', 'ן', 'ם', 'פ'],
+  ['ש', 'ד', 'ג', 'כ', 'ע', 'י', 'ח', 'ל', 'ך', 'ף'],
+  ['ז', 'ס', 'ב', 'ה', 'נ', 'מ', 'צ', 'ת', 'ץ'],
+];
+
+function BackspaceIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+         stroke="#45423A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+      <line x1="18" y1="9" x2="12" y2="15"/>
+      <line x1="12" y1="9" x2="18" y2="15"/>
+    </svg>
+  );
+}
+
+function HebrewKeyboard({ onKey, onBackspace, onDone }) {
+  const [pressedKey, setPressedKey] = useState(null);
+
+  function mkKey(id, content, onPress, opts = {}) {
+    const { flex = 1, fontSize = 17, dark = false } = opts;
+    const isPressed = pressedKey === id;
+    return (
+      <button
+        key={id}
+        onPointerDown={(e) => { e.preventDefault(); setPressedKey(id); onPress(); }}
+        onPointerUp={() => setPressedKey(null)}
+        onPointerLeave={() => setPressedKey(null)}
+        style={{
+          flex, height: 44, borderRadius: 6,
+          background: isPressed ? '#C8C5BC' : (dark ? '#D4D1C3' : '#E2DFD0'),
+          border: 'none', boxShadow: 'none',
+          fontFamily: 'Atlas', fontSize, color: '#45423A', cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          userSelect: 'none', WebkitUserSelect: 'none',
+          WebkitTapHighlightColor: 'transparent', minWidth: 0,
+        }}
+      >
+        {content}
+      </button>
+    );
+  }
+
+  return (
+    <div style={{ direction: 'ltr' }}>
+      <div style={{ background: 'transparent', padding: '6px 8px', display: 'flex', justifyContent: 'flex-end' }}>
+        <button
+          onPointerDown={(e) => { e.preventDefault(); setPressedKey('done'); onDone(); }}
+          onPointerUp={() => setPressedKey(null)}
+          onPointerLeave={() => setPressedKey(null)}
+          style={{
+            padding: '12px 32px', borderRadius: 30, border: 'none',
+            background: pressedKey === 'done' ? '#2E2B25' : '#45423A',
+            fontFamily: 'Atlas', fontSize: 15, fontWeight: 600, color: '#F8F5EE',
+            cursor: 'pointer', boxShadow: '0 1px 0 rgba(0,0,0,0.25)',
+            userSelect: 'none', WebkitUserSelect: 'none',
+          }}
+        >
+          סיום
+        </button>
+      </div>
+      <div style={{ background: '#F8F5EE', padding: '10px 4px 28px', borderTop: '1px solid #D4D1C3' }}>
+        <div style={{ display: 'flex', gap: 5, marginBottom: 8, justifyContent: 'center' }}>
+          {['1','2','3','4','5','6','7','8','9','0'].map(n => mkKey(n, n, () => onKey(n)))}
+        </div>
+        {KB_ROWS.map((row, ri) => (
+          <div key={ri} style={{ display: 'flex', gap: 5, marginBottom: 8, justifyContent: 'center' }}>
+            {ri === 2 && <div style={{ flex: 0.5 }} />}
+            {row.map(key => mkKey(key, key, () => onKey(key)))}
+            {ri === 2 && <div style={{ flex: 0.5 }} />}
+          </div>
+        ))}
+        <div style={{ display: 'flex', gap: 5 }}>
+          {mkKey('.', '.', () => onKey('.'), { flex: 0.6, fontSize: 22 })}
+          {mkKey(',', ',', () => onKey(','), { flex: 0.6, fontSize: 18 })}
+          {mkKey('space', 'רווח', () => onKey(' '), { flex: 3, fontSize: 14 })}
+          {mkKey('back', <BackspaceIcon />, onBackspace, { flex: 1, dark: true })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* Location color cycle — repeats from blue after the 5th location */
 const LOCATION_COLORS = ['#183497', '#B6CDFF', '#FFC8CE', '#00BE4A', '#FFDB60'];
 function colorForIndex(i) { return LOCATION_COLORS[i % LOCATION_COLORS.length]; }
@@ -94,6 +178,7 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
   const [addingCustom,      setAddingCustom]    = useState(false);
   const [customText,        setCustomText]      = useState('');
   const [pressed,           setPressed]         = useState(null);
+  const [showKeyboard,      setShowKeyboard]    = useState(false);
   const inputRef = useRef(null);
 
   const press = id => ({
@@ -131,6 +216,9 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
     closeDropdown();
   }
 
+  function handleKey(key) { setCustomText(prev => prev + key); }
+  function handleBackspace() { setCustomText(prev => prev.slice(0, -1)); }
+
   function confirmCustom() {
     const trimmed = customText.trim();
     if (trimmed) {
@@ -141,6 +229,7 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
     }
     setCustomText('');
     setAddingCustom(false);
+    setShowKeyboard(false);
     closeDropdown();
   }
 
@@ -262,10 +351,9 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
                 </button>
                 <input
                   ref={inputRef}
-                  autoFocus
                   value={customText}
-                  onChange={e => setCustomText(e.target.value)}
-                  onKeyDown={e => { if (e.key === 'Enter') confirmCustom(); }}
+                  readOnly
+                  inputMode="none"
                   placeholder={isFemale ? 'הקלידי מיקום חדש...' : 'הקלד מיקום חדש...'}
                   style={{
                     flex: 1, height: '100%', borderRadius: 24,
@@ -279,7 +367,7 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
               </div>
             ) : (
               <button
-                onClick={() => setAddingCustom(true)}
+                onClick={() => { setAddingCustom(true); setShowKeyboard(true); }}
                 {...press('add_loc')}
                 style={{
                   width: '100%', height: 48, border: 'none',
@@ -311,6 +399,9 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
           {...press('trigger')}
           style={{
             position: 'absolute', left: 24, right: 24, bottom: BOTTOM_PAD,
+            opacity: showKeyboard ? 0 : 1,
+            pointerEvents: showKeyboard ? 'none' : 'auto',
+            transition: 'opacity 0.2s ease',
             height: TRIGGER_H, padding: '0 20px', borderRadius: 24,
             border: '1.5px solid #45423A',
             background: pressed === 'trigger' ? 'rgba(69,66,58,0.08)' : 'transparent',
@@ -332,7 +423,12 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
       </div>
 
       {/* ── Continue button — W-140, aligned left ── */}
-      <div style={{ display: 'flex', justifyContent: 'flex-start', padding: '0 24px 44px' }}>
+      <div style={{
+        display: 'flex', justifyContent: 'flex-start', padding: '0 24px 44px',
+        opacity: showKeyboard ? 0 : 1,
+        pointerEvents: showKeyboard ? 'none' : 'auto',
+        transition: 'opacity 0.2s ease',
+      }}>
         <button
           disabled={!confirmed}
           onClick={() => confirmed && onNext({ location: selectedLocation, color: selectedColor })}
@@ -352,6 +448,19 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
         >
           {isFemale ? 'המשיכי' : 'המשך'}
         </button>
+      </div>
+
+      {/* ── Virtual Hebrew keyboard — slides up when adding a custom location ── */}
+      <div style={{
+        overflow: 'hidden',
+        maxHeight: showKeyboard ? '380px' : '0px',
+        transition: 'max-height 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
+      }}>
+        <HebrewKeyboard
+          onKey={handleKey}
+          onBackspace={handleBackspace}
+          onDone={confirmCustom}
+        />
       </div>
 
     </div>
