@@ -82,8 +82,11 @@ export default function WalkthroughScreen5({ onDone, onSkip }) {
     const base = containerRef.current.getBoundingClientRect();
     const a = elA.getBoundingClientRect();
     const b = elB.getBoundingClientRect();
-    setRectA({ top: a.top - base.top, left: a.left - base.left, size: a.width });
-    setRectB({ top: b.top - base.top, left: b.left - base.left, size: b.width });
+    /* Compensate for CSS zoom on PhoneFrame — getBoundingClientRect returns
+       viewport (visual) pixels, but position:absolute uses CSS pixels. */
+    const zoom = base.width / (containerRef.current.offsetWidth || base.width);
+    setRectA({ top: (a.top - base.top) / zoom, left: (a.left - base.left) / zoom, size: a.width / zoom });
+    setRectB({ top: (b.top - base.top) / zoom, left: (b.left - base.left) / zoom, size: b.width / zoom });
 
     /* Reveal mandalas + card after scrim settles */
     requestAnimationFrame(() => requestAnimationFrame(() => setOpen(true)));
