@@ -467,6 +467,7 @@ export default function InsightsFlow({ onClose, onShowSummary }) {
   const touchStart = useRef(null);
 
   const [loading,     setLoading]     = useState(true);
+  const [loadingOut,  setLoadingOut]  = useState(false);
   const [welcome,     setWelcome]     = useState(false);
   const [fadeIn,      setFadeIn]      = useState(false);
   const [viewMode,    setViewMode]    = useState('חודש');
@@ -478,13 +479,17 @@ export default function InsightsFlow({ onClose, onShowSummary }) {
 
   /* Auto-dismiss loading → welcome */
   useEffect(() => {
-    const t = setTimeout(() => {
-      setLoading(false);
-      setWelcome(true);
-      requestAnimationFrame(() => setFadeIn(true));
-      try { const a = new Audio('/sound-036.mp3'); a.volume = 0.4; a.play(); } catch (_) {}
+    const t1 = setTimeout(() => {
+      setLoadingOut(true);
+      const t2 = setTimeout(() => {
+        setLoading(false);
+        setWelcome(true);
+        requestAnimationFrame(() => setFadeIn(true));
+        try { const a = new Audio('/sound-036.mp3'); a.volume = 0.4; a.play(); } catch (_) {}
+      }, 400);
+      return () => clearTimeout(t2);
     }, 2000);
-    return () => clearTimeout(t);
+    return () => clearTimeout(t1);
   }, []);
 
   function dismissWelcome() {
@@ -564,6 +569,7 @@ export default function InsightsFlow({ onClose, onShowSummary }) {
       <div style={{
         flex: 1, display: 'flex', flexDirection: 'column',
         background: '#F8F5EE', alignItems: 'center', justifyContent: 'center', gap: 20,
+        opacity: loadingOut ? 0 : 1, transition: 'opacity 0.4s ease',
       }}>
         <DotSpinner />
         <p style={{ fontFamily: 'Atlas', fontWeight: 400, fontSize: 16, color: '#45423A', margin: 0, direction: 'rtl' }}>

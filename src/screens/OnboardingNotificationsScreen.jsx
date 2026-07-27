@@ -62,9 +62,9 @@ export default function OnboardingNotificationsScreen({ onNext, onBack }) {
               style={{
                 width: '100%', padding: '16px 0', borderRadius: 30,
                 border: '1.5px solid #45423A',
-                background: pressed === id ? 'rgba(69,66,58,0.10)' : 'transparent',
-                borderColor: pressed === id ? '#2E2B25' : '#45423A',
-                color: '#45423A',
+                background: pressed === id ? '#45423A' : 'transparent',
+                borderColor: '#45423A',
+                color: pressed === id ? '#F8F5EE' : '#45423A',
                 fontFamily: 'Atlas', fontWeight: 400, fontSize: 16,
                 cursor: 'pointer', boxSizing: 'border-box',
                 transform: pressed === id ? 'scale(0.97)' : 'scale(1)',
