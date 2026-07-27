@@ -425,7 +425,7 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
         }}>
           <div style={{
             height: 52, borderRadius: 26,
-            border: '1.5px solid #45423A', background: '#F8F5EE',
+            border: '1.5px solid #45423A', background: 'rgba(248,245,238,0.95)',
             display: 'flex', alignItems: 'center', paddingRight: 20, paddingLeft: 16,
             direction: 'rtl',
           }}>
@@ -452,7 +452,6 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
         overflow: 'hidden', zIndex: 10,
         maxHeight: showKeyboard ? '380px' : '0px',
         transition: 'max-height 0.5s cubic-bezier(0.32, 0.72, 0, 1)',
-        background: '#F8F5EE',
       }}>
         <HebrewKeyboard
           onKey={handleKey}
