@@ -179,6 +179,7 @@ export default function AddEventScreen4({ onNext, onBack, onClose }) {
   const [pressed, setPressed]         = useState(null);
   const [showKeyboard, setShowKeyboard] = useState(false);
   const textareaRef = useRef(null);
+  const kbLock = useRef(false);
 
   useEffect(() => {
     if (showKeyboard) textareaRef.current?.focus();
@@ -254,7 +255,7 @@ export default function AddEventScreen4({ onNext, onBack, onClose }) {
           className="event-textarea"
           value={text}
           ref={textareaRef}
-          onClick={() => setShowKeyboard(true)}
+          onClick={() => { if (!kbLock.current) setShowKeyboard(true); }}
           onChange={e => setText(e.target.value)}
           placeholder={placeholder}
           inputMode="none"
@@ -324,7 +325,11 @@ export default function AddEventScreen4({ onNext, onBack, onClose }) {
         <HebrewKeyboard
           onKey={handleKey}
           onBackspace={handleBackspace}
-          onDone={() => setShowKeyboard(false)}
+          onDone={() => {
+              kbLock.current = true;
+              setShowKeyboard(false);
+              setTimeout(() => { kbLock.current = false; }, 600);
+            }}
         />
       </div>
 
