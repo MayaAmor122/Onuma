@@ -408,9 +408,9 @@ function VideoSplash({ onStart }) {
           style={{
             position: 'absolute',
             top: '50%', left: '50%',
-            width: '844px', height: '390px',
+            width: '100vh', height: '100vw',
             objectFit: 'cover',
-            transform: 'translate(-50%, -50%) rotate(90deg) scale(1.2)',
+            transform: 'translate(-50%, -50%) rotate(90deg)',
           }}
         />
       ) : (
