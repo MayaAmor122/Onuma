@@ -283,14 +283,15 @@ export default function AddEventScreen3({ onNext, onBack, onClose, timeOfDay = '
       <p style={{
         fontFamily: 'Atlas', fontWeight: 500, fontSize: 18, color: '#45423A',
         textAlign: 'right', direction: 'rtl', margin: '24px 28px 0',
-        opacity: showKeyboard ? 0 : 1,
-        transition: 'opacity 0.25s ease',
+        opacity: showKeyboard ? 0.35 : 1,
+        filter: showKeyboard ? 'blur(3px)' : 'none',
+        transition: 'opacity 0.25s ease, filter 0.25s ease',
       }}>
         {isFemale ? 'בחרי איפה האירוע התרחש?' : 'בחר איפה האירוע התרחש?'}
       </p>
 
       {/* ── Mandala preview + dropdown — mandala stays fixed, dropdown overlays on top ── */}
-      <div style={{ flex: 1, position: 'relative', opacity: showKeyboard ? 0 : 1, transition: 'opacity 0.25s ease' }}>
+      <div style={{ flex: 1, position: 'relative', opacity: showKeyboard ? 0.35 : 1, filter: showKeyboard ? 'blur(3px)' : 'none', transition: 'opacity 0.25s ease, filter 0.25s ease' }}>
 
         {/* Mandala — tappable to toggle dropdown */}
         <div
