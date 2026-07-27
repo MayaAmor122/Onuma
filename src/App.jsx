@@ -406,8 +406,11 @@ function VideoSplash({ onStart }) {
           src={VIDEO_SRC}
           loop muted playsInline
           style={{
-            position: 'absolute', inset: 0,
-            width: '100%', height: '100%', objectFit: 'cover',
+            position: 'absolute',
+            top: '50%', left: '50%',
+            width: '844px', height: '390px',
+            objectFit: 'cover',
+            transform: 'translate(-50%, -50%) rotate(90deg)',
           }}
         />
       ) : (
