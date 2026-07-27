@@ -466,11 +466,13 @@ export default function InsightsFlow({ onClose, onShowSummary }) {
   const { events: contextEvents } = useApp();
   const allEvents = FAKE_HISTORICAL_EVENTS;
   const now        = new Date();
-  const touchStart = useRef(null);
+  const touchStart  = useRef(null);
+  const welcomeRef  = useRef(false);
 
   const [loading,     setLoading]     = useState(true);
   const [loadingOut,  setLoadingOut]  = useState(false);
   const [welcome,     setWelcome]     = useState(false);
+  welcomeRef.current = welcome;
   const [fadeIn,      setFadeIn]      = useState(false);
   const [viewMode,    setViewMode]    = useState('חודש');
   const [month,       setMonth]       = useState(now.getMonth());
@@ -527,21 +529,32 @@ export default function InsightsFlow({ onClose, onShowSummary }) {
 
   /* Window-level release handlers — fire even when pointer leaves the element */
   useEffect(() => {
+    function handleSwipeEnd(dx, dy) {
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+        if (welcomeRef.current) {
+          setFadeIn(false);
+          setTimeout(() => {
+            setWelcome(false);
+            requestAnimationFrame(() => requestAnimationFrame(() => setFadeIn(true)));
+          }, 300);
+        } else {
+          dx > 0 ? navRef.current.goNext() : navRef.current.goPrev();
+        }
+      }
+    }
     function onMouseUp(e) {
       if (!touchStart.current) return;
       const dx = e.clientX - touchStart.current.x;
       const dy = e.clientY - touchStart.current.y;
-      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40)
-        dx > 0 ? navRef.current.goNext() : navRef.current.goPrev();
       touchStart.current = null;
+      handleSwipeEnd(dx, dy);
     }
     function onTouchEnd(e) {
       if (!touchStart.current) return;
       const dx = e.changedTouches[0].clientX - touchStart.current.x;
       const dy = e.changedTouches[0].clientY - touchStart.current.y;
-      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40)
-        dx > 0 ? navRef.current.goNext() : navRef.current.goPrev();
       touchStart.current = null;
+      handleSwipeEnd(dx, dy);
     }
     window.addEventListener('mouseup', onMouseUp);
     window.addEventListener('touchend', onTouchEnd);
