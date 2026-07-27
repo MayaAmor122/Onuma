@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 
 /* ── Icons ── */
@@ -62,6 +62,7 @@ export default function AddEventScreen2({ onNext, onBack, onClose, timeOfDay = '
   const isFemale = gender === 'female';
   const [rating,  setRating]  = useState(null);
   const [pressed, setPressed] = useState(null);
+  const dragging = useRef(false);
 
   const press = id => ({
     onPointerDown: () => setPressed(id),
@@ -69,15 +70,31 @@ export default function AddEventScreen2({ onNext, onBack, onClose, timeOfDay = '
     onPointerLeave:() => setPressed(null),
   });
 
-  function handleTargetClick(e) {
-    const rect   = e.currentTarget.getBoundingClientRect();
-    const dx     = e.clientX - (rect.left + rect.width  / 2);
-    const dy     = e.clientY - (rect.top  + rect.height / 2);
-    const dist   = Math.sqrt(dx * dx + dy * dy);
-    const outerR = rect.width / 2; // use visual size so zoom doesn't break hit-testing
-    if (dist > outerR + 6) return;
-    const zone   = Math.ceil((dist / outerR) * 5);
-    setRating(Math.max(1, Math.min(5, zone)));
+  function calcRating(e) {
+    const rect  = e.currentTarget.getBoundingClientRect();
+    const dx    = e.clientX - (rect.left + rect.width  / 2);
+    const dy    = e.clientY - (rect.top  + rect.height / 2);
+    const dist  = Math.sqrt(dx * dx + dy * dy);
+    const outerR = rect.width / 2;
+    if (dist > outerR + 6) return null;
+    return Math.max(1, Math.min(5, Math.ceil((dist / outerR) * 5)));
+  }
+
+  function handlePointerDown(e) {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    dragging.current = true;
+    const r = calcRating(e);
+    if (r !== null) setRating(r);
+  }
+
+  function handlePointerMove(e) {
+    if (!dragging.current) return;
+    const r = calcRating(e);
+    if (r !== null) setRating(r);
+  }
+
+  function handlePointerUp() {
+    dragging.current = false;
   }
 
   const outer = OUTER[timeOfDay] || OUTER.morning;
@@ -154,7 +171,9 @@ export default function AddEventScreen2({ onNext, onBack, onClose, timeOfDay = '
 
           {/* 5-ring interactive target — centered inside the SVG */}
           <div
-            onClick={handleTargetClick}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
             style={{
               position: 'absolute',
               width: TARGET_R * 2, height: TARGET_R * 2,
