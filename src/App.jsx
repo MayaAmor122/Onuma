@@ -410,7 +410,7 @@ function VideoSplash({ onStart }) {
             top: '50%', left: '50%',
             width: '844px', height: '390px',
             objectFit: 'cover',
-            transform: 'translate(-50%, -50%) rotate(90deg) scale(1.1)',
+            transform: 'translate(-50%, -50%) rotate(90deg) scale(1.2)',
           }}
         />
       ) : (
