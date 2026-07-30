@@ -428,7 +428,7 @@ export default function HomeScreen({
   useEffect(() => {
     if (!playEntrySound || _homeEntrySoundPlayed) return;
     _homeEntrySoundPlayed = true;
-    try { const a = new Audio('/sound-036.mp3'); a.volume = 0.4; a.play(); } catch (_) {}
+    try { const a = new Audio(`${import.meta.env.BASE_URL}sound-036.mp3`); a.volume = 0.4; a.play(); } catch (_) {}
   }, []);
 
   const events     = previewEvents || contextEvents;
@@ -513,7 +513,7 @@ export default function HomeScreen({
   /* Play sound when new event lands on the grid */
   useEffect(() => {
     if (!newEventId) return;
-    try { const a = new Audio('/sound-036.mp3'); a.volume = 0.25; a.play(); } catch (_) {}
+    try { const a = new Audio(`${import.meta.env.BASE_URL}sound-036.mp3`); a.volume = 0.25; a.play(); } catch (_) {}
   }, [newEventId]);
 
   /* Scroll "+" button into view after a new event is saved */
@@ -634,7 +634,7 @@ export default function HomeScreen({
       setPatternData(data);
       setSheet(hasPattern ? 'result' : 'no-result');
       if (hasPattern) {
-        try { const a = new Audio('/sound-036.mp3'); a.volume = 0.4; a.play(); } catch (_) {}
+        try { const a = new Audio(`${import.meta.env.BASE_URL}sound-036.mp3`); a.volume = 0.4; a.play(); } catch (_) {}
       }
     }, 1600);
   }

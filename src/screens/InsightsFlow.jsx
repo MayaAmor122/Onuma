@@ -489,7 +489,7 @@ export default function InsightsFlow({ onClose, onShowSummary }) {
         setLoading(false);
         setWelcome(true);
         requestAnimationFrame(() => setFadeIn(true));
-        try { const a = new Audio('/sound-036.mp3'); a.volume = 0.4; a.play(); } catch (_) {}
+        try { const a = new Audio(`${import.meta.env.BASE_URL}sound-036.mp3`); a.volume = 0.4; a.play(); } catch (_) {}
       }, 400);
       return () => clearTimeout(t2);
     }, 2000);

@@ -30,7 +30,7 @@ export default function LoadingScreen({ onDone, text = 'בונה את לוח ה�
 
   /* Preload walkthrough intro sound so it's cached and plays instantly */
   useEffect(() => {
-    try { new Audio('/sound-036.mp3').load(); } catch (_) {}
+    try { new Audio(`${import.meta.env.BASE_URL}sound-036.mp3`).load(); } catch (_) {}
   }, []);
 
   return (
